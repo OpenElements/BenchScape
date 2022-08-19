@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 public class SampleBenchmark {
 
-    @Benchmark
+    //@Benchmark
     @Fork(1)
     @Warmup(iterations = 2, time = 2)
     @Measurement(iterations = 3, time = 3)

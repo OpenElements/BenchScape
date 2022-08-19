@@ -67,7 +67,10 @@ public class BenchmarkFactory {
         final String unit = benchmarkResult.getPrimaryResult().getScoreUnit();
         final double value = benchmarkResult.getPrimaryResult().getScore();
         final double error = benchmarkResult.getPrimaryResult().getScoreError();
-        final Result result = new Result(value, error, unit);
+        final double min = benchmarkResult.getPrimaryResult().getStatistics().getMin();
+        final double max = benchmarkResult.getPrimaryResult().getStatistics().getMax();
+
+        final Result result = new Result(value, error, unit, min, max);
 
         final Benchmark benchmark = new Benchmark(UUID.randomUUID().toString(), benchmarkName, BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, result);
 

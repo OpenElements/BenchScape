@@ -1,5 +1,5 @@
 package com.openelements.jmh.store.data;
 
-public record Result(double value, double error, String unit) {
+public record Result(double value, double error, String unit, double min, double max) {
 
 }

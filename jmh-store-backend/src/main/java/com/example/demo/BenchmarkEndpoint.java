@@ -38,6 +38,8 @@ public class BenchmarkEndpoint {
         timeseriesEntity.setTimestamp(benchmark.execution().measurementTime());
         timeseriesEntity.setValue(benchmark.result().value());
         timeseriesEntity.setError(benchmark.result().error());
+        timeseriesEntity.setMin(benchmark.result().min());
+        timeseriesEntity.setMax(benchmark.result().max());
         timeseriesRepository.save(timeseriesEntity);
     }
 

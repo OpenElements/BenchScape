@@ -69,20 +69,59 @@
     }).then(function (data) {
         console.log(data);
 
-        var dataset =
-            {
-                data: [],
-                fill: false,
-                tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
-                borderColor: 'blue'
-            };
+        var dataset = {
+            data: [],
+            fill: false,
+            tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+            borderColor: 'blue'
+        };
+        var lowErrorDataset = {
+            data: [],
+            fill: false,
+            tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+            borderColor: 'red'
+        };
+        var highErrorDataset = {
+            data: [],
+            fill: false,
+            tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+            borderColor: 'red'
+        };
+        var minDataset = {
+            data: [],
+            fill: false,
+            tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+            borderColor: 'orange'
+        };
+        var maxDataset = {
+            data: [],
+            fill: false,
+            tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+            borderColor: 'orange'
+        };
         data.forEach(element => {
             var dataEntry = {
                 x: element.timestamp, y: element.value
             }
             dataset.data.push(dataEntry);
+            var lowErrordataEntry = {
+                x: element.timestamp, y: element.value - element.error
+            }
+            lowErrorDataset.data.push(lowErrordataEntry);
+            var highErrordataEntry = {
+                x: element.timestamp, y: element.value + element.error
+            }
+            highErrorDataset.data.push(highErrordataEntry);
+            var minDataEntry = {
+                x: element.timestamp, y: element.min
+            }
+            minDataset.data.push(minDataEntry);
+            var maxDataEntry = {
+                x: element.timestamp, y: element.max
+            }
+            maxDataset.data.push(maxDataEntry);
         });
-        config.data.datasets = [dataset];
+        config.data.datasets = [dataset, minDataset, maxDataset];
         console.log(dataset);
     }).catch(function (e) {
         console.log("Booo", e);

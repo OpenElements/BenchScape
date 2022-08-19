@@ -23,6 +23,12 @@ public class TimeseriesEntity {
     @Column(nullable = false)
     private double error;
 
+    @Column(nullable = false)
+    private double min;
+
+    @Column(nullable = false)
+    private double max;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -61,5 +67,21 @@ public class TimeseriesEntity {
 
     public void setError(double error) {
         this.error = error;
+    }
+
+    public double getMin() {
+        return min;
+    }
+
+    public void setMin(double min) {
+        this.min = min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
     }
 }
