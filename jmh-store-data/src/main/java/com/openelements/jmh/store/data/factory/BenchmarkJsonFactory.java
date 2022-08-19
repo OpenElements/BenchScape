@@ -1,13 +1,15 @@
-package com.openelements.jmh.store.data;
+package com.openelements.jmh.store.data.factory;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.openelements.jmh.store.data.*;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,11 +18,27 @@ import java.util.concurrent.TimeUnit;
 
 public class BenchmarkJsonFactory {
 
-    public static Set<Benchmark> load(final Path jsonFile) throws IOException {
+    public static Set<Benchmark> loadRawJmhJsonResult(final Path jsonFile) throws IOException {
         try (final Reader jsonReader = new FileReader(jsonFile.toFile())) {
             JsonElement jsonElement = JsonParser.parseReader(jsonReader);
             return parse(jsonElement);
         }
+    }
+
+    public static String toJson(final Set<Benchmark> benchmarks) {
+        final Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(Instant.class, new InstantConverter())
+                .create();
+        return gson.toJson(benchmarks);
+    }
+
+    public static String toJson(final Benchmark benchmark) {
+        final Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(Instant.class, new InstantConverter())
+                .create();
+        return gson.toJson(benchmark);
     }
 
     private static Set<Benchmark> parse(final JsonElement jsonElement) {
@@ -47,7 +65,12 @@ public class BenchmarkJsonFactory {
         final String jmhVersion = params.get("jmhVersion").getAsString();
         final String jvmName = params.get("vmName").getAsString();
         final String jvmVersion = params.get("vmVersion").getAsString();
-        final BenchmarkInfrastructure infrastructure = new BenchmarkInfrastructure(jvmVersion, jvmName, jmhVersion);
+        final OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+        final String arch = osBean.getArch();
+        final int availableProcessors = osBean.getAvailableProcessors();
+        final String osVersion = osBean.getVersion();
+        final String osName = osBean.getName();
+        final BenchmarkInfrastructure infrastructure = new BenchmarkInfrastructure(arch, availableProcessors, -1L, osName, osVersion, jvmVersion, jvmName, jmhVersion);
 
         final int warmupIterations = params.get("warmup").getAsJsonObject().get("count").getAsInt();
         final int warmupBatchSize = params.get("warmup").getAsJsonObject().get("batchSize").getAsInt();
@@ -61,11 +84,9 @@ public class BenchmarkJsonFactory {
         final String measurementTimeUnit = params.get("warmup").getAsJsonObject().get("timeValue").getAsJsonObject().get("timeUnit").getAsString();
         final BenchmarkMeasurementConfiguration measurementConfiguration = new BenchmarkMeasurementConfiguration(measurementIterations, measurementTime, parseTimeUnit(measurementTimeUnit), measurementBatchSize);
 
-        final BenchmarkConfiguration configuration = new BenchmarkConfiguration(threads, forks, parseTimeUnit(measurementTimeUnit), timeout, parseTimeUnit(timeoutTimeunit), measurementConfiguration, warmupConfiguration);
+        final BenchmarkConfiguration configuration = new BenchmarkConfiguration(threads, forks, parseTimeUnit(timeunit), timeout, parseTimeUnit(timeoutTimeunit), measurementConfiguration, warmupConfiguration);
 
-        final BenchmarkResult result = new BenchmarkResult();
-
-        final Benchmark benchmark = new Benchmark(UUID.randomUUID().toString(), benchmarkName, parseType(mode), infrastructure, configuration, result);
+        final Benchmark benchmark = new Benchmark(UUID.randomUUID().toString(), benchmarkName, parseType(mode), infrastructure, configuration, null, null);
 
         return benchmark;
     }
