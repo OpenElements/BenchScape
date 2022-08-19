@@ -24,6 +24,7 @@ public class BenchmarkEndpoint {
         this.timeseriesRepository = timeseriesRepository;
     }
 
+    @CrossOrigin
     @PostMapping("/benchmark")
     void storeBenchmark(@RequestBody final Benchmark benchmark) {
         final BenchmarkEntity benchmarkEntity = benchmarkRepository.findByName(benchmark.benchmark()).orElseGet(() -> {
@@ -40,6 +41,7 @@ public class BenchmarkEndpoint {
         timeseriesRepository.save(timeseriesEntity);
     }
 
+    @CrossOrigin
     @GetMapping("/benchmarks")
     @ResponseBody
     List<String> getAllBenchmarks() {
@@ -48,6 +50,7 @@ public class BenchmarkEndpoint {
                 .collect(Collectors.toList());
     }
 
+    @CrossOrigin
     @GetMapping("/timeseries")
     @ResponseBody
     List<TimeseriesEntity> getTimeseries(@RequestParam(name = "benchmark") String benchmark) {

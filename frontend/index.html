@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+<div style="width:75%;">
+    <canvas id="canvas"></canvas>
+</div>
+<script>
+    var config = {
+        type: 'line',
+        data: {
+            datasets: [
+                {
+                    data: [{
+                        x: "2022-08-19T10:01:42.255Z", y: 0.01930039623173051
+                    }, {
+                        x: "2022-08-19T10:02:42.255Z", y: 0.013
+                    }, {
+                        x: "2022-08-19T10:02:55.255Z", y: 0.01930039623173051
+                    }, {
+                        x: "2022-08-19T10:03:02.255Z", y: 0.01934
+                    }, {
+                        x: "2022-08-19T10:03:42.255Z", y: 0.0189
+                    }],
+                    fill: false,
+                    tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+                    borderColor: 'blue'
+                }
+            ]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            responsive: true,
+            title: {
+                display: false,
+            },
+            scales: {
+                xAxes: [{
+                    type: "time"
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'ops/ms'
+                    }
+                }]
+            }
+        }
+    };
+
+    fetch("http://localhost:8080/timeseries?benchmark=com.openelements.jmh.store.data.test.UploaderSample.doIt").then(function (response) {
+        return response.json();
+    }).then(function (data) {
+        console.log(data);
+
+        var dataset =
+            {
+                data: [],
+                fill: false,
+                tension: 0, //Damit die Übergänge zwischen Punkten eckig sind
+                borderColor: 'blue'
+            };
+        data.forEach(element => {
+            var dataEntry = {
+                x: element.timestamp, y: element.value
+            }
+            dataset.data.push(dataEntry);
+        });
+        config.data.datasets = [dataset];
+        console.log(dataset);
+    }).catch(function (e) {
+        console.log("Booo", e);
+    });
+
+    window.onload = function () {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        new Chart(ctx, config);
+    };
+</script>
+</body>
+</html>
