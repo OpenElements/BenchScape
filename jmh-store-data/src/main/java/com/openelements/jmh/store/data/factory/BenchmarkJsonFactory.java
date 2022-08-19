@@ -29,6 +29,7 @@ public class BenchmarkJsonFactory {
         final Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Instant.class, new InstantConverter())
+                .serializeSpecialFloatingPointValues()
                 .create();
         return gson.toJson(benchmarks);
     }
@@ -37,6 +38,7 @@ public class BenchmarkJsonFactory {
         final Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Instant.class, new InstantConverter())
+                .serializeSpecialFloatingPointValues()
                 .create();
         return gson.toJson(benchmark);
     }

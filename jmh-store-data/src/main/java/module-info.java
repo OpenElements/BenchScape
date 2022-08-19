@@ -8,5 +8,6 @@ module jmh.store.data {
     requires jmh.core;
     requires com.google.gson;
     requires java.management;
+    requires java.net.http;
     requires jdk.management;
 }
