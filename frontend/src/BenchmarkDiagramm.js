@@ -40,8 +40,7 @@ function BenchmarkDiagramm(props) {
             }
         }
     });
-
-
+    
     let loadData = () => {
         let benchmarkName = props.benchmark;
         fetch("http://localhost:8080/timeseries?benchmark=" + benchmarkName).then(function (response) {

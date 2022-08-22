@@ -17,6 +17,7 @@
     <modules>
         <module>jmh-store-data</module>
         <module>jmh-store-backend</module>
+        <module>jmh-maven-plugin</module>
     </modules>
 
     <dependencyManagement>
