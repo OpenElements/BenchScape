@@ -2,44 +2,36 @@ package com.openelements.jmh.maven;
 
 import com.openelements.jmh.store.data.runner.JmhUploader;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.resolver.ArtifactResolutionException;
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
-import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
-import org.apache.maven.artifact.resolver.ResolutionErrorHandler;
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.repository.RepositorySystem;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 @Mojo(name = "java", threadSafe = true, requiresDependencyResolution = ResolutionScope.TEST)
-public class JmhMojo
-        extends AbstractExecMojo {
+public class JmhMojo extends AbstractMojo {
 
     /**
      * The enclosing project.
      */
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
-
-    @Parameter(defaultValue = "${session}", readonly = true, required = true)
-    private MavenSession session;
 
     /**
      * This folder is added to the list of those folders containing source to be compiled. Use this if your plugin
@@ -79,15 +71,6 @@ public class JmhMojo
      */
     @Parameter(property = "addOutputToClasspath", defaultValue = "true")
     private boolean addOutputToClasspath;
-    
-    @Component
-    private RepositorySystem repositorySystem;
-
-    @Component
-    private ResolutionErrorHandler resolutionErrorHandler;
-
-    @Component
-    private ProjectBuilder projectBuilder;
 
     /**
      * Execute goal.
@@ -96,31 +79,19 @@ public class JmhMojo
      * @throws MojoFailureException   something bad happened...
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        IsolatedThreadGroup threadGroup = new IsolatedThreadGroup("JmhUploader");
-        Thread bootstrapThread = new Thread(threadGroup, new Runnable() {
-            public void run() {
-                try {
-                    Class<?> bootClass = Thread.currentThread().getContextClassLoader().loadClass(JmhUploader.class.getName());
-                    MethodHandles.Lookup lookup = MethodHandles.lookup();
-                    MethodHandle constructorHandle = lookup.findConstructor(bootClass, MethodType.methodType(void.class));
-                    Object uploader = constructorHandle.invoke();
-                    MethodHandle run = lookup.findVirtual(bootClass, "run", MethodType.methodType(void.class));
-                    run.invoke(uploader);
-                } catch (Throwable e) { // just pass it on
-                    Thread.currentThread().getThreadGroup().uncaughtException(Thread.currentThread(), e);
-                }
+        final IsolatedThreadGroup threadGroup = new IsolatedThreadGroup(getLog(), "JmhUploader");
+        final URLClassLoader classLoader = getClassLoader();
+        final IsolatedThreadFactory threadFactory = new IsolatedThreadFactory(threadGroup, classLoader);
+        Executors.newSingleThreadExecutor(threadFactory).submit(() -> {
+            try {
+                executeJmh();
+            } catch (final Throwable e) {
+                Thread.currentThread().getThreadGroup().uncaughtException(Thread.currentThread(), e);
             }
-        }, "JmhUploaderThread");
-        URLClassLoader classLoader = getClassLoader();
-        bootstrapThread.setContextClassLoader(classLoader);
-        bootstrapThread.start();
+        });
         joinNonDaemonThreads(threadGroup);
-        terminateThreads(threadGroup);
-        try {
-            threadGroup.destroy();
-        } catch (IllegalThreadStateException e) {
-            getLog().warn("Couldn't destroy threadgroup " + threadGroup, e);
-        }
+        terminateFullThreadGroup(threadGroup);
+
         if (classLoader != null) {
             try {
                 classLoader.close();
@@ -128,72 +99,51 @@ public class JmhMojo
                 getLog().error(e.getMessage(), e);
             }
         }
-        synchronized (threadGroup) {
-            if (threadGroup.uncaughtException != null) {
-                throw new MojoExecutionException("An exception occurred while executing the Java class. "
-                        + threadGroup.uncaughtException.getMessage(), threadGroup.uncaughtException);
-            }
+        final Throwable uncaughtException = threadGroup.getUncaughtException();
+        if (uncaughtException != null) {
+            throw new MojoExecutionException("An exception occurred while executing the Java class. "
+                    + uncaughtException.getMessage(), uncaughtException);
         }
-        registerSourceRoots();
     }
 
-    /**
-     * a ThreadGroup to isolate execution and collect exceptions.
-     */
-    private class IsolatedThreadGroup
-            extends ThreadGroup {
-        private Throwable uncaughtException; // synchronize access to this
+    private void executeJmh() throws Throwable {
+        Class<?> bootClass = Thread.currentThread().getContextClassLoader().loadClass(JmhUploader.class.getName());
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodHandle constructorHandle = lookup.findConstructor(bootClass, MethodType.methodType(void.class));
+        Object uploader = constructorHandle.invoke();
+        MethodHandle run = lookup.findVirtual(bootClass, "run", MethodType.methodType(void.class));
+        run.invoke(uploader);
+    }
 
-        public IsolatedThreadGroup(String name) {
-            super(name);
-        }
+    private boolean containsDaemon(Collection<Thread> threads) {
+        return Objects.requireNonNull(threads).stream()
+                .filter(t -> t.isDaemon())
+                .findAny()
+                .isPresent();
+    }
 
-        public void uncaughtException(Thread thread, Throwable throwable) {
-            if (throwable instanceof ThreadDeath) {
-                return; // harmless
-            }
-            synchronized (this) {
-                if (uncaughtException == null) // only remember the first one
-                {
-                    uncaughtException = throwable; // will be reported eventually
-                }
-            }
-            getLog().warn(throwable);
-        }
+    private boolean containsDaemon(ThreadGroup threadGroup) {
+        return containsDaemon(getActiveThreads(threadGroup));
     }
 
     private void joinNonDaemonThreads(ThreadGroup threadGroup) {
-        boolean foundNonDaemon;
-        do {
-            foundNonDaemon = false;
-            Collection<Thread> threads = getActiveThreads(threadGroup);
-            for (Thread thread : threads) {
-                if (thread.isDaemon()) {
-                    continue;
-                }
-                foundNonDaemon = true; // try again; maybe more threads were created while we were busy
-                joinThread(thread, 0);
-            }
+        while (containsDaemon(threadGroup)) {
+            getActiveThreads(threadGroup).stream()
+                    .filter(t -> !t.isDaemon())
+                    .forEach(t -> joinThread(thread, 0));
         }
-        while (foundNonDaemon);
     }
 
-    private void joinThread(Thread thread, long timeoutMsecs) {
+    private void joinThread(Thread thread) {
         try {
-            getLog().debug("joining on thread " + thread);
-            thread.join(timeoutMsecs);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // good practice if don't throw
-            getLog().warn("interrupted while joining against thread " + thread, e); // not expected!
-        }
-        if (thread.isAlive()) // generally abnormal
-        {
-            getLog().warn("thread " + thread + " was interrupted but is still alive after waiting at least "
-                    + timeoutMsecs + "msecs");
+            getLog().debug("Joining on thread " + thread.getName());
+            thread.join(0);
+        } catch (final InterruptedException e) {
+            getLog().warn("Interrupted after joining timeout for thread " + thread.getName());
         }
     }
 
-    private void terminateThreads(ThreadGroup threadGroup) {
+    private void terminateFullThreadGroup(ThreadGroup threadGroup) {
         long startTime = System.currentTimeMillis();
         Set<Thread> uncooperativeThreads = new HashSet<>(); // these were not responsive to interruption
         for (Collection<Thread> threads = getActiveThreads(threadGroup); !threads.isEmpty(); threads =
@@ -233,6 +183,11 @@ public class JmhMojo
                         + " such as " + threadsArray[0]);
             }
         }
+        try {
+            threadGroup.destroy();
+        } catch (IllegalThreadStateException e) {
+            getLog().warn("Couldn't destroy threadgroup " + threadGroup, e);
+        }
     }
 
     private Collection<Thread> getActiveThreads(ThreadGroup threadGroup) {
@@ -255,13 +210,15 @@ public class JmhMojo
             throws MojoExecutionException {
         List<Path> classpathURLs = new ArrayList<>();
         this.addRelevantProjectDependenciesToClasspath(classpathURLs);
-
         try {
-            return URLClassLoaderBuilder.builder()
-                    .setLogger(getLog())
-                    .setPaths(classpathURLs)
-                    .build();
-        } catch (NullPointerException | IOException e) {
+            return new URLClassLoader(classpathURLs.stream().map(p -> {
+                try {
+                    return p.toUri().toURL();
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException("ERROR", e);
+                }
+            }).toArray(i -> new URL[i]));
+        } catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
 
@@ -293,51 +250,6 @@ public class JmhMojo
             path.add(classPathElement.getFile().toPath());
         }
 
-    }
-
-    /**
-     * Resolve the executable dependencies for the specified project
-     *
-     * @param executablePomArtifact the project's POM
-     * @return a set of Artifacts
-     * @throws MojoExecutionException if a failure happens
-     */
-    private Set<Artifact> resolveExecutableDependencies(Artifact executablePomArtifact)
-            throws MojoExecutionException {
-        try {
-            ArtifactResolutionRequest request = new ArtifactResolutionRequest()
-                    .setArtifact(executablePomArtifact)
-                    .setLocalRepository(getSession().getLocalRepository())
-                    .setRemoteRepositories(getSession().getRequest().getRemoteRepositories())
-                    .setForceUpdate(getSession().getRequest().isUpdateSnapshots())
-                    .setOffline(getSession().isOffline())
-                    .setResolveTransitively(true);
-
-            ArtifactResolutionResult result = repositorySystem.resolve(request);
-            resolutionErrorHandler.throwErrors(request, result);
-
-            return result.getArtifacts();
-        } catch (ArtifactResolutionException ex) {
-            throw new MojoExecutionException("Encountered problems resolving dependencies of the executable "
-                    + "in preparation for its execution.", ex);
-        }
-    }
-
-    /**
-     * Stop program execution for nn millis.
-     *
-     * @param millis the number of millis-seconds to wait for, <code>0</code> stops program forever.
-     */
-    private void waitFor(long millis) {
-        Object lock = new Object();
-        synchronized (lock) {
-            try {
-                lock.wait(millis);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // good practice if don't throw
-                getLog().warn("Spuriously interrupted while waiting for " + millis + "ms", e);
-            }
-        }
     }
 
     /**
@@ -380,22 +292,4 @@ public class JmhMojo
         getLog().debug("Collected project classpath " + theClasspathFiles);
     }
 
-    /**
-     * Register compile and compile tests source roots if necessary
-     */
-    private void registerSourceRoots() {
-        if (sourceRoot != null) {
-            getLog().info("Registering compile source root " + sourceRoot);
-            project.addCompileSourceRoot(sourceRoot.toString());
-        }
-
-        if (testSourceRoot != null) {
-            getLog().info("Registering compile test source root " + testSourceRoot);
-            project.addTestCompileSourceRoot(testSourceRoot.toString());
-        }
-    }
-
-    private final MavenSession getSession() {
-        return session;
-    }
 }
