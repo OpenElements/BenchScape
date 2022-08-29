@@ -18,6 +18,7 @@
         <module>jmh-store-data</module>
         <module>jmh-store-backend</module>
         <module>jmh-maven-plugin</module>
+        <module>sample-benchmark</module>
     </modules>
 
     <dependencyManagement>

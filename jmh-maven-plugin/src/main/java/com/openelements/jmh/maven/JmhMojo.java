@@ -20,7 +20,9 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Mojo(name = "jmh", defaultPhase = LifecyclePhase.VERIFY, requiresDependencyResolution = ResolutionScope.RUNTIME_PLUS_SYSTEM, requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM)
@@ -39,13 +41,20 @@ public class JmhMojo extends AbstractMojo {
         final IsolatedThreadGroup threadGroup = new IsolatedThreadGroup(getLog(), "JmhUploader");
         final URLClassLoader classLoader = getClassLoader();
         final IsolatedThreadFactory threadFactory = new IsolatedThreadFactory(threadGroup, classLoader);
-        Executors.newSingleThreadExecutor(threadFactory).submit(() -> {
+        Future<?> submit = Executors.newSingleThreadExecutor(threadFactory).submit(() -> {
             try {
                 executeJmh();
             } catch (final Throwable e) {
                 Thread.currentThread().getThreadGroup().uncaughtException(Thread.currentThread(), e);
             }
         });
+        try {
+            submit.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         joinNonDaemonThreads(threadGroup);
         terminateFullThreadGroup(threadGroup);
 
