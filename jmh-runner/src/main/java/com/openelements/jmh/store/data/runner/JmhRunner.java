@@ -2,8 +2,6 @@ package com.openelements.jmh.store.data.runner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.openelements.jmh.store.data.factory.BenchmarkFactory;
-import com.openelements.jmh.store.data.factory.BenchmarkJsonFactory;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
@@ -14,6 +12,9 @@ import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import com.openelements.jmh.store.data.factory.*;
+import com.openelements.jmh.store.data.*;
+
 
 public class JmhRunner {
 
@@ -42,7 +43,7 @@ public class JmhRunner {
     }
 
     Set<Benchmark> results = run.stream()
-        .map(result -> BenchmarkFactory.convert(result))
+        .map(BenchmarkFactory::convert)
         .collect(Collectors.toSet());
 
     results.stream().forEach(benchmark -> {

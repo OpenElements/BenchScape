@@ -1,7 +1,5 @@
 package com.openelements.jmh.store.data.runner;
 
-import com.openelements.jmh.store.data.factory.BenchmarkFactory;
-import com.openelements.jmh.store.data.factory.BenchmarkJsonFactory;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,6 +12,9 @@ import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import com.openelements.jmh.store.data.factory.*;
+import com.openelements.jmh.store.data.*;
+
 
 public class JmhUploader {
 

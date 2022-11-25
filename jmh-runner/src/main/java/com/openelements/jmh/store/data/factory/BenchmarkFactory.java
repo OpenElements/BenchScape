@@ -1,8 +1,8 @@
 package com.openelements.jmh.store.data.factory;
 
-import com.openelements.jmh.store.data.*;
 import org.openjdk.jmh.results.BenchmarkResult;
 import org.openjdk.jmh.results.RunResult;
+import com.openelements.jmh.store.data.*;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
