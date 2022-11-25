@@ -48,6 +48,7 @@ public class JmhMojo extends AbstractMojo {
                 Thread.currentThread().getThreadGroup().uncaughtException(Thread.currentThread(), e);
             }
         });
+
         try {
             submit.get();
         } catch (InterruptedException e) {
