@@ -41,9 +41,9 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.open-elements</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>jmh-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${project.version}</version>
         <executions>
           <execution>
             <goals>
