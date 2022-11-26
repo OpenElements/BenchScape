@@ -1,8 +1,14 @@
-package com.openelements.jmh.store.data.factory;
+package com.openelements.jmh.runner.factory;
 
+import com.openelements.jmh.common.Benchmark;
+import com.openelements.jmh.common.BenchmarkConfiguration;
+import com.openelements.jmh.common.BenchmarkExecution;
+import com.openelements.jmh.common.BenchmarkInfrastructure;
+import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
+import com.openelements.jmh.common.BenchmarkType;
+import com.openelements.jmh.common.Result;
 import org.openjdk.jmh.results.BenchmarkResult;
 import org.openjdk.jmh.results.RunResult;
-import com.openelements.jmh.store.data.*;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;

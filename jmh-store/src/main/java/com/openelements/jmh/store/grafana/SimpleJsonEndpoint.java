@@ -3,13 +3,12 @@ package com.openelements.jmh.store.grafana;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.openelements.jmh.store.db.repositories.BenchmarkRepository;
-import com.openelements.jmh.store.db.repositories.TimeseriesRepository;
-import com.openelements.jmh.store.shared.TimeseriesDefinition;
+import com.openelements.jmh.store.db.DataService;
+import com.openelements.jmh.store.shared.Timeseries;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,15 +22,11 @@ public class SimpleJsonEndpoint {
 
   //See https://grafana.com/grafana/plugins/grafana-simple-json-datasource/
 
-  private final BenchmarkRepository benchmarkRepository;
-
-  private final TimeseriesRepository timeseriesRepository;
-
-  public SimpleJsonEndpoint(
-      final BenchmarkRepository benchmarkRepository,
-      final TimeseriesRepository timeseriesRepository) {
-    this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository);
-    this.timeseriesRepository = Objects.requireNonNull(timeseriesRepository);
+  private final DataService dataService;
+  
+  @Autowired
+  public SimpleJsonEndpoint(final DataService dataService) {
+    this.dataService = Objects.requireNonNull(dataService);
   }
 
   @CrossOrigin
@@ -44,12 +39,9 @@ public class SimpleJsonEndpoint {
   @PostMapping("/search")
   String getSearch(@RequestBody final String jsonString) {
     final JsonArray result = new JsonArray();
-    System.out.println("search: " + jsonString);
-    benchmarkRepository.findAll().stream()
-        .map(entity -> entity.getName())
-        .forEach(name -> {
-          result.add(name);
-        });
+    dataService.getAllBenchmarks().stream()
+        .map(benchmark -> benchmark.name())
+        .forEach(name -> result.add(name));
     return result.toString();
   }
 
@@ -73,13 +65,10 @@ public class SimpleJsonEndpoint {
     final JsonArray resultArray = new JsonArray();
 
     targets.forEach(target -> {
-      final Long benchmarkId = benchmarkRepository.findByName(target)
-          .orElseThrow(() -> new IllegalArgumentException("Benchmark not found")).getId();
-      List<TimeseriesDefinition> timeseries = timeseriesRepository.findAllForBenchmark(benchmarkId)
-          .stream()
-          .map(entity -> new TimeseriesDefinition(entity.getId(), entity.getTimestamp(),
-              entity.getMeasurement(), entity.getError(), entity.getMin(), entity.getMax()))
-          .collect(Collectors.toList());
+      final List<Timeseries> timeseries = dataService.getBenchmarkByName(target)
+          .map(benchmark -> benchmark.id())
+          .map(benchmarkId -> dataService.getAllTimeseriesForBenchmarks(benchmarkId))
+          .orElseThrow(() -> new IllegalArgumentException("Benchmark not found"));
 
       final JsonObject valueResultObject = new JsonObject();
       valueResultObject.addProperty("target", target);
@@ -100,17 +89,17 @@ public class SimpleJsonEndpoint {
       resultArray.add(maxResultObject);
 
       timeseries.forEach(point -> {
-        JsonArray valueJsonPoint = new JsonArray();
+        final JsonArray valueJsonPoint = new JsonArray();
         valueJsonPoint.add(point.value());
         valueJsonPoint.add(point.timestamp().toEpochMilli());
         valueDataPoints.add(valueJsonPoint);
 
-        JsonArray minJsonPoint = new JsonArray();
+        final JsonArray minJsonPoint = new JsonArray();
         minJsonPoint.add(point.min());
         minJsonPoint.add(point.timestamp().toEpochMilli());
         minDataPoints.add(minJsonPoint);
 
-        JsonArray maxJsonPoint = new JsonArray();
+        final JsonArray maxJsonPoint = new JsonArray();
         maxJsonPoint.add(point.max());
         maxJsonPoint.add(point.timestamp().toEpochMilli());
         maxDataPoints.add(maxJsonPoint);

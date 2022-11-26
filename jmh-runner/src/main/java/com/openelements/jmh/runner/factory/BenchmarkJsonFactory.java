@@ -1,8 +1,12 @@
-package com.openelements.jmh.store.data.factory;
+package com.openelements.jmh.runner.factory;
 
 import com.google.gson.*;
-import com.openelements.jmh.store.data.*;
+import com.openelements.jmh.common.Benchmark;
+import com.openelements.jmh.common.BenchmarkConfiguration;
+import com.openelements.jmh.common.BenchmarkInfrastructure;
+import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
 
+import com.openelements.jmh.common.BenchmarkType;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;

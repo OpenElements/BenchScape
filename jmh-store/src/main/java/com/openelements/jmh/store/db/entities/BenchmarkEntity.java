@@ -22,7 +22,7 @@ public class BenchmarkEntity {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -30,7 +30,7 @@ public class BenchmarkEntity {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -38,7 +38,8 @@ public class BenchmarkEntity {
     return unit;
   }
 
-  public void setUnit(String unit) {
+  public void setUnit(final String unit) {
     this.unit = unit;
   }
+
 }

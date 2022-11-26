@@ -1,9 +1,12 @@
-package com.openelements.jmh.store.data.runner;
+package com.openelements.jmh.runner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.openelements.jmh.common.Benchmark;
+import com.openelements.jmh.runner.factory.BenchmarkFactory;
+import com.openelements.jmh.runner.factory.BenchmarkJsonFactory;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,15 +15,13 @@ import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import com.openelements.jmh.store.data.factory.*;
-import com.openelements.jmh.store.data.*;
 
 
-public class JmhRunner {
+public class JmhUploader {
 
   private final Set<Class> classes;
 
-  public JmhRunner() {
+  public JmhUploader() {
     this.classes = new HashSet<>();
   }
 
@@ -34,24 +35,26 @@ public class JmhRunner {
     final Runner runner = new Runner(optionsBuilder.build());
     Collection<RunResult> run = runner.run();
 
-    final Gson gson = new GsonBuilder().create();
-    String jsonString = gson.toJson(run);
-    try (final FileWriter fileWriter = new FileWriter("raw-jmh-data.json")) {
-      fileWriter.write(jsonString);
-    } catch (final IOException e) {
-      e.printStackTrace();
-    }
-
     Set<Benchmark> results = run.stream()
-        .map(BenchmarkFactory::convert)
+        .map(result -> BenchmarkFactory.convert(result))
         .collect(Collectors.toSet());
 
     results.stream().forEach(benchmark -> {
       final String json = BenchmarkJsonFactory.toJson(benchmark);
-      final String filename = benchmark.id() + ".json";
-      try (final FileWriter fileWriter = new FileWriter(filename)) {
-        fileWriter.write(json);
-      } catch (final IOException e) {
+
+      try {
+        final HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("http://localhost:8080/benchmark"))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .build();
+
+        final HttpResponse<Void> response = HttpClient
+            .newBuilder()
+            .build()
+            .send(request, HttpResponse.BodyHandlers.discarding());
+        System.out.println(response);
+      } catch (Exception e) {
         e.printStackTrace();
       }
     });

@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.data.factory;
+package com.openelements.jmh.runner.factory;
 
 import com.google.gson.*;
 

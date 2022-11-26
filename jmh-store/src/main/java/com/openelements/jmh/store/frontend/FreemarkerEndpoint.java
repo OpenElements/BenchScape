@@ -2,10 +2,9 @@ package com.openelements.jmh.store.frontend;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.openelements.jmh.store.db.repositories.BenchmarkRepository;
-import com.openelements.jmh.store.db.repositories.TimeseriesRepository;
+import com.openelements.jmh.store.db.DataService;
 import com.openelements.jmh.store.shared.BenchmarkDefinition;
-import com.openelements.jmh.store.shared.TimeseriesDefinition;
+import com.openelements.jmh.store.shared.Timeseries;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FreemarkerEndpoint {
 
-  private final BenchmarkRepository benchmarkRepository;
-
-  private final TimeseriesRepository timeseriesRepository;
-
-  public FreemarkerEndpoint(
-      final BenchmarkRepository benchmarkRepository,
-      final TimeseriesRepository timeseriesRepository) {
-    this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository);
-    this.timeseriesRepository = Objects.requireNonNull(timeseriesRepository);
+  private final DataService dataService;
+  
+  @Autowired
+  public FreemarkerEndpoint(final DataService dataService) {
+    this.dataService = Objects.requireNonNull(dataService);
   }
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -38,9 +34,8 @@ public class FreemarkerEndpoint {
     Objects.requireNonNull(model);
 
     final List<BenchmarkDefinition> benchmarks = new ArrayList<>();
-    benchmarkRepository.findAll().forEach(entity -> {
-      System.out.println(entity.getId());
-      benchmarks.add(new BenchmarkDefinition(entity.getId(), entity.getName(), entity.getUnit()));
+    dataService.getAllBenchmarks().forEach(benchmark -> {
+      benchmarks.add(benchmark);
     });
     model.addAttribute("benchmarks", benchmarks);
     return "index";
@@ -51,15 +46,11 @@ public class FreemarkerEndpoint {
     Objects.requireNonNull(id);
     Objects.requireNonNull(model);
 
-    final BenchmarkDefinition benchmark = benchmarkRepository.findById(id)
-        .map(entity -> new BenchmarkDefinition(entity.getId(), entity.getName(), entity.getUnit()))
+    final BenchmarkDefinition benchmark = dataService.getBenchmarkById(id)
         .orElseThrow(
             () -> new IllegalArgumentException("No Benchmark with id '" + id + "' defined"));
 
-    final List<TimeseriesDefinition> values = timeseriesRepository.findAllForBenchmark(id).stream()
-        .map(entity -> new TimeseriesDefinition(entity.getId(), entity.getTimestamp(),
-            entity.getMeasurement(), entity.getError(),
-            entity.getMin(), entity.getMax())).collect(Collectors.toList());
+    final List<Timeseries> values = dataService.getAllTimeseriesForBenchmarks(id);
 
     model.addAttribute("dataset", convertValues(values, v -> v.value(), "orange").toString());
     model.addAttribute("minDataset", convertValues(values, v -> v.min(), "#12121260").toString());
@@ -69,8 +60,8 @@ public class FreemarkerEndpoint {
     return "graph";
   }
 
-  private JsonObject convertValues(final List<TimeseriesDefinition> values,
-      final Function<TimeseriesDefinition, Double> extractor, final String color) {
+  private JsonObject convertValues(final List<Timeseries> values,
+      final Function<Timeseries, Double> extractor, final String color) {
     Objects.requireNonNull(values);
     Objects.requireNonNull(extractor);
     Objects.requireNonNull(color);

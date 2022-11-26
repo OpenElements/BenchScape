@@ -1,6 +1,6 @@
 package com.openelements.benchmark;
 
-import com.openelements.jmh.store.data.runner.JmhUploader;
+import com.openelements.jmh.runner.JmhUploader;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

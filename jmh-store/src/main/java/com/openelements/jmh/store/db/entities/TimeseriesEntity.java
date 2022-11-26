@@ -34,7 +34,7 @@ public class TimeseriesEntity {
   @Column(nullable = false)
   private double max;
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -46,7 +46,7 @@ public class TimeseriesEntity {
     return benchmarkId;
   }
 
-  public void setBenchmarkId(Long benchmarkId) {
+  public void setBenchmarkId(final Long benchmarkId) {
     this.benchmarkId = benchmarkId;
   }
 
@@ -54,7 +54,7 @@ public class TimeseriesEntity {
     return timestamp;
   }
 
-  public void setTimestamp(Instant timestamp) {
+  public void setTimestamp(final Instant timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -62,7 +62,7 @@ public class TimeseriesEntity {
     return measurement;
   }
 
-  public void setMeasurement(double value) {
+  public void setMeasurement(final double value) {
     this.measurement = value;
   }
 
@@ -70,7 +70,7 @@ public class TimeseriesEntity {
     return error;
   }
 
-  public void setError(double error) {
+  public void setError(final double error) {
     this.error = error;
   }
 
@@ -78,7 +78,7 @@ public class TimeseriesEntity {
     return min;
   }
 
-  public void setMin(double min) {
+  public void setMin(final double min) {
     this.min = min;
   }
 
@@ -86,7 +86,8 @@ public class TimeseriesEntity {
     return max;
   }
 
-  public void setMax(double max) {
+  public void setMax(final double max) {
     this.max = max;
   }
+
 }

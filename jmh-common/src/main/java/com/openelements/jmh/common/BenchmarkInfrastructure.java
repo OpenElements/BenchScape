@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.data;
+package com.openelements.jmh.common;
 
 public record BenchmarkInfrastructure(String arch, int availableProcessors, long memory, String osName,
                                       String osVersion,

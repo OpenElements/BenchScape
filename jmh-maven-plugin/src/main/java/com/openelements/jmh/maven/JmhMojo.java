@@ -1,6 +1,6 @@
 package com.openelements.jmh.maven;
 
-import com.openelements.jmh.store.data.runner.JmhUploader;
+import com.openelements.jmh.runner.JmhUploader;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

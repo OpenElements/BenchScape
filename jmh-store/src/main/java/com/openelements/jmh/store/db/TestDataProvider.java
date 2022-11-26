@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +23,16 @@ public class TestDataProvider implements CommandLineRunner {
 
   private final TimeseriesRepository timeseriesRepository;
 
+  @Autowired
   public TestDataProvider(
-      BenchmarkRepository benchmarkRepository,
-      TimeseriesRepository timeseriesRepository) {
+      final BenchmarkRepository benchmarkRepository,
+      final TimeseriesRepository timeseriesRepository) {
     this.benchmarkRepository = benchmarkRepository;
     this.timeseriesRepository = timeseriesRepository;
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(final String... args) throws Exception {
     final long benchmark1Id = createBenchmark("Test for Foo.bar()");
     IntStream.range(0, 1_000).forEach(i -> createTimeseries(benchmark1Id));
 
@@ -68,7 +70,7 @@ public class TestDataProvider implements CommandLineRunner {
   }
 
   private long createBenchmark(final String name) {
-    BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
+    final BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
     benchmarkEntity.setName(name);
     benchmarkEntity.setUnit("ops/ms");
     return benchmarkRepository.save(benchmarkEntity).getId();

@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.data;
+package com.openelements.jmh.common;
 
 public enum BenchmarkType {
     THROUGHPUT;

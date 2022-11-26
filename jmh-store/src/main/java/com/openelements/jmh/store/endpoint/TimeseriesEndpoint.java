@@ -1,12 +1,9 @@
 package com.openelements.jmh.store.endpoint;
 
-import com.openelements.jmh.store.db.repositories.BenchmarkRepository;
-import com.openelements.jmh.store.db.repositories.TimeseriesRepository;
-import com.openelements.jmh.store.shared.TimeseriesDefinition;
-import java.util.Comparator;
+import com.openelements.jmh.store.db.DataService;
+import com.openelements.jmh.store.shared.Timeseries;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,32 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TimeseriesEndpoint {
 
-  private final BenchmarkRepository benchmarkRepository;
-
-  private final TimeseriesRepository timeseriesRepository;
+  private final DataService dataService;
 
   @Autowired
-  public TimeseriesEndpoint(final BenchmarkRepository benchmarkRepository,
-      final TimeseriesRepository timeseriesRepository) {
-    this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository,
-        "benchmarkRepository must not be null");
-    this.timeseriesRepository = Objects.requireNonNull(timeseriesRepository,
-        "timeseriesRepository must not be null");
+  public TimeseriesEndpoint(final DataService dataService) {
+    this.dataService = Objects.requireNonNull(dataService);
   }
 
   @CrossOrigin
   @GetMapping("/timeseries")
   @ResponseBody
-  List<TimeseriesDefinition> getTimeseries(@RequestParam Long benchmarkId) {
-    return benchmarkRepository.findById(benchmarkId)
-        .map(entity -> entity.getId())
-        .map(id -> timeseriesRepository.findAllForBenchmark(id))
-        .orElseThrow(
-            () -> new IllegalArgumentException("No benchmark with id '" + benchmarkId + "' found"))
-        .stream()
-        .map(entity -> new TimeseriesDefinition(entity.getId(), entity.getTimestamp(),
-            entity.getMeasurement(), entity.getError(), entity.getMin(), entity.getMax()))
-        .sorted(Comparator.comparing(t -> t.timestamp()))
-        .collect(Collectors.toList());
+  List<Timeseries> getTimeseries(@RequestParam final Long benchmarkId) {
+    Objects.requireNonNull(benchmarkId);
+    return dataService.getAllTimeseriesForBenchmarks(benchmarkId);
   }
 }
