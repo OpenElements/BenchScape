@@ -48,7 +48,6 @@ public class SimpleJsonEndpoint {
   @CrossOrigin
   @PostMapping("/query")
   String getQuery(@RequestBody final String jsonString) {
-    System.out.println("query: " + jsonString);
     final JsonObject jsonRoot = JsonParser.parseString(jsonString).getAsJsonObject();
     final JsonObject range = jsonRoot.getAsJsonObject("range");
     final String rangeFrom = range.get("from").getAsString();
@@ -112,7 +111,6 @@ public class SimpleJsonEndpoint {
   @CrossOrigin
   @PostMapping("/annotations")
   String getAnnotations(@RequestBody final String jsonString) {
-    System.out.println("annotations: " + jsonString);
     final JsonObject jsonRoot = JsonParser.parseString(jsonString).getAsJsonObject();
     final JsonObject annotation = jsonRoot.getAsJsonObject("annotation");
 
@@ -141,7 +139,6 @@ public class SimpleJsonEndpoint {
   @CrossOrigin
   @PostMapping("/tag-values")
   String getTagValues(@RequestBody final String jsonString) {
-    System.out.println("tag-values: " + jsonString);
     final JsonObject jsonRoot = JsonParser.parseString(jsonString).getAsJsonObject();
     final String tag = jsonRoot.get("key").getAsString();
 
