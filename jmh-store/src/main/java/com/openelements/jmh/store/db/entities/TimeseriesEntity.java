@@ -34,6 +34,15 @@ public class TimeseriesEntity {
   @Column(nullable = false)
   private double max;
 
+  @Column(nullable = true)
+  private Integer availableProcessors;
+
+  @Column(nullable = true)
+  private Long memory;
+
+  @Column(nullable = true)
+  private String jvmVersion;
+
   public void setId(final Long id) {
     this.id = id;
   }
@@ -90,4 +99,27 @@ public class TimeseriesEntity {
     this.max = max;
   }
 
+  public Integer getAvailableProcessors() {
+    return availableProcessors;
+  }
+
+  public void setAvailableProcessors(final Integer availableProcessors) {
+    this.availableProcessors = availableProcessors;
+  }
+
+  public Long getMemory() {
+    return memory;
+  }
+
+  public void setMemory(final Long memory) {
+    this.memory = memory;
+  }
+
+  public String getJvmVersion() {
+    return jvmVersion;
+  }
+
+  public void setJvmVersion(final String jvmVersion) {
+    this.jvmVersion = jvmVersion;
+  }
 }

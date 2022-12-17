@@ -2,7 +2,6 @@ package com.openelements.jmh.store.endpoint;
 
 import com.openelements.jmh.common.Benchmark;
 import com.openelements.jmh.store.db.DataService;
-import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.gate.QualityGate;
 import com.openelements.jmh.store.shared.BenchmarkDefinition;
 import com.openelements.jmh.store.shared.BenchmarkWithTimeseriesResult;
@@ -35,7 +34,7 @@ public class BenchmarkEndpoint {
 
   @CrossOrigin
   @PostMapping("/benchmark")
-  BenchmarkWithTimeseriesResult storeBenchmark(@RequestBody final Benchmark benchmark) {
+  StoreBenchmarkResult storeBenchmark(@RequestBody final Benchmark benchmark) {
     final BenchmarkWithTimeseriesResult result = dataService.save(benchmark);
 
     final BenchmarkDefinition benchmarkDefinition = dataService.getBenchmarkById(
@@ -44,11 +43,8 @@ public class BenchmarkEndpoint {
     final Timeseries timeseries = dataService.getTimeseriesById(result.timeseriesId())
         .orElseThrow(() -> new IllegalStateException());
 
-    final Set<Violation> check = qualityGate.check(benchmarkDefinition, timeseries);
-    if (!check.isEmpty()) {
-      throw new RuntimeException("TODO");
-    }
-    return result;
+    final Set<Violation> checkResult = qualityGate.check(benchmarkDefinition, timeseries);
+    return new StoreBenchmarkResult(benchmarkDefinition.id(), timeseries.id(), checkResult);
   }
 
   @CrossOrigin
@@ -66,7 +62,4 @@ public class BenchmarkEndpoint {
         .orElseThrow(() -> new IllegalArgumentException("Not found!"));
   }
 
-  private BenchmarkDefinition convert(final BenchmarkEntity entity) {
-    return new BenchmarkDefinition(entity.getId(), entity.getName(), entity.getUnit());
-  }
 }

@@ -30,11 +30,20 @@ public class RulesEntity {
   @Column
   private Double maxAllowedValueDeviation;
 
+  @Column(nullable = false)
+  private boolean failOnDifferentProcessorCount;
+
+  @Column(nullable = false)
+  private boolean failOnDifferentMemorySize;
+
+  @Column(nullable = false)
+  private boolean failOnDifferentJvmVersion;
+
   public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(final Long id) {
     this.id = id;
   }
 
@@ -42,7 +51,7 @@ public class RulesEntity {
     return benchmarkId;
   }
 
-  public void setBenchmarkId(Long benchmarkId) {
+  public void setBenchmarkId(final Long benchmarkId) {
     this.benchmarkId = benchmarkId;
   }
 
@@ -50,7 +59,7 @@ public class RulesEntity {
     return maxAllowedValue;
   }
 
-  public void setMaxAllowedValue(Double maxAllowedValue) {
+  public void setMaxAllowedValue(final Double maxAllowedValue) {
     this.maxAllowedValue = maxAllowedValue;
   }
 
@@ -58,7 +67,7 @@ public class RulesEntity {
     return minAllowedValue;
   }
 
-  public void setMinAllowedValue(Double minAllowedValue) {
+  public void setMinAllowedValue(final Double minAllowedValue) {
     this.minAllowedValue = minAllowedValue;
   }
 
@@ -66,7 +75,7 @@ public class RulesEntity {
     return maxAllowedError;
   }
 
-  public void setMaxAllowedError(Double maxAllowedError) {
+  public void setMaxAllowedError(final Double maxAllowedError) {
     this.maxAllowedError = maxAllowedError;
   }
 
@@ -74,7 +83,7 @@ public class RulesEntity {
     return maxAllowedErrorDeviation;
   }
 
-  public void setMaxAllowedErrorDeviation(Double maxAllowedErrorDeviation) {
+  public void setMaxAllowedErrorDeviation(final Double maxAllowedErrorDeviation) {
     this.maxAllowedErrorDeviation = maxAllowedErrorDeviation;
   }
 
@@ -82,7 +91,31 @@ public class RulesEntity {
     return maxAllowedValueDeviation;
   }
 
-  public void setMaxAllowedValueDeviation(Double maxAllowedValueDeviation) {
+  public void setMaxAllowedValueDeviation(final Double maxAllowedValueDeviation) {
     this.maxAllowedValueDeviation = maxAllowedValueDeviation;
+  }
+
+  public boolean isFailOnDifferentProcessorCount() {
+    return failOnDifferentProcessorCount;
+  }
+
+  public void setFailOnDifferentProcessorCount(final boolean failOnDifferentProcessorCount) {
+    this.failOnDifferentProcessorCount = failOnDifferentProcessorCount;
+  }
+
+  public boolean isFailOnDifferentMemorySize() {
+    return failOnDifferentMemorySize;
+  }
+
+  public void setFailOnDifferentMemorySize(final boolean failOnDifferentMemorySize) {
+    this.failOnDifferentMemorySize = failOnDifferentMemorySize;
+  }
+
+  public boolean isFailOnDifferentJvmVersion() {
+    return failOnDifferentJvmVersion;
+  }
+
+  public void setFailOnDifferentJvmVersion(final boolean failOnDifferentJvmVersion) {
+    this.failOnDifferentJvmVersion = failOnDifferentJvmVersion;
   }
 }

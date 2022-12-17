@@ -18,6 +18,15 @@ public class BenchmarkEntity {
   @Column(nullable = false)
   private String unit;
 
+  @Column(nullable = true)
+  private Integer defaultAvailableProcessors;
+
+  @Column(nullable = true)
+  private Long defaultMemory;
+
+  @Column(nullable = true)
+  private String defaultJvmVersion;
+
   public Long getId() {
     return id;
   }
@@ -42,4 +51,27 @@ public class BenchmarkEntity {
     this.unit = unit;
   }
 
+  public Integer getDefaultAvailableProcessors() {
+    return defaultAvailableProcessors;
+  }
+
+  public void setDefaultAvailableProcessors(final Integer defaultAvailableProcessors) {
+    this.defaultAvailableProcessors = defaultAvailableProcessors;
+  }
+
+  public Long getDefaultMemory() {
+    return defaultMemory;
+  }
+
+  public void setDefaultMemory(final Long defaultMemory) {
+    this.defaultMemory = defaultMemory;
+  }
+
+  public String getDefaultJvmVersion() {
+    return defaultJvmVersion;
+  }
+
+  public void setDefaultJvmVersion(final String defaultJvmVersion) {
+    this.defaultJvmVersion = defaultJvmVersion;
+  }
 }

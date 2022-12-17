@@ -4,10 +4,13 @@ import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.db.entities.TimeseriesEntity;
 import com.openelements.jmh.store.db.repositories.BenchmarkRepository;
 import com.openelements.jmh.store.db.repositories.TimeseriesRepository;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.IntStream;
 import javax.transaction.Transactional;
@@ -66,6 +69,19 @@ public class TestDataProvider implements CommandLineRunner {
         timeseriesEntity.getMeasurement() / 10.0D));
     timeseriesEntity.setMax(timeseriesEntity.getMeasurement() + random.nextDouble(
         timeseriesEntity.getMeasurement() / 10.0D));
+
+    final OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+
+    final long memory = Optional.of(osBean)
+        .filter(bean -> bean instanceof com.sun.management.OperatingSystemMXBean)
+        .map(bean -> ((com.sun.management.OperatingSystemMXBean) bean))
+        .map(bean -> bean.getTotalMemorySize())
+        .orElse(-1L);
+
+    timeseriesEntity.setAvailableProcessors(osBean.getAvailableProcessors());
+    timeseriesEntity.setMemory(memory);
+    timeseriesEntity.setJvmVersion(System.getProperty("java.runtime.version"));
+
     timeseriesRepository.save(timeseriesEntity);
   }
 

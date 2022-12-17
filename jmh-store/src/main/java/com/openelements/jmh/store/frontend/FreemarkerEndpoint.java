@@ -3,15 +3,19 @@ package com.openelements.jmh.store.frontend;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.openelements.jmh.store.db.DataService;
+import com.openelements.jmh.store.frontend.model.TimeseriesTableModel;
 import com.openelements.jmh.store.shared.BenchmarkDefinition;
 import com.openelements.jmh.store.shared.Timeseries;
+import com.openelements.jmh.store.util.Formatter;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FreemarkerEndpoint {
 
   private final DataService dataService;
-  
+
   @Autowired
   public FreemarkerEndpoint(final DataService dataService) {
     this.dataService = Objects.requireNonNull(dataService);
@@ -41,7 +45,7 @@ public class FreemarkerEndpoint {
     return "index";
   }
 
-  @RequestMapping(value = "/graph", method = RequestMethod.GET)
+  @RequestMapping(value = "timeseries/graph", method = RequestMethod.GET)
   public String getGraph(final @RequestParam("id") Long id, final Model model) {
     Objects.requireNonNull(id);
     Objects.requireNonNull(model);
@@ -55,9 +59,49 @@ public class FreemarkerEndpoint {
     model.addAttribute("dataset", convertValues(values, v -> v.value(), "orange").toString());
     model.addAttribute("minDataset", convertValues(values, v -> v.min(), "#12121260").toString());
     model.addAttribute("maxDataset", convertValues(values, v -> v.max(), "#12121260").toString());
-
     model.addAttribute("benchmark", benchmark);
-    return "graph";
+
+    return "timeseries/graph";
+  }
+
+  @RequestMapping(value = "timeseries/table", method = RequestMethod.GET)
+  public String getDataPoints(final @RequestParam("id") Long id, final Model model,
+      final HttpServletRequest request) {
+    Objects.requireNonNull(id);
+    Objects.requireNonNull(model);
+    Objects.requireNonNull(request);
+
+    final BenchmarkDefinition benchmark = dataService.getBenchmarkById(id)
+        .orElseThrow(
+            () -> new IllegalArgumentException("No Benchmark with id '" + id + "' defined"));
+
+    final List<TimeseriesTableModel> timeseries = dataService.getAllTimeseriesForBenchmarks(
+            benchmark.id())
+        .stream().map(dataPoint -> {
+          final String dateAndTime = Formatter.toShortReadableForm(request, dataPoint.timestamp());
+          final String value = Formatter.format2Dec(request, dataPoint.value());
+          final String error = Formatter.format2Dec(request, dataPoint.error());
+          final String min = Formatter.format2Dec(request, dataPoint.min());
+          final String max = Formatter.format2Dec(request, dataPoint.max());
+          final String processorCount = Optional.ofNullable(dataPoint.availableProcessors())
+              .map(v -> Integer.toString(v)).orElse("UNKNOWN");
+          final String memorySize = Optional.ofNullable(dataPoint.memory())
+              .map(v -> Formatter.humanReadableBytes(v)).orElse("UNKNOWN");
+          final String jvmVersion = Optional.ofNullable(dataPoint.jvmVersion()).orElse("UNKNOWN");
+          return new TimeseriesTableModel(dateAndTime, value, error, min, max, processorCount,
+              memorySize,
+              jvmVersion);
+        }).collect(Collectors.toList());
+
+    timeseries.stream().forEach(dataPoint -> {
+      System.out.println();
+    });
+
+    model.addAttribute("benchmarkName", benchmark.name());
+    model.addAttribute("unit", benchmark.unit());
+    model.addAttribute("dataPoints", timeseries);
+
+    return "timeseries/table";
   }
 
   private JsonObject convertValues(final List<Timeseries> values,
