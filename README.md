@@ -15,14 +15,14 @@ at `/grafana`.
 JMH results can be created and uploaded automatically by using the Maven Plugin in the
 `jmh-maven-plugin` module or by calling the Uploader directly (see `jmh-runner` module).
 
-## Starting the server
+### Starting the server
 
 The `jmh-store` module contains the Spring Boot based server that can simply be started by the main
 class `com.openelements.jmh.store.app.Application`. Once the server is started the frontend can be
 reached at [http://localhost:8080](http://localhost:8080). Currently, the server automatically
 creates some dummy data for 3 benchmarks at start time.
 
-## Using the Maven plugin
+### Using the Maven plugin
 
 The `jmh-maven-plugin` module contains a Maven plugin that can be used to execute JMH benchmark and
 upload its results the JMH Store. The `sample` module shows how a Maven project should be configured
