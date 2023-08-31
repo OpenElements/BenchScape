@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
+@RequestMapping("/api") // Base path for all endpoints
+@EnableSwagger2
+@Api(tags = "Benchmark API") // Swagger API tags
 public class BenchmarkEndpoint {
 
   private final DataService dataService;
@@ -32,34 +32,34 @@ public class BenchmarkEndpoint {
     this.qualityGate = Objects.requireNonNull(qualityGate);
   }
 
+  @ApiOperation("Store benchmark")
   @CrossOrigin
   @PostMapping("/benchmark")
-  StoreBenchmarkResult storeBenchmark(@RequestBody final Benchmark benchmark) {
+  public StoreBenchmarkResult storeBenchmark(@RequestBody final Benchmark benchmark) {
     final BenchmarkWithTimeseriesResult result = dataService.save(benchmark);
 
     final BenchmarkDefinition benchmarkDefinition = dataService.getBenchmarkById(
-            result.benchmarkId())
-        .orElseThrow(() -> new IllegalStateException());
+                    result.benchmarkId())
+            .orElseThrow(() -> new IllegalStateException());
     final Timeseries timeseries = dataService.getTimeseriesById(result.timeseriesId())
-        .orElseThrow(() -> new IllegalStateException());
+            .orElseThrow(() -> new IllegalStateException());
 
     final Set<Violation> checkResult = qualityGate.check(benchmarkDefinition, timeseries);
     return new StoreBenchmarkResult(benchmarkDefinition.id(), timeseries.id(), checkResult);
   }
 
+  @ApiOperation("Get all benchmarks")
   @CrossOrigin
   @GetMapping("/benchmark")
-  @ResponseBody
-  List<BenchmarkDefinition> getAllBenchmarks() {
+  public List<BenchmarkDefinition> getAllBenchmarks() {
     return dataService.getAllBenchmarks();
   }
 
+  @ApiOperation("Get benchmark by ID")
   @CrossOrigin
   @GetMapping("/benchmark/{id}")
-  @ResponseBody
-  BenchmarkDefinition getBenchmarkById(@PathVariable final Long id) {
+  public BenchmarkDefinition getBenchmarkById(@PathVariable final Long id) {
     return dataService.getBenchmarkById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Not found!"));
+            .orElseThrow(() -> new IllegalArgumentException("Not found!"));
   }
-
 }
