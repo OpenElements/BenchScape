@@ -12,13 +12,11 @@ import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api") // Base path for all endpoints
-@EnableSwagger2
 @Api(tags = "Benchmark API") // Swagger API tags
 public class BenchmarkEndpoint {
 
