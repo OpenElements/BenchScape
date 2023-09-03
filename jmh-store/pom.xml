@@ -55,4 +55,15 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <finalName>jmh-store-server</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.5.9</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>
