@@ -20,9 +20,9 @@
 name: Build and deploy JAR app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to the name of your Azure Web App
-  JAVA_VERSION: '11'                  # set this to the Java version to use
-  DISTRIBUTION: zulu                  # set this to the Java distribution
+  AZURE_WEBAPP_NAME: BenchScape    # set this to the name of your Azure Web App
+  JAVA_VERSION: '17'                  # set this to the Java version to use
+  DISTRIBUTION: temurin                  # set this to the Java distribution
 
 on:
   push:
@@ -75,5 +75,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB39B6A5B1404E9A9CEE269A3A46D3F1 }}
           package: '*.jar'

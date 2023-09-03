@@ -44,14 +44,6 @@
         <groupId>${project.groupId}</groupId>
         <artifactId>jmh-maven-plugin</artifactId>
         <version>${project.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>jmh</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
