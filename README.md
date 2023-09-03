@@ -40,3 +40,11 @@ Maven executable for the repository.
 
 To build the project just call `./mvnw verify` from the root folder of the
 project (`mvnw.cmd verify` on windows).
+
+## Azure Dev instance
+
+The JMH-Store server app of the `main` branch is deployed to Microsoft Azure.
+Any change on the main branch will trigger an update to Azure.
+The server instance can be found at https://benchscape.azurewebsites.net.
+The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
+The server is defined by the jar in the `jmh-store/target/` folder of the repo.
