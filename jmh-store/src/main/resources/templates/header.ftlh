@@ -5,7 +5,7 @@
       <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-10"
            alt="JMH Visualizer Logo"/>
       <span
-          class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">JVM Visualizer</span>
+          class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">JVM Visualizer INTEGRATION</span>
     </a>
     <div class="w-full block w-auto" id="navbar-solid-bg">
       <ul class="flex flex-col mt-4 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
