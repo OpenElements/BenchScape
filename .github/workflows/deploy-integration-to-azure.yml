@@ -19,7 +19,7 @@
 
 name: Deploy integration to Azure
 
-run-name: Triggered on ${{ github.ref }} by @${{ github.actor }}
+run-name: Triggered for branch/tag ${{ github.ref }}
 
 env:
   AZURE_WEBAPP_NAME: benchscape-integration
