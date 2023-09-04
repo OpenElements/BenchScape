@@ -17,17 +17,15 @@
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
-name: Deploy Main to
+name: Deploy integration to Azure
 
 env:
-  AZURE_WEBAPP_NAME: benchscape
-  AZURE_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BENCHSCAPE_MAIN }}
+  AZURE_WEBAPP_NAME: benchscape-integration
+  AZURE_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BENCHSCAPE_INTEGRATION }}
   JAVA_VERSION: '17'
   DISTRIBUTION: temurin
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
