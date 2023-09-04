@@ -48,6 +48,7 @@ Any change on the main branch will trigger an update to Azure.
 The server instance can be found at https://benchscape.azurewebsites.net.
 The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
 The server is defined by the jar in the `jmh-store/target/` folder of the repo.
+Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui.html
 
 ## Azure deployment for PRs
 
@@ -56,3 +57,4 @@ Instead, a GitHub Action can be triggered manually to deploy the server to Azure
 The server instance can be found at https://benchscape-integration.azurewebsites.net.
 The workflow is defined by the `deploy-integration-to-azure.yml` GitHub Action.
 The server is defined by the jar in the `jmh-store/target/` folder of the repo.
+Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui.html
