@@ -19,6 +19,8 @@
 
 name: Deploy integration to Azure
 
+run-name: Triggered for branch/tag ${{ github.ref }}
+
 env:
   AZURE_WEBAPP_NAME: benchscape-integration
   AZURE_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BENCHSCAPE_INTEGRATION }}
