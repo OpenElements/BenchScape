@@ -31,6 +31,9 @@ the `pom.xml` of the module to see how the integration is working. Since the plu
 `verify` phase you can easily trigger a full execution by calling `./mvnw verify` on the root level
 of the repo (see build instruction) once the JMH Store server is running.
 
+## Kanban board
+The Kanban board for the project can be found here: https://github.com/orgs/OpenElements/projects/1
+
 ## Building the project
 
 The project is based on [Java 17](https://adoptium.net/de/temurin/releases/)
