@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/node/node
+/node/npm
+/node/npm.cmd
+/node/npx
+/node/npx.cmd
