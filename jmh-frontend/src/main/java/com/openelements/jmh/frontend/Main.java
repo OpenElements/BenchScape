@@ -1,4 +1,4 @@
-package com.open-elements.jmh;
+package com.openelements.jmh.frontend;
 
 public class Main {
     public static void main(String[] args) {
