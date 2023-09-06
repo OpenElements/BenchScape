@@ -1,6 +1,6 @@
-# JMH Store
+# BenchScape
 
-The JMH Store project contains functionality to collect
+BenchScape contains functionality to collect
 [Java Microbenchmark Harness (JMH)](https://github.com/openjdk/jmh) results for continuous
 integration approaches.
 
