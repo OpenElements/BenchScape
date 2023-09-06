@@ -1,8 +1,8 @@
 package com.openelements.jmh.store.swagger;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
+@OpenAPIDefinition
 public class SwaggerConfig { }
