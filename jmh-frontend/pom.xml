@@ -11,12 +11,6 @@
 
     <artifactId>jmh-frontend</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <build>
         <finalName>jmh-store-server</finalName>
         <plugins>
@@ -67,30 +61,6 @@
                     <nodeVersion>v16.15.0</nodeVersion>
                     <workingDirectory>src/main/frontend</workingDirectory>
                 </configuration>
-            </plugin>
-
-            <!-- Copy React build artifacts to Spring Boot -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>Copy JavaScript app into SpringBoot</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/classes/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/frontend/build</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
