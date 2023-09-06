@@ -20,6 +20,7 @@
     <module>jmh-maven-plugin</module>
     <module>jmh-store</module>
     <module>sample</module>
+    <module>jmh-frontend</module>
   </modules>
 
   <dependencyManagement>
