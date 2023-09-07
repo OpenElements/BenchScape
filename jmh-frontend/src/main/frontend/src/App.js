@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
@@ -24,17 +25,29 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          {isLoading
-            ? "Loading..."
-            : // Display the fetched data
-              data.map((benchmark) => (
-                <div key={benchmark.id}>
-                  <h2>{benchmark.name}</h2>
-                  {/* Display other properties of the benchmark */}
-                </div>
+        <h2>Benchmark Data</h2>
+        {isLoading ? (
+          "Loading..."
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((benchmark) => (
+                <tr key={benchmark.id}>
+                  <td>{benchmark.id}</td>
+                  <td>{benchmark.name}</td>
+                  <td>{benchmark.unit}</td>
+                </tr>
               ))}
-        </p>
+            </tbody>
+          </table>
+        )}
       </header>
     </div>
   );
