@@ -1,6 +1,9 @@
 package com.openelements.benchmark;
 
-import com.openelements.jmh.runner.JmhUploader;
+import com.openelements.jmh.client.io.FileClient;
+import com.openelements.jmh.client.io.RestClient;
+import com.openelements.jmh.client.jmh.BenchmarkFactory;
+import com.openelements.jmh.client.jmh.JmhExecutor;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,26 +24,32 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Scope.Benchmark)
 public class SampleBenchmark {
 
-  @Benchmark
-  @Fork(0)
-  @Warmup(iterations = 2, time = 2)
-  @Threads(2)
-  @Measurement(iterations = 4, time = 3)
-  @OutputTimeUnit(TimeUnit.MILLISECONDS)
-  @BenchmarkMode(Mode.Throughput)
-  public void doIt(Blackhole blackhole) throws NoSuchAlgorithmException {
-    String value = UUID.randomUUID().toString();
-    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    byte[] encodedhash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
-    blackhole.consume(encodedhash);
-  }
-
-  public static void main(final String[] args) throws Exception {
-    while (true) {
-      JmhUploader jmh = new JmhUploader();
-      jmh.addBenchmarkClass(SampleBenchmark.class);
-      jmh.addBenchmarkClass(SampleBenchmark2.class);
-      jmh.run();
+    @Benchmark
+    @Fork(0)
+    @Warmup(iterations = 1, time = 1)
+    @Threads(2)
+    @Measurement(iterations = 2, time = 2)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @BenchmarkMode(Mode.Throughput)
+    public void doIt(Blackhole blackhole) throws NoSuchAlgorithmException {
+        String value = UUID.randomUUID().toString();
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedhash = digest.digest(value.getBytes(StandardCharsets.UTF_8));
+        blackhole.consume(encodedhash);
     }
-  }
+
+    public static void main(final String[] args) throws Exception {
+        final FileClient fileClient = new FileClient("target/benchmark/");
+        final RestClient restClient = new RestClient();
+        JmhExecutor.executeAll().stream()
+                .map(BenchmarkFactory::convert)
+                .forEach(benchmarkExecution -> {
+                    try {
+                        fileClient.write(benchmarkExecution);
+                        restClient.post(benchmarkExecution);
+                    } catch (final Exception e) {
+                        throw new RuntimeException("Error in posting result", e);
+                    }
+                });
+    }
 }

@@ -17,6 +17,7 @@ import com.openelements.jmh.client.json.converter.BenchmarkResultConverter;
 import com.openelements.jmh.client.json.converter.InstantConverter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class BenchmarkJsonFactory {
     }
 
     @NonNull
-    public static String toJson(@NonNull final Set<BenchmarkExecution> benchmarks) {
+    public static String toJson(@NonNull final Collection<BenchmarkExecution> benchmarks) {
         Objects.requireNonNull(benchmarks, "benchmarks must not be null");
         return createGson().toJson(benchmarks);
     }

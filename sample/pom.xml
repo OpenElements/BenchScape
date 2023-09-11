@@ -14,13 +14,12 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>jmh-runner</artifactId>
+      <artifactId>jmh-client</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
-      <version>1.34</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

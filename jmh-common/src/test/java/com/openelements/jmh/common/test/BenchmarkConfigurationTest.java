@@ -13,18 +13,28 @@ public class BenchmarkConfigurationTest {
         final BenchmarkMeasurementConfiguration measurementConfig = DummyFactory.createBenchmarkMeasurementConfiguration();
         final BenchmarkMeasurementConfiguration warmupConfig = DummyFactory.createBenchmarkMeasurementConfiguration();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(-1, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(0, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(-100, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, -1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, 0, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, -100, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, 1, -1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, 1, 0, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BenchmarkConfiguration(1, 1, -100, TimeUnit.SECONDS, measurementConfig, warmupConfig));
-        Assertions.assertThrows(NullPointerException.class, () -> new BenchmarkConfiguration(1, 1, 1, null, measurementConfig, warmupConfig));
-        Assertions.assertThrows(NullPointerException.class, () -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, null, warmupConfig));
-        Assertions.assertThrows(NullPointerException.class, () -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, measurementConfig, null));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(-1, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(0, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(-100, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(1, -1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(1, -100, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(1, 1, -1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(1, 1, 0, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkConfiguration(1, 1, -100, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new BenchmarkConfiguration(1, 1, 1, null, measurementConfig, warmupConfig));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, null, warmupConfig));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, measurementConfig, null));
     }
 
     @Test
@@ -32,6 +42,7 @@ public class BenchmarkConfigurationTest {
         final BenchmarkMeasurementConfiguration measurementConfig = DummyFactory.createBenchmarkMeasurementConfiguration();
         final BenchmarkMeasurementConfiguration warmupConfig = DummyFactory.createBenchmarkMeasurementConfiguration();
 
-        Assertions.assertDoesNotThrow(() -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
+        Assertions.assertDoesNotThrow(
+                () -> new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, measurementConfig, warmupConfig));
     }
 }

@@ -16,7 +16,8 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         JsonDeserializer<BenchmarkInfrastructure> {
 
     @Override
-    public BenchmarkInfrastructure deserialize(@NonNull final JsonElement json, @NonNull final Type typeOfT, @NonNull final JsonDeserializationContext context)
+    public BenchmarkInfrastructure deserialize(@NonNull final JsonElement json, @NonNull final Type typeOfT,
+            @NonNull final JsonDeserializationContext context)
             throws JsonParseException {
         Objects.requireNonNull(json, "json must not be null");
         Objects.requireNonNull(context, "context must not be null");
@@ -27,13 +28,14 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         final String osVersion = json.getAsJsonObject().get("osVersion").getAsString();
         final String jvmVersion = json.getAsJsonObject().get("jvmVersion").getAsString();
         final String jvmName = json.getAsJsonObject().get("jvmName").getAsString();
-        final String jmhVendor = json.getAsJsonObject().get("jmhVendor").getAsString();
+        final String jmhVersion = json.getAsJsonObject().get("jmhVersion").getAsString();
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                jmhVendor);
+                jmhVersion);
     }
 
     @Override
-    public JsonElement serialize(@NonNull final BenchmarkInfrastructure src, @NonNull final Type typeOfSrc, @NonNull final JsonSerializationContext context) {
+    public JsonElement serialize(@NonNull final BenchmarkInfrastructure src, @NonNull final Type typeOfSrc,
+            @NonNull final JsonSerializationContext context) {
         Objects.requireNonNull(src, "src must not be null");
         Objects.requireNonNull(context, "context must not be null");
         final JsonObject json = new JsonObject();
@@ -44,7 +46,7 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         json.addProperty("osVersion", src.osVersion());
         json.addProperty("jvmVersion", src.jvmVersion());
         json.addProperty("jvmName", src.jvmName());
-        json.addProperty("jmhVendor", src.jmhVersion());
+        json.addProperty("jmhVersion", src.jmhVersion());
         return json;
     }
 }

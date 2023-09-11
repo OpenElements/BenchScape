@@ -1,28 +1,33 @@
-package com.openelements.jmh.client.factory;
+package com.openelements.jmh.client.jmh;
 
-import com.openelements.jmh.common.BenchmarkExecution;
 import com.openelements.jmh.common.BenchmarkConfiguration;
+import com.openelements.jmh.common.BenchmarkExecution;
 import com.openelements.jmh.common.BenchmarkExecutionMetadata;
+import com.openelements.jmh.common.BenchmarkExecutionResult;
 import com.openelements.jmh.common.BenchmarkInfrastructure;
 import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
 import com.openelements.jmh.common.BenchmarkType;
-import com.openelements.jmh.common.BenchmarkExecutionResult;
 import com.openelements.jmh.common.BenchmarkUnit;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.time.Instant;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.IterationParams;
 import org.openjdk.jmh.results.RunResult;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-import java.time.Instant;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
 public class BenchmarkFactory {
 
     private BenchmarkFactory() {
+    }
+
+    public static Collection<BenchmarkExecution> convert(@NonNull final Collection<RunResult> jmhResults) {
+        Objects.requireNonNull(jmhResults, "jmhResults must not be null");
+        return jmhResults.stream().map(BenchmarkFactory::convert).toList();
     }
 
     @NonNull
@@ -30,11 +35,13 @@ public class BenchmarkFactory {
         Objects.requireNonNull(jmhResult, "jmhResult must not be null");
         final BenchmarkInfrastructure infrastructure = convertToBenchmarkInfrastructure(jmhResult.getParams());
         final BenchmarkConfiguration configuration = convertToBenchmarkConfiguration(jmhResult.getParams());
-        final org.openjdk.jmh.results.BenchmarkResult benchmarkResult = jmhResult.getBenchmarkResults().stream().findFirst().orElseThrow();
+        final org.openjdk.jmh.results.BenchmarkResult benchmarkResult = jmhResult.getBenchmarkResults().stream()
+                .findFirst().orElseThrow();
         final BenchmarkExecutionMetadata execution = convertToBenchmarkExecution(benchmarkResult);
         final BenchmarkExecutionResult result = convertToBenchmarkResult(benchmarkResult.getPrimaryResult());
         final String benchmarkName = jmhResult.getParams().getBenchmark();
-        final BenchmarkExecution benchmark = new BenchmarkExecution(benchmarkName, BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, result);
+        final BenchmarkExecution benchmark = new BenchmarkExecution(benchmarkName, BenchmarkType.THROUGHPUT,
+                infrastructure, configuration, execution, result);
         return benchmark;
     }
 
@@ -54,11 +61,13 @@ public class BenchmarkFactory {
         final int availableProcessors = osBean.getAvailableProcessors();
         final String osVersion = osBean.getVersion();
         final String osName = osBean.getName();
-        return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+        return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
+                jmhVersion);
     }
 
     @NonNull
-    private static BenchmarkMeasurementConfiguration convertToBenchmarkMeasurementConfiguration(@NonNull final IterationParams params) {
+    private static BenchmarkMeasurementConfiguration convertToBenchmarkMeasurementConfiguration(
+            @NonNull final IterationParams params) {
         Objects.requireNonNull(params, "params must not be null");
         final int warmupIterations = params.getCount();
         final int warmupBatchSize = params.getBatchSize();
@@ -70,28 +79,48 @@ public class BenchmarkFactory {
     @NonNull
     private static BenchmarkConfiguration convertToBenchmarkConfiguration(@NonNull final BenchmarkParams params) {
         Objects.requireNonNull(params, "params must not be null");
-        final BenchmarkMeasurementConfiguration warmupConfiguration = convertToBenchmarkMeasurementConfiguration(params.getWarmup());
-        final BenchmarkMeasurementConfiguration measurementConfiguration = convertToBenchmarkMeasurementConfiguration(params.getMeasurement());
+        final BenchmarkMeasurementConfiguration warmupConfiguration = convertToBenchmarkMeasurementConfiguration(
+                params.getWarmup());
+        final BenchmarkMeasurementConfiguration measurementConfiguration = convertToBenchmarkMeasurementConfiguration(
+                params.getMeasurement());
         final int threads = params.getThreads();
         final int forks = params.getForks();
         final long timeout = params.getTimeout().getTime();
         final TimeUnit timeoutTimeunit = params.getTimeout().getTimeUnit();
-        return new BenchmarkConfiguration(threads, forks, timeout, timeoutTimeunit, measurementConfiguration, warmupConfiguration);
+        return new BenchmarkConfiguration(threads, forks, timeout, timeoutTimeunit, measurementConfiguration,
+                warmupConfiguration);
     }
 
     @NonNull
-    private static BenchmarkExecutionResult convertToBenchmarkResult(@NonNull final org.openjdk.jmh.results.Result benchmarkResult) {
+    private static BenchmarkExecutionResult convertToBenchmarkResult(
+            @NonNull final org.openjdk.jmh.results.Result benchmarkResult) {
         Objects.requireNonNull(benchmarkResult, "benchmarkResult must not be null");
         final String unit = benchmarkResult.getScoreUnit();
         final double value = benchmarkResult.getScore();
-        final double error = benchmarkResult.getScoreError();
-        final double min = benchmarkResult.getStatistics().getMin();
-        final double max = benchmarkResult.getStatistics().getMax();
+        final Double error;
+        if (Objects.equals(benchmarkResult.getScoreError(), Double.NaN)) {
+            error = null;
+        } else {
+            error = benchmarkResult.getScoreError();
+        }
+        final Double min;
+        if (Objects.equals(benchmarkResult.getStatistics().getMin(), Double.NaN)) {
+            min = null;
+        } else {
+            min = benchmarkResult.getStatistics().getMin();
+        }
+        final Double max;
+        if (Objects.equals(benchmarkResult.getStatistics().getMax(), Double.NaN)) {
+            max = null;
+        } else {
+            max = benchmarkResult.getStatistics().getMax();
+        }
         return new BenchmarkExecutionResult(value, error, min, max, BenchmarkUnit.getForJmhName(unit));
     }
 
     @NonNull
-    private static BenchmarkExecutionMetadata convertToBenchmarkExecution(@NonNull final org.openjdk.jmh.results.BenchmarkResult benchmarkResult) {
+    private static BenchmarkExecutionMetadata convertToBenchmarkExecution(
+            @NonNull final org.openjdk.jmh.results.BenchmarkResult benchmarkResult) {
         Objects.requireNonNull(benchmarkResult, "benchmarkResult must not be null");
         final Instant startTimeInstant = Instant.ofEpochMilli(benchmarkResult.getMetadata().getStartTime());
         final Instant warmupTimeInstant = Instant.ofEpochMilli(benchmarkResult.getMetadata().getWarmupTime());
@@ -99,7 +128,8 @@ public class BenchmarkFactory {
         final Instant stopTimeInstant = Instant.ofEpochMilli(benchmarkResult.getMetadata().getStopTime());
         final long warmupOps = benchmarkResult.getMetadata().getWarmupOps();
         final long measurementOps = benchmarkResult.getMetadata().getMeasurementOps();
-        return new BenchmarkExecutionMetadata(startTimeInstant, warmupTimeInstant, measurementTimeInstant, stopTimeInstant, warmupOps, measurementOps);
+        return new BenchmarkExecutionMetadata(startTimeInstant, warmupTimeInstant, measurementTimeInstant,
+                stopTimeInstant, warmupOps, measurementOps);
     }
 
 }

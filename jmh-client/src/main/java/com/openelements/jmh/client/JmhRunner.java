@@ -2,9 +2,9 @@ package com.openelements.jmh.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.openelements.jmh.common.BenchmarkExecution;
-import com.openelements.jmh.client.factory.BenchmarkFactory;
+import com.openelements.jmh.client.jmh.BenchmarkFactory;
 import com.openelements.jmh.client.json.BenchmarkJsonFactory;
+import com.openelements.jmh.common.BenchmarkExecution;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
@@ -18,45 +18,46 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 
+@Deprecated
 public class JmhRunner {
 
-  private final Set<Class> classes;
+    private final Set<Class> classes;
 
-  public JmhRunner() {
-    this.classes = new HashSet<>();
-  }
-
-  public void addBenchmarkClass(final Class cls) {
-    classes.add(cls);
-  }
-
-  public void run() throws RunnerException {
-    final OptionsBuilder optionsBuilder = new OptionsBuilder();
-    classes.forEach(cls -> optionsBuilder.getIncludes().add(cls.getName()));
-    final Runner runner = new Runner(optionsBuilder.build());
-    Collection<RunResult> run = runner.run();
-
-    final Gson gson = new GsonBuilder().create();
-    String jsonString = gson.toJson(run);
-    try (final FileWriter fileWriter = new FileWriter("raw-jmh-data.json")) {
-      fileWriter.write(jsonString);
-    } catch (final IOException e) {
-      e.printStackTrace();
+    public JmhRunner() {
+        this.classes = new HashSet<>();
     }
 
-    Set<BenchmarkExecution> results = run.stream()
-        .map(BenchmarkFactory::convert)
-        .collect(Collectors.toSet());
+    public void addBenchmarkClass(final Class cls) {
+        classes.add(cls);
+    }
 
-    results.stream().forEach(benchmark -> {
-      final String json = BenchmarkJsonFactory.toJson(benchmark);
-      final String filename = UUID.randomUUID().toString() + ".json";
-      try (final FileWriter fileWriter = new FileWriter(filename)) {
-        fileWriter.write(json);
-      } catch (final IOException e) {
-        e.printStackTrace();
-      }
-    });
+    public void run() throws RunnerException {
+        final OptionsBuilder optionsBuilder = new OptionsBuilder();
+        classes.forEach(cls -> optionsBuilder.getIncludes().add(cls.getName()));
+        final Runner runner = new Runner(optionsBuilder.build());
+        Collection<RunResult> run = runner.run();
 
-  }
+        final Gson gson = new GsonBuilder().create();
+        String jsonString = gson.toJson(run);
+        try (final FileWriter fileWriter = new FileWriter("raw-jmh-data.json")) {
+            fileWriter.write(jsonString);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+        Set<BenchmarkExecution> results = run.stream()
+                .map(BenchmarkFactory::convert)
+                .collect(Collectors.toSet());
+
+        results.stream().forEach(benchmark -> {
+            final String json = BenchmarkJsonFactory.toJson(benchmark);
+            final String filename = UUID.randomUUID().toString() + ".json";
+            try (final FileWriter fileWriter = new FileWriter(filename)) {
+                fileWriter.write(json);
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
 }

@@ -16,15 +16,15 @@ import org.openjdk.jmh.annotations.Warmup;
 @State(Scope.Benchmark)
 public class SampleBenchmark2 {
 
-  @Benchmark
-  @Fork(0)
-  @Warmup(iterations = 2, time = 2)
-  @Threads(2)
-  @Measurement(iterations = 4, time = 3)
-  @OutputTimeUnit(TimeUnit.MILLISECONDS)
-  @BenchmarkMode(Mode.Throughput)
-  public void doIt() throws Exception {
-    Thread.sleep(new Random(System.currentTimeMillis()).nextLong(1, 10));
-  }
+    @Benchmark
+    @Fork(0)
+    @Warmup(iterations = 1, time = 1)
+    @Threads(2)
+    @Measurement(iterations = 2, time = 2)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @BenchmarkMode(Mode.Throughput)
+    public void doIt() throws Exception {
+        Thread.sleep(new Random(System.currentTimeMillis()).nextLong(1, 10));
+    }
 
 }
