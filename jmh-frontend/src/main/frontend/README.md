@@ -20,6 +20,34 @@ BenchScape is a web application that consists of a React frontend and a Spring B
 
 `Fetch Data:` When the frontend component loads or when a user interacts with the application, it makes HTTP requests (e.g., GET, POST) to the Spring Boot backend's API endpoints.
 
+1.  **_Scenario A: Fetching Data from a Local Backend_**
+
+    To run the frontend and have it fetch data from a backend hosted on your local machine, follow these steps:
+
+    a. Ensure that you have the backend server running locally on your machine, typically on localhost or a specific port (e.g., http://localhost:8080).
+
+    b. In your frontend project directory `cd jmh-frontend/src/main/frontend`, locate the `.env.development` file. This file contains environment-specific configuration settings.
+
+    c. Set the API URL in `.env.development` to point to your local backend server. For example:
+
+        REACT_APP_API_URL=http://localhost:8080/api
+
+    d. Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
+
+2.  **_Scenario B: Fetching Data from a Cloud-Based Backend_**
+
+    If you want to run the frontend and have it fetch data from a backend hosted in the cloud, follow these steps:
+
+    a. Ensure that your cloud-based backend is accessible and has a publicly available API endpoint.
+
+    b. In your project directory, locate the `.env.production` file. This file contains environment-specific configuration settings for production.
+
+    c. Set the API URL in `.env.production` to point to your cloud-based backend's API endpoint. For example:
+
+        REACT_APP_API_URL=https://your-cloud-backend.com/api
+
+    d. Start the React frontend for production deployment (e.g., using npm build and a suitable web server). The frontend will now make API requests to your cloud-based backend.
+
 `Receive and Display Data:` The frontend receives JSON data from the backend as responses to its API requests. It then processes this data and displays it in a user-friendly format, such as a table.
 
 ## Spring Boot Backend
