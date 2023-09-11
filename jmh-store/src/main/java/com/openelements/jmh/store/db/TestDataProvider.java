@@ -1,5 +1,6 @@
 package com.openelements.jmh.store.db;
 
+import com.openelements.jmh.common.BenchmarkUnit;
 import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.db.entities.TimeseriesEntity;
 import com.openelements.jmh.store.db.repositories.BenchmarkRepository;
@@ -88,7 +89,7 @@ public class TestDataProvider implements CommandLineRunner {
   private long createBenchmark(final String name) {
     final BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
     benchmarkEntity.setName(name);
-    benchmarkEntity.setUnit("ops/ms");
+    benchmarkEntity.setUnit(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
     return benchmarkRepository.save(benchmarkEntity).getId();
   }
 }

@@ -1,8 +1,8 @@
-package com.openelements.jmh.runner;
+package com.openelements.jmh.client;
 
-import com.openelements.jmh.common.Benchmark;
-import com.openelements.jmh.runner.factory.BenchmarkFactory;
-import com.openelements.jmh.runner.factory.BenchmarkJsonFactory;
+import com.openelements.jmh.common.BenchmarkExecution;
+import com.openelements.jmh.client.factory.BenchmarkFactory;
+import com.openelements.jmh.client.json.BenchmarkJsonFactory;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -35,7 +35,7 @@ public class JmhUploader {
     final Runner runner = new Runner(optionsBuilder.build());
     Collection<RunResult> run = runner.run();
 
-    Set<Benchmark> results = run.stream()
+    Set<BenchmarkExecution> results = run.stream()
         .map(result -> BenchmarkFactory.convert(result))
         .collect(Collectors.toSet());
 

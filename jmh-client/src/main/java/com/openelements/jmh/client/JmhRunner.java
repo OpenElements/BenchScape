@@ -1,15 +1,16 @@
-package com.openelements.jmh.runner;
+package com.openelements.jmh.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.openelements.jmh.common.Benchmark;
-import com.openelements.jmh.runner.factory.BenchmarkFactory;
-import com.openelements.jmh.runner.factory.BenchmarkJsonFactory;
+import com.openelements.jmh.common.BenchmarkExecution;
+import com.openelements.jmh.client.factory.BenchmarkFactory;
+import com.openelements.jmh.client.json.BenchmarkJsonFactory;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
@@ -43,13 +44,13 @@ public class JmhRunner {
       e.printStackTrace();
     }
 
-    Set<Benchmark> results = run.stream()
+    Set<BenchmarkExecution> results = run.stream()
         .map(BenchmarkFactory::convert)
         .collect(Collectors.toSet());
 
     results.stream().forEach(benchmark -> {
       final String json = BenchmarkJsonFactory.toJson(benchmark);
-      final String filename = benchmark.id() + ".json";
+      final String filename = UUID.randomUUID().toString() + ".json";
       try (final FileWriter fileWriter = new FileWriter(filename)) {
         fileWriter.write(json);
       } catch (final IOException e) {

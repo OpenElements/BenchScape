@@ -1,7 +1,7 @@
 package com.openelements.jmh.store.db;
 
-import com.openelements.jmh.common.Benchmark;
-import com.openelements.jmh.common.Result;
+import com.openelements.jmh.common.BenchmarkExecution;
+import com.openelements.jmh.common.BenchmarkExecutionResult;
 import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.db.entities.RulesEntity;
 import com.openelements.jmh.store.db.entities.TimeseriesEntity;
@@ -64,15 +64,15 @@ public class DataService {
     return rulesRepository.findForBenchmark(benchmarkId).map(entity -> convert(entity));
   }
 
-  public BenchmarkWithTimeseriesResult save(final Benchmark benchmark) {
+  public BenchmarkWithTimeseriesResult save(final BenchmarkExecution benchmark) {
     Objects.requireNonNull(benchmark, "benchmark must not be null");
-    final Result result = Objects.requireNonNull(benchmark.result(),
+    final BenchmarkExecutionResult result = Objects.requireNonNull(benchmark.result(),
         "benchmark.result must not be null");
 
-    final BenchmarkEntity benchmarkEntity = benchmarkRepository.findByName(benchmark.benchmark())
+    final BenchmarkEntity benchmarkEntity = benchmarkRepository.findByName(benchmark.benchmarkName())
         .orElseGet(() -> {
           final BenchmarkEntity newEntity = new BenchmarkEntity();
-          newEntity.setName(benchmark.benchmark());
+          newEntity.setName(benchmark.benchmarkName());
           newEntity.setUnit(result.unit());
           Optional.ofNullable(benchmark.infrastructure()).ifPresent(infrastructure -> {
             newEntity.setDefaultAvailableProcessors(infrastructure.availableProcessors());
@@ -107,7 +107,7 @@ public class DataService {
   }
 
   private BenchmarkDefinition convert(final BenchmarkEntity entity) {
-    return new BenchmarkDefinition(entity.getId(), entity.getName(), entity.getUnit(),
+    return new BenchmarkDefinition(entity.getId(), entity.getName(), entity.getUnit().name(),
         entity.getDefaultAvailableProcessors(), entity.getDefaultMemory(),
         entity.getDefaultJvmVersion());
   }

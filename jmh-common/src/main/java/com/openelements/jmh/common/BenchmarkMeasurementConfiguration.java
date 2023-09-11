@@ -1,7 +1,28 @@
 package com.openelements.jmh.common;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public record BenchmarkMeasurementConfiguration(int iterations, long time, TimeUnit timeUnit, int batchSize) {
+/**
+ * The configuration of a benchmark measurement. Such configuration is provided for the warmup and the measurement phase of the benchmark.
+ * @param iterations number of iterations to execute
+ * @param time time to execute the benchmark in the given time unit
+ * @param timeUnit unit of the time
+ * @param batchSize number of operations to execute in a batch
+ */
+public record BenchmarkMeasurementConfiguration(int iterations, long time, @NonNull TimeUnit timeUnit, int batchSize) {
 
+    public BenchmarkMeasurementConfiguration {
+        if(iterations < 1) {
+            throw new IllegalArgumentException("iterations must be greater than 0");
+        }
+        if(time < 1) {
+            throw new IllegalArgumentException("time must be greater than 0");
+        }
+        Objects.requireNonNull(timeUnit, "timeUnit must not be null");
+        if(batchSize < 1) {
+            throw new IllegalArgumentException("batchSize must be greater than 0");
+        }
+    }
 }

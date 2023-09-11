@@ -1,6 +1,6 @@
 package com.openelements.jmh.store.endpoint;
 
-import com.openelements.jmh.common.Benchmark;
+import com.openelements.jmh.common.BenchmarkExecution;
 import com.openelements.jmh.store.db.DataService;
 import com.openelements.jmh.store.gate.QualityGate;
 import com.openelements.jmh.store.shared.BenchmarkDefinition;
@@ -33,7 +33,7 @@ public class BenchmarkEndpoint {
   @ApiOperation("Store benchmark")
   @CrossOrigin
   @PostMapping("/benchmark")
-  public StoreBenchmarkResult storeBenchmark(@RequestBody final Benchmark benchmark) {
+  public StoreBenchmarkResult storeBenchmark(@RequestBody final BenchmarkExecution benchmark) {
     final BenchmarkWithTimeseriesResult result = dataService.save(benchmark);
 
     final BenchmarkDefinition benchmarkDefinition = dataService.getBenchmarkById(

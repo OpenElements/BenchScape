@@ -1,5 +1,6 @@
 package com.openelements.jmh.store.db.entities;
 
+import com.openelements.jmh.common.BenchmarkUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ public class BenchmarkEntity {
   private String name;
 
   @Column(nullable = false)
-  private String unit;
+  private BenchmarkUnit unit;
 
   @Column(nullable = true)
   private Integer defaultAvailableProcessors;
@@ -43,11 +44,11 @@ public class BenchmarkEntity {
     this.name = name;
   }
 
-  public String getUnit() {
+  public BenchmarkUnit getUnit() {
     return unit;
   }
 
-  public void setUnit(final String unit) {
+  public void setUnit(BenchmarkUnit unit) {
     this.unit = unit;
   }
 
