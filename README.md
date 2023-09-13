@@ -67,16 +67,20 @@ project (`mvnw.cmd verify` on windows).
 
 The `main` branch is automatically deployed to Microsoft Azure.
 Any change on the main branch will trigger an update to Azure.
-The server instance can be found at https://benchscape.azurewebsites.net.
-The frontend of the app can be found at https://proud-desert-0b7815310.3.azurestaticapps.net
-Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
+
+- The server instance can be found at https://benchscape.azurewebsites.net.
+- The frontend of the app can be found at https://proud-desert-0b7815310.3.azurestaticapps.net
+- Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
+
 The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
 
 ## Azure deployment for PRs
 
 The branch of a PR will not automatically be deployed to Azure to save costs.
 Instead, a GitHub Action can be triggered manually to deploy the server to Azure.
-The server instance can be found at https://benchscape-integration.azurewebsites.net.
-The frontend of the app can be found at https://proud-glacier-06e62e410.3.azurestaticapps.net
-Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
+
+- The server instance can be found at https://benchscape-integration.azurewebsites.net.
+- The frontend of the app can be found at https://proud-glacier-06e62e410.3.azurestaticapps.net
+- Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
+
 The workflow is defined by the `deploy-integration-to-azure.yml` GitHub Action.
