@@ -41,14 +41,6 @@ jobs:
       - name: Build with Maven
         run: mvn verify
 
-      - name: Upload Server to Azure
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ env.AZURE_PUBLISH_PROFILE }}
-          package: ${{ env.SERVER_LOCATION }}
-
       - name: Upload Frontend to Azure
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -56,5 +48,13 @@ jobs:
           action: "upload"
           skip_app_build: true
           app_location: ${{ env.FRONTEND_LOCATION }}
+
+      - name: Upload Server to Azure
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ env.AZURE_PUBLISH_PROFILE }}
+          package: ${{ env.SERVER_LOCATION }}
 
 
