@@ -16,7 +16,7 @@
   </properties>
 
   <modules>
-    <module>jmh-common</module>
+    <module>jmh-data-model</module>
     <module>jmh-client</module>
     <module>jmh-maven-plugin</module>
     <module>jmh-store</module>
