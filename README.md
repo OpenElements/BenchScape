@@ -1,8 +1,7 @@
 # BenchScape
 
-BenchScape contains functionality to collect
-[Java Microbenchmark Harness (JMH)](https://github.com/openjdk/jmh) results for continuous
-integration approaches.
+BenchScape contains functionality to collect and visualize [Java Microbenchmark Harness (JMH)](https://github.com/openjdk/jmh) 
+results for continuous integration approaches.
 
 ## Overview
 
