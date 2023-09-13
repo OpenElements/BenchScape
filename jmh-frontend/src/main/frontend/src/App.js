@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import "./App.css";
 
 function App() {
@@ -11,45 +11,45 @@ function App() {
 
     // Fetch data from the "/api/benchmark" endpoint
     fetch(`${apiUrl}/api/benchmark`)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      setData(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      setIsLoading(false);
+    });
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>Benchmark Data</h2>
-        {isLoading ? (
-          "Loading..."
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Unit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((benchmark) => (
-                <tr key={benchmark.id}>
-                  <td>{benchmark.id}</td>
-                  <td>{benchmark.name}</td>
-                  <td>{benchmark.unit}</td>
+      <div className="App">
+        <header className="App-header">
+          <h2>BenchScape V1.1</h2>
+          {isLoading ? (
+              "Loading..."
+          ) : (
+              <table>
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Unit</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </header>
-    </div>
+                </thead>
+                <tbody>
+                {data.map((benchmark) => (
+                    <tr key={benchmark.id}>
+                      <td>{benchmark.id}</td>
+                      <td>{benchmark.name}</td>
+                      <td>{benchmark.unit}</td>
+                    </tr>
+                ))}
+                </tbody>
+              </table>
+          )}
+        </header>
+      </div>
   );
 }
 

@@ -3,8 +3,11 @@ name: Deploy main to Azure
 env:
   AZURE_WEBAPP_NAME: benchscape
   AZURE_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BENCHSCAPE_MAIN }}
+  AZURE_FRONTEND_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BENCHSCAPE_MAIN }}
   JAVA_VERSION: '17'
   DISTRIBUTION: temurin
+  FRONTEND_LOCATION: "jmh-frontend/src/main/frontend/build"
+
 
 on:
   push:
@@ -32,10 +35,18 @@ jobs:
       - name: Build with Maven
         run: mvn verify
 
-      - name: Deploy to Azure Web App
+      - name: Upload Server to Azure
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ env.AZURE_PUBLISH_PROFILE }}
           package: '${{ github.workspace }}/jmh-store/target/*.jar'
+
+      - name: Upload Frontend to Azure
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ env.AZURE_FRONTEND_TOKEN }}
+          action: "upload"
+          skip_app_build: true
+          app_location: ${{ env.FRONTEND_LOCATION }}
