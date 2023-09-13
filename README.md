@@ -74,9 +74,9 @@ The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
 
 ## Azure deployment for PRs
 
-The branch of a PR will not automatically deployed to Azure to save costs.
+The branch of a PR will not automatically be deployed to Azure to save costs.
 Instead, a GitHub Action can be triggered manually to deploy the server to Azure.
 The server instance can be found at https://benchscape-integration.azurewebsites.net.
-The workflow is defined by the `deploy-integration-to-azure.yml` GitHub Action.
-The server is defined by the jar in the `jmh-store/target/` folder of the repo.
+The frontend of the app can be found at https://proud-glacier-06e62e410.3.azurestaticapps.net
 Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
+The workflow is defined by the `deploy-integration-to-azure.yml` GitHub Action.
