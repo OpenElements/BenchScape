@@ -1,6 +1,6 @@
 package com.openelements.benchmark;
 
-import com.openelements.jmh.client.JmhRunner;
+import com.openelements.benchscape.jmh.client.JmhRunner;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

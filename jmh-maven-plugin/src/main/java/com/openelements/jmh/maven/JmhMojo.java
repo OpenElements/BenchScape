@@ -1,6 +1,6 @@
 package com.openelements.jmh.maven;
 
-import com.openelements.jmh.client.JmhUploader;
+import com.openelements.benchscape.jmh.client.JmhUploader;
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

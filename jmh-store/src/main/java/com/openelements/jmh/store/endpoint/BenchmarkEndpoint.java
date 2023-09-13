@@ -1,6 +1,6 @@
 package com.openelements.jmh.store.endpoint;
 
-import com.openelements.benchscape.common.BenchmarkExecution;
+import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.jmh.store.db.DataService;
 import com.openelements.jmh.store.gate.QualityGate;
 import com.openelements.jmh.store.shared.BenchmarkDefinition;

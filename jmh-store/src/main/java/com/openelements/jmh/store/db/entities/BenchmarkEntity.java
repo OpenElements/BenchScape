@@ -1,6 +1,6 @@
 package com.openelements.jmh.store.db.entities;
 
-import com.openelements.benchscape.common.BenchmarkUnit;
+import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
 package com.openelements.jmh.store.db;
 
-import com.openelements.benchscape.common.BenchmarkUnit;
+import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.db.entities.TimeseriesEntity;
 import com.openelements.jmh.store.db.repositories.BenchmarkRepository;

@@ -1,7 +1,7 @@
 package com.openelements.jmh.store.db;
 
-import com.openelements.benchscape.common.BenchmarkExecution;
-import com.openelements.benchscape.common.BenchmarkExecutionResult;
+import com.openelements.benchscape.jmh.model.BenchmarkExecution;
+import com.openelements.benchscape.jmh.model.BenchmarkExecutionResult;
 import com.openelements.jmh.store.db.entities.BenchmarkEntity;
 import com.openelements.jmh.store.db.entities.RulesEntity;
 import com.openelements.jmh.store.db.entities.TimeseriesEntity;
