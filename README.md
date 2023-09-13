@@ -72,7 +72,7 @@ Any change on the main branch will trigger an update to Azure.
 - The frontend of the app can be found at https://proud-desert-0b7815310.3.azurestaticapps.net
 - Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
 
-The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
+The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-main-to-azure.yml).
 
 ## Azure deployment for PRs
 
@@ -83,4 +83,4 @@ Instead, a GitHub Action can be triggered manually to deploy the server to Azure
 - The frontend of the app can be found at https://proud-glacier-06e62e410.3.azurestaticapps.net
 - Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
 
-The workflow is defined by the `deploy-integration-to-azure.yml` GitHub Action.
+The workflow is defined by the `deploy-integration-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-integration-to-azure.yml).
