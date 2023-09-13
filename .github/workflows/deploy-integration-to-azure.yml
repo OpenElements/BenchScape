@@ -9,7 +9,7 @@ env:
   JAVA_VERSION: '17'
   DISTRIBUTION: temurin
   FRONTEND_LOCATION: "jmh-frontend/src/main/frontend/build"
-  SERVER_LOCATION: "${{ github.workspace }}/jmh-store/target/*.jar"
+  SERVER_LOCATION: "${{ github.workspace }}/jmh-store/target/app.jar"
 
 on:
   workflow_dispatch:
