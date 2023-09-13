@@ -20,16 +20,34 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.IterationParams;
 import org.openjdk.jmh.results.RunResult;
 
+/**
+ * Factory for creating {@link BenchmarkExecution} instances from JMH results ({@link RunResult}).
+ */
 public class BenchmarkFactory {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private BenchmarkFactory() {
     }
 
+    /**
+     * Converts the given {@link RunResult} instances to {@link BenchmarkExecution} instances.
+     *
+     * @param jmhResults the JMH results to convert
+     * @return the converted {@link BenchmarkExecution} instances
+     */
     public static Collection<BenchmarkExecution> convert(@NonNull final Collection<RunResult> jmhResults) {
         Objects.requireNonNull(jmhResults, "jmhResults must not be null");
         return jmhResults.stream().map(BenchmarkFactory::convert).toList();
     }
 
+    /**
+     * Converts the given {@link RunResult} to a {@link BenchmarkExecution}.
+     *
+     * @param jmhResult the JMH result to convert
+     * @return the converted {@link BenchmarkExecution}
+     */
     @NonNull
     public static BenchmarkExecution convert(@NonNull final RunResult jmhResult) {
         Objects.requireNonNull(jmhResult, "jmhResult must not be null");
@@ -45,6 +63,12 @@ public class BenchmarkFactory {
         return benchmark;
     }
 
+    /**
+     * Converts the given {@link org.openjdk.jmh.results.BenchmarkResult} to a {@link BenchmarkExecutionMetadata}.
+     *
+     * @param params the JMH result to convert
+     * @return the converted {@link BenchmarkExecutionMetadata}
+     */
     @NonNull
     private static BenchmarkInfrastructure convertToBenchmarkInfrastructure(@NonNull final BenchmarkParams params) {
         Objects.requireNonNull(params, "params must not be null");
@@ -65,6 +89,12 @@ public class BenchmarkFactory {
                 jmhVersion);
     }
 
+    /**
+     * Converts the given {@link org.openjdk.jmh.results.BenchmarkResult} to a {@link BenchmarkExecutionMetadata}.
+     *
+     * @param params the JMH result to convert
+     * @return the converted {@link BenchmarkExecutionMetadata}
+     */
     @NonNull
     private static BenchmarkMeasurementConfiguration convertToBenchmarkMeasurementConfiguration(
             @NonNull final IterationParams params) {
@@ -76,6 +106,12 @@ public class BenchmarkFactory {
         return new BenchmarkMeasurementConfiguration(warmupIterations, warmupTime, warmupTimeUnit, warmupBatchSize);
     }
 
+    /**
+     * Converts the given {@link org.openjdk.jmh.results.BenchmarkResult} to a {@link BenchmarkExecutionMetadata}.
+     *
+     * @param params the JMH result to convert
+     * @return the converted {@link BenchmarkExecutionMetadata}
+     */
     @NonNull
     private static BenchmarkConfiguration convertToBenchmarkConfiguration(@NonNull final BenchmarkParams params) {
         Objects.requireNonNull(params, "params must not be null");
@@ -91,6 +127,12 @@ public class BenchmarkFactory {
                 warmupConfiguration);
     }
 
+    /**
+     * Converts the given {@link org.openjdk.jmh.results.BenchmarkResult} to a {@link BenchmarkExecutionMetadata}.
+     *
+     * @param benchmarkResult the JMH result to convert
+     * @return the converted {@link BenchmarkExecutionMetadata}
+     */
     @NonNull
     private static BenchmarkExecutionResult convertToBenchmarkResult(
             @NonNull final org.openjdk.jmh.results.Result benchmarkResult) {
@@ -118,6 +160,12 @@ public class BenchmarkFactory {
         return new BenchmarkExecutionResult(value, error, min, max, BenchmarkUnit.getForJmhName(unit));
     }
 
+    /**
+     * Converts the given {@link org.openjdk.jmh.results.BenchmarkResult} to a {@link BenchmarkExecutionMetadata}.
+     *
+     * @param benchmarkResult the JMH result to convert
+     * @return the converted {@link BenchmarkExecutionMetadata}
+     */
     @NonNull
     private static BenchmarkExecutionMetadata convertToBenchmarkExecution(
             @NonNull final org.openjdk.jmh.results.BenchmarkResult benchmarkResult) {

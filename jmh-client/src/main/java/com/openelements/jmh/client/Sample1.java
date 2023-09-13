@@ -5,7 +5,7 @@ import com.openelements.jmh.client.io.RestClient;
 import com.openelements.jmh.client.jmh.BenchmarkFactory;
 import com.openelements.jmh.client.jmh.JmhExecutor;
 
-public class Main {
+public class Sample1 {
 
     public static void main(String[] args) throws Exception {
         final RestClient restClient = new RestClient();

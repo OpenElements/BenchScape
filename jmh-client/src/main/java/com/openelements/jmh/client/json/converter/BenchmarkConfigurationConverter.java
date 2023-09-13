@@ -1,5 +1,6 @@
 package com.openelements.jmh.client.json.converter;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -14,6 +15,11 @@ import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * GSON (see {@link Gson}) Converter for {@link BenchmarkConfiguration} instances.
+ *
+ * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
+ */
 public final class BenchmarkConfigurationConverter implements JsonSerializer<BenchmarkConfiguration>,
         JsonDeserializer<BenchmarkConfiguration> {
     @Override

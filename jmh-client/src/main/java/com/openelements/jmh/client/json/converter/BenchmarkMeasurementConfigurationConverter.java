@@ -13,6 +13,11 @@ import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * GSON (see {@link Gson}) Converter for {@link BenchmarkMeasurementConfiguration} instances.
+ *
+ * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
+ */
 public final class BenchmarkMeasurementConfigurationConverter implements JsonSerializer<BenchmarkMeasurementConfiguration>,
         JsonDeserializer<BenchmarkMeasurementConfiguration> {
     @Override

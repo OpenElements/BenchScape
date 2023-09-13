@@ -7,15 +7,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.openelements.jmh.common.BenchmarkExecution;
 import com.openelements.jmh.common.BenchmarkConfiguration;
+import com.openelements.jmh.common.BenchmarkExecution;
 import com.openelements.jmh.common.BenchmarkExecutionMetadata;
-import com.openelements.jmh.common.BenchmarkInfrastructure;
 import com.openelements.jmh.common.BenchmarkExecutionResult;
+import com.openelements.jmh.common.BenchmarkInfrastructure;
 import com.openelements.jmh.common.BenchmarkType;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+/**
+ * GSON (see {@link com.google.gson.Gson}) Converter for {@link BenchmarkExecution} instances.
+ *
+ * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
+ */
 public final class BenchmarkConverter implements JsonSerializer<BenchmarkExecution>,
         JsonDeserializer<BenchmarkExecution> {
     @Override
@@ -25,10 +30,14 @@ public final class BenchmarkConverter implements JsonSerializer<BenchmarkExecuti
         Objects.requireNonNull(context, "context must not be null");
         final String benchmarkName = json.getAsJsonObject().get("benchmarkName").getAsString();
         final BenchmarkType type = context.deserialize(json.getAsJsonObject().get("type"), BenchmarkType.class);
-        final BenchmarkInfrastructure infrastructure = context.deserialize(json.getAsJsonObject().get("infrastructure"), BenchmarkInfrastructure.class);
-        final BenchmarkConfiguration configuration = context.deserialize(json.getAsJsonObject().get("configuration"), BenchmarkConfiguration.class);
-        final BenchmarkExecutionMetadata execution = context.deserialize(json.getAsJsonObject().get("execution"), BenchmarkExecutionMetadata.class);
-        final BenchmarkExecutionResult result = context.deserialize(json.getAsJsonObject().get("result"), BenchmarkExecutionResult.class);
+        final BenchmarkInfrastructure infrastructure = context.deserialize(json.getAsJsonObject().get("infrastructure"),
+                BenchmarkInfrastructure.class);
+        final BenchmarkConfiguration configuration = context.deserialize(json.getAsJsonObject().get("configuration"),
+                BenchmarkConfiguration.class);
+        final BenchmarkExecutionMetadata execution = context.deserialize(json.getAsJsonObject().get("execution"),
+                BenchmarkExecutionMetadata.class);
+        final BenchmarkExecutionResult result = context.deserialize(json.getAsJsonObject().get("result"),
+                BenchmarkExecutionResult.class);
         return new BenchmarkExecution(benchmarkName, type, infrastructure, configuration, execution, result);
     }
 

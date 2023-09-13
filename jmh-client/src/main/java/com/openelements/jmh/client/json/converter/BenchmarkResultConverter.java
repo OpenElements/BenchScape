@@ -13,6 +13,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+/**
+ * GSON (see {@link Gson}) Converter for {@link BenchmarkExecutionResult} instances.
+ *
+ * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
+ */
 public final class BenchmarkResultConverter implements JsonSerializer<BenchmarkExecutionResult>, JsonDeserializer<BenchmarkExecutionResult> {
 
     @Override

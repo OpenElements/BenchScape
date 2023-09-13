@@ -1,9 +1,6 @@
 package com.openelements.benchmark;
 
-import com.openelements.jmh.client.io.FileClient;
-import com.openelements.jmh.client.io.RestClient;
-import com.openelements.jmh.client.jmh.BenchmarkFactory;
-import com.openelements.jmh.client.jmh.JmhExecutor;
+import com.openelements.jmh.client.JmhRunner;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -39,17 +36,7 @@ public class SampleBenchmark {
     }
 
     public static void main(final String[] args) throws Exception {
-        final FileClient fileClient = new FileClient("target/benchmark/");
-        final RestClient restClient = new RestClient();
-        JmhExecutor.executeAll().stream()
-                .map(BenchmarkFactory::convert)
-                .forEach(benchmarkExecution -> {
-                    try {
-                        fileClient.write(benchmarkExecution);
-                        restClient.post(benchmarkExecution);
-                    } catch (final Exception e) {
-                        throw new RuntimeException("Error in posting result", e);
-                    }
-                });
+        JmhRunner runner = new JmhRunner();
+        runner.execute();
     }
 }

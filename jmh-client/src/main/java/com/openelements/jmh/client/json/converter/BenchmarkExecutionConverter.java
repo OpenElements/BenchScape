@@ -13,25 +13,34 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * GSON (see {@link Gson}) Converter for {@link BenchmarkExecutionMetadata} instances.
+ *
+ * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
+ */
 public final class BenchmarkExecutionConverter implements JsonSerializer<BenchmarkExecutionMetadata>,
         JsonDeserializer<BenchmarkExecutionMetadata> {
 
     @Override
-    public BenchmarkExecutionMetadata deserialize(@NonNull final JsonElement json, @NonNull final Type typeOfT, @NonNull final JsonDeserializationContext context)
+    public BenchmarkExecutionMetadata deserialize(@NonNull final JsonElement json, @NonNull final Type typeOfT,
+            @NonNull final JsonDeserializationContext context)
             throws JsonParseException {
         Objects.requireNonNull(json, "json must not be null");
         Objects.requireNonNull(context, "context must not be null");
         final Instant startTime = context.deserialize(json.getAsJsonObject().get("startTime"), Instant.class);
         final Instant warmupTime = context.deserialize(json.getAsJsonObject().get("warmupTime"), Instant.class);
-        final Instant measurementTime = context.deserialize(json.getAsJsonObject().get("measurementTime"), Instant.class);
+        final Instant measurementTime = context.deserialize(json.getAsJsonObject().get("measurementTime"),
+                Instant.class);
         final Instant stopTime = context.deserialize(json.getAsJsonObject().get("stopTime"), Instant.class);
         final long warmupOps = context.deserialize(json.getAsJsonObject().get("warmupOps"), long.class);
         final long measurementOps = context.deserialize(json.getAsJsonObject().get("measurementOps"), long.class);
-        return new BenchmarkExecutionMetadata(startTime, warmupTime, measurementTime, stopTime, warmupOps, measurementOps);
+        return new BenchmarkExecutionMetadata(startTime, warmupTime, measurementTime, stopTime, warmupOps,
+                measurementOps);
     }
 
     @Override
-    public JsonElement serialize(@NonNull final BenchmarkExecutionMetadata src, @NonNull final Type typeOfSrc, @NonNull final JsonSerializationContext context) {
+    public JsonElement serialize(@NonNull final BenchmarkExecutionMetadata src, @NonNull final Type typeOfSrc,
+            @NonNull final JsonSerializationContext context) {
         Objects.requireNonNull(src, "src must not be null");
         Objects.requireNonNull(context, "context must not be null");
         final JsonObject json = new JsonObject();
