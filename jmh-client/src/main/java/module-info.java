@@ -1,11 +1,11 @@
 module com.openelements.jmh.client {
-    requires com.openelements.jmh.common;
-    requires jmh.core;
-    requires java.net.http;
+    requires transitive com.openelements.benchscape.common;
+    requires transitive jmh.core;
+    requires static com.github.spotbugs.annotations;
     requires com.google.gson;
+    requires java.net.http;
     requires java.management;
     requires jdk.management;
-    requires static com.github.spotbugs.annotations;
 
     exports com.openelements.jmh.client;
     exports com.openelements.jmh.client.json;

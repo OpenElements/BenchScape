@@ -1,4 +1,4 @@
-package com.openelements.jmh.common;
+package com.openelements.benchscape.common;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Objects;

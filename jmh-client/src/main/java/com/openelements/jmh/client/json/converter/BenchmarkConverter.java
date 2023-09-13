@@ -7,12 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.openelements.jmh.common.BenchmarkConfiguration;
-import com.openelements.jmh.common.BenchmarkExecution;
-import com.openelements.jmh.common.BenchmarkExecutionMetadata;
-import com.openelements.jmh.common.BenchmarkExecutionResult;
-import com.openelements.jmh.common.BenchmarkInfrastructure;
-import com.openelements.jmh.common.BenchmarkType;
+import com.openelements.benchscape.common.BenchmarkConfiguration;
+import com.openelements.benchscape.common.BenchmarkExecution;
+import com.openelements.benchscape.common.BenchmarkExecutionMetadata;
+import com.openelements.benchscape.common.BenchmarkExecutionResult;
+import com.openelements.benchscape.common.BenchmarkInfrastructure;
+import com.openelements.benchscape.common.BenchmarkType;
 import java.lang.reflect.Type;
 import java.util.Objects;
 

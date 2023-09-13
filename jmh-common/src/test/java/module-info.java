@@ -1,4 +1,4 @@
-open module com.openelements.jmh.common.test {
-    requires com.openelements.jmh.common;
+open module com.openelements.benchscape.common.test {
+    requires com.openelements.benchscape.common;
     requires org.junit.jupiter.api;
 }

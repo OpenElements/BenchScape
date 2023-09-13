@@ -1,10 +1,12 @@
-package com.openelements.jmh.common.test;
+package com.openelements.benchscape.common.test;
 
-import com.openelements.jmh.common.BenchmarkExecutionResult;
-import com.openelements.jmh.common.BenchmarkUnit;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.openelements.benchscape.common.BenchmarkExecutionResult;
+import com.openelements.benchscape.common.BenchmarkUnit;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BenchmarkExecutionResultTest {
 

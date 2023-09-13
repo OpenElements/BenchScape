@@ -1,11 +1,11 @@
-package com.openelements.jmh.common.test;
+package com.openelements.benchscape.common.test;
 
-import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.openelements.benchscape.common.BenchmarkMeasurementConfiguration;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class BenchmarkMeasurementConfigurationTest {
 
@@ -16,7 +16,8 @@ public class BenchmarkMeasurementConfigurationTest {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         int batchSize = 10;
 
-        BenchmarkMeasurementConfiguration configuration = new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize);
+        BenchmarkMeasurementConfiguration configuration = new BenchmarkMeasurementConfiguration(iterations, time,
+                timeUnit, batchSize);
 
         assertEquals(iterations, configuration.iterations());
         assertEquals(time, configuration.time());
@@ -31,7 +32,8 @@ public class BenchmarkMeasurementConfigurationTest {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         int batchSize = 10;
 
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
+        assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
     }
 
     @Test
@@ -41,7 +43,8 @@ public class BenchmarkMeasurementConfigurationTest {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         int batchSize = 10;
 
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
+        assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
     }
 
     @Test
@@ -50,7 +53,8 @@ public class BenchmarkMeasurementConfigurationTest {
         long time = 2000; // 2 seconds
         int batchSize = 10;
 
-        assertThrows(NullPointerException.class, () -> new BenchmarkMeasurementConfiguration(iterations, time, null, batchSize));
+        assertThrows(NullPointerException.class,
+                () -> new BenchmarkMeasurementConfiguration(iterations, time, null, batchSize));
     }
 
     @Test
@@ -60,6 +64,7 @@ public class BenchmarkMeasurementConfigurationTest {
         TimeUnit timeUnit = TimeUnit.SECONDS;
         int batchSize = 0;
 
-        assertThrows(IllegalArgumentException.class, () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
+        assertThrows(IllegalArgumentException.class,
+                () -> new BenchmarkMeasurementConfiguration(iterations, time, timeUnit, batchSize));
     }
 }

@@ -1,7 +1,7 @@
 package com.openelements.jmh.client.io;
 
+import com.openelements.benchscape.common.BenchmarkExecution;
 import com.openelements.jmh.client.json.BenchmarkJsonFactory;
-import com.openelements.jmh.common.BenchmarkExecution;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.IOException;
 import java.net.URI;

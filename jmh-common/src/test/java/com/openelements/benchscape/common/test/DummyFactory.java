@@ -1,13 +1,13 @@
-package com.openelements.jmh.common.test;
+package com.openelements.benchscape.common.test;
 
-import com.openelements.jmh.common.BenchmarkExecution;
-import com.openelements.jmh.common.BenchmarkConfiguration;
-import com.openelements.jmh.common.BenchmarkExecutionMetadata;
-import com.openelements.jmh.common.BenchmarkInfrastructure;
-import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
-import com.openelements.jmh.common.BenchmarkExecutionResult;
-import com.openelements.jmh.common.BenchmarkType;
-import com.openelements.jmh.common.BenchmarkUnit;
+import com.openelements.benchscape.common.BenchmarkConfiguration;
+import com.openelements.benchscape.common.BenchmarkExecution;
+import com.openelements.benchscape.common.BenchmarkExecutionMetadata;
+import com.openelements.benchscape.common.BenchmarkExecutionResult;
+import com.openelements.benchscape.common.BenchmarkInfrastructure;
+import com.openelements.benchscape.common.BenchmarkMeasurementConfiguration;
+import com.openelements.benchscape.common.BenchmarkType;
+import com.openelements.benchscape.common.BenchmarkUnit;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
@@ -30,10 +30,12 @@ public class DummyFactory {
     }
 
     public static BenchmarkConfiguration createBenchmarkConfiguration() {
-        return new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, createBenchmarkMeasurementConfiguration(), createBenchmarkMeasurementConfiguration());
+        return new BenchmarkConfiguration(1, 1, 1, TimeUnit.SECONDS, createBenchmarkMeasurementConfiguration(),
+                createBenchmarkMeasurementConfiguration());
     }
 
     public static BenchmarkExecution createBenchmark() {
-        return new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, createBenchmarkInfrastructure(), createBenchmarkConfiguration(), createBenchmarkExecution(), createBenchmarkResult());
+        return new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, createBenchmarkInfrastructure(),
+                createBenchmarkConfiguration(), createBenchmarkExecution(), createBenchmarkResult());
     }
 }

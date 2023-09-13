@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
+import com.openelements.benchscape.common.BenchmarkMeasurementConfiguration;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
 import java.util.Objects;
@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @see com.google.gson.GsonBuilder#registerTypeAdapter(Type, Object)
  */
-public final class BenchmarkMeasurementConfigurationConverter implements JsonSerializer<BenchmarkMeasurementConfiguration>,
+public final class BenchmarkMeasurementConfigurationConverter implements
+        JsonSerializer<BenchmarkMeasurementConfiguration>,
         JsonDeserializer<BenchmarkMeasurementConfiguration> {
     @Override
     public BenchmarkMeasurementConfiguration deserialize(@NonNull final JsonElement json, @NonNull final Type typeOfT,

@@ -1,10 +1,10 @@
 package com.openelements.jmh.client;
 
+import com.openelements.benchscape.common.BenchmarkExecution;
 import com.openelements.jmh.client.io.FileClient;
 import com.openelements.jmh.client.io.RestClient;
 import com.openelements.jmh.client.jmh.BenchmarkFactory;
 import com.openelements.jmh.client.jmh.JmhExecutor;
-import com.openelements.jmh.common.BenchmarkExecution;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.Collection;

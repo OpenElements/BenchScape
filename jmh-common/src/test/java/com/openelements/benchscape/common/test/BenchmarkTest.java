@@ -1,11 +1,11 @@
-package com.openelements.jmh.common.test;
+package com.openelements.benchscape.common.test;
 
-import com.openelements.jmh.common.BenchmarkExecution;
-import com.openelements.jmh.common.BenchmarkConfiguration;
-import com.openelements.jmh.common.BenchmarkExecutionMetadata;
-import com.openelements.jmh.common.BenchmarkInfrastructure;
-import com.openelements.jmh.common.BenchmarkExecutionResult;
-import com.openelements.jmh.common.BenchmarkType;
+import com.openelements.benchscape.common.BenchmarkConfiguration;
+import com.openelements.benchscape.common.BenchmarkExecution;
+import com.openelements.benchscape.common.BenchmarkExecutionMetadata;
+import com.openelements.benchscape.common.BenchmarkExecutionResult;
+import com.openelements.benchscape.common.BenchmarkInfrastructure;
+import com.openelements.benchscape.common.BenchmarkType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +19,11 @@ public class BenchmarkTest {
         final BenchmarkExecutionResult result = DummyFactory.createBenchmarkResult();
 
         Assertions.assertDoesNotThrow(() -> {
-            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, result);
+            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution,
+                    result);
         });
     }
+
     @Test
     void testBadInstantiation() {
         final BenchmarkInfrastructure infrastructure = DummyFactory.createBenchmarkInfrastructure();
@@ -35,7 +37,8 @@ public class BenchmarkTest {
             new BenchmarkExecution("", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, result);
         });
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new BenchmarkExecution("            ", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, result);
+            new BenchmarkExecution("            ", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution,
+                    result);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             new BenchmarkExecution("benchmarkName", null, infrastructure, configuration, execution, result);
@@ -47,10 +50,12 @@ public class BenchmarkTest {
             new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, null, execution, result);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, null, result);
+            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, null,
+                    result);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution, null);
+            new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, infrastructure, configuration, execution,
+                    null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             new BenchmarkExecution(null, null, null, null, null, null);

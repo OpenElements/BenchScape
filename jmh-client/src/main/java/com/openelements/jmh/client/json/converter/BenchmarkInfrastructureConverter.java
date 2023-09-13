@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.openelements.jmh.common.BenchmarkInfrastructure;
+import com.openelements.benchscape.common.BenchmarkInfrastructure;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
 import java.util.Objects;

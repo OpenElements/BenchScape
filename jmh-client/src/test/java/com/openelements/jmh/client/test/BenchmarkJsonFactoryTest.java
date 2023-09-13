@@ -2,8 +2,9 @@ package com.openelements.jmh.client.test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.openelements.benchscape.common.BenchmarkExecution;
 import com.openelements.jmh.client.json.BenchmarkJsonFactory;
-import com.openelements.jmh.common.BenchmarkExecution;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,8 @@ public class BenchmarkJsonFactoryTest {
         final BenchmarkExecution execution = DummyFactory.createBenchmark();
 
         //when
-        final JsonElement jsonElement = BenchmarkJsonFactory.toJsonTree(execution);
+        final String json = BenchmarkJsonFactory.toJson(execution);
+        JsonElement jsonElement = new JsonParser().parse(json);
 
         Assertions.assertNotNull(jsonElement);
         Assertions.assertTrue(jsonElement.isJsonObject());

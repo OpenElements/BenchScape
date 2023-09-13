@@ -1,5 +1,5 @@
-module com.openelements.jmh.common {
-  exports com.openelements.jmh.common;
+module com.openelements.benchscape.common {
+    exports com.openelements.benchscape.common;
 
-  requires static com.github.spotbugs.annotations;
+    requires static com.github.spotbugs.annotations;
 }

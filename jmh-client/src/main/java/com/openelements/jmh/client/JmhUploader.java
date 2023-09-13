@@ -1,8 +1,8 @@
 package com.openelements.jmh.client;
 
+import com.openelements.benchscape.common.BenchmarkExecution;
 import com.openelements.jmh.client.io.RestClient;
 import com.openelements.jmh.client.jmh.BenchmarkFactory;
-import com.openelements.jmh.common.BenchmarkExecution;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;

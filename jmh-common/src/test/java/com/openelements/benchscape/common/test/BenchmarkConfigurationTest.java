@@ -1,7 +1,7 @@
-package com.openelements.jmh.common.test;
+package com.openelements.benchscape.common.test;
 
-import com.openelements.jmh.common.BenchmarkConfiguration;
-import com.openelements.jmh.common.BenchmarkMeasurementConfiguration;
+import com.openelements.benchscape.common.BenchmarkConfiguration;
+import com.openelements.benchscape.common.BenchmarkMeasurementConfiguration;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
