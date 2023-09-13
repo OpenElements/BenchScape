@@ -15,12 +15,30 @@ at `/grafana`.
 JMH results can be created and uploaded automatically by using the Maven Plugin in the
 `jmh-maven-plugin` module or by calling the Uploader directly (see `jmh-runner` module).
 
-### Starting the server
+### Starting the backend server
 
 The `jmh-store` module contains the Spring Boot based server that can simply be started by the main
 class `com.openelements.jmh.store.app.Application`. Once the server is started the frontend can be
 reached at [http://localhost:8080](http://localhost:8080). Currently, the server automatically
 creates some dummy data for 3 benchmarks at start time.
+
+### Starting the frontend server
+
+Open a new terminal or command prompt (keep the backend server running in the previous terminal).
+
+Navigate to the root directory of your React frontend project (jmh-frontend). You can use the cd command to change your working directory:
+
+    cd BenchScape/jmh-frontend/src/main/frontend
+
+Install the required Node.js packages by running the following command:
+
+    npm install
+
+Start the React development server:
+
+    npm start
+
+The Frontend development server should start and be accessible at http://localhost:3000.
 
 ### Using the Maven plugin
 
@@ -32,6 +50,7 @@ the `pom.xml` of the module to see how the integration is working. Since the plu
 of the repo (see build instruction) once the JMH Store server is running.
 
 ## Kanban board
+
 The Kanban board for the project can be found here: https://github.com/orgs/OpenElements/projects/1
 
 ## Building the project
