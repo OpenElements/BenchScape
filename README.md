@@ -65,17 +65,12 @@ project (`mvnw.cmd verify` on windows).
 
 ## Azure deployment for main branch
 
-The JMH-Store server app of the `main` branch is deployed to Microsoft Azure.
+The `main` branch is automatically deployed to Microsoft Azure.
 Any change on the main branch will trigger an update to Azure.
 The server instance can be found at https://benchscape.azurewebsites.net.
-The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
-The server is defined by the jar in the `jmh-store/target/` folder of the repo.
-Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
-
-The frontend of the `main` branch is deployed to Microsoft Azure.
-Any change on the main branch will trigger an update to Azure.
 The frontend of the app can be found at https://proud-desert-0b7815310.3.azurestaticapps.net
-The workflow is defined by the `deploy-main-frontend-to-azure.yml` GitHub Action.
+Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
+The workflow is defined by the `deploy-main-to-azure.yml` GitHub Action.
 
 ## Azure deployment for PRs
 
