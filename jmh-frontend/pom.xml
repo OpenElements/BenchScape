@@ -1,68 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.open-elements.jmh</groupId>
-        <artifactId>jmh-store-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.open-elements.benchscape</groupId>
+    <artifactId>benchscape-parent</artifactId>
+    <version>0.3.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>jmh-frontend</artifactId>
 
-    <artifactId>jmh-frontend</artifactId>
+  <build>
+    <finalName>jmh-store-server</finalName>
+    <plugins>
+      <!-- Frontend Maven Plugin -->
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.12.1</version>
+        <executions>
+          <!-- Install node and npm -->
+          <execution>
+            <id>Install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <nodeVersion>v16.15.0</nodeVersion>
+              <npmVersion>8.5.5</npmVersion>
+            </configuration>
+          </execution>
 
-    <build>
-        <finalName>jmh-store-server</finalName>
-        <plugins>
-            <!-- Frontend Maven Plugin -->
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.12.1</version>
-                <executions>
-                    <!-- Install node and npm -->
-                    <execution>
-                        <id>Install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <nodeVersion>v16.15.0</nodeVersion>
-                            <npmVersion>8.5.5</npmVersion>
-                        </configuration>
-                    </execution>
+          <!-- Run npm install -->
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
 
-                    <!-- Run npm install -->
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-                    <!-- Build production version -->
-                    <execution>
-                        <id>npm build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <nodeVersion>v16.15.0</nodeVersion>
-                    <workingDirectory>src/main/frontend</workingDirectory>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+          <!-- Build production version -->
+          <execution>
+            <id>npm build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <nodeVersion>v16.15.0</nodeVersion>
+          <workingDirectory>src/main/frontend</workingDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
