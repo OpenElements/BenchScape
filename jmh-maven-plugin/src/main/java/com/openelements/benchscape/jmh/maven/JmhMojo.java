@@ -4,6 +4,7 @@ import com.openelements.benchscape.jmh.client.JmhRunner;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
@@ -55,6 +57,10 @@ public class JmhMojo extends AbstractMojo {
     public static final String CLASSPATH_ARG = "-cp";
     public static final String JAR_TYPE = "jar";
 
+    /**
+     * If true benchmarks in test scope will be executed (Java classes of benchmarks must be placed under
+     * {@code src/main/java}).
+     */
     private boolean benchmarksInTestScope = false;
 
     @Parameter(defaultValue = "${project}", readonly = true)
@@ -82,55 +88,20 @@ public class JmhMojo extends AbstractMojo {
             Objects.requireNonNull(resolutionErrorHandler, "resolutionErrorHandler must not be null");
 
             final File benchmarkList = getBenchmarkList();
-            getLog().info("Checking if '" + benchmarkList + "' exists.");
+            getLog().debug("Checking if '" + benchmarkList + "' exists.");
             if (!benchmarkList.exists()) {
-                getLog().info("No benchmarks found, skipping execution of goal.");
+                getLog().info("No JMH benchmarks found, skipping execution of goal.");
             } else {
                 if (getLog().isDebugEnabled()) {
                     getLog().debug("Benchmark list:");
                     Files.readAllLines(benchmarkList.toPath(), StandardCharsets.UTF_8).forEach(l -> getLog().debug(l));
                 }
-                getLog().debug("Trying to extract version of plugin.");
-                final String myVersion = getMyVersion();
-                getLog().debug("Version of plugin is " + myVersion);
-
-                getLog().debug("Trying to resolve artifact of '" + MY_GROUP_ID + ":" + JMH_CLIENT_ARTIFACT_ID + ":"
-                        + myVersion + "'.");
-                final List<String> dependencies = resolveArtifact(MY_GROUP_ID, JMH_CLIENT_ARTIFACT_ID, myVersion);
-                getLog().debug("All dependencies for '" + MY_GROUP_ID + ":" + JMH_CLIENT_ARTIFACT_ID + ":" + myVersion
-                        + "' resolved:");
-                dependencies.forEach(d -> getLog().debug(d));
 
                 getLog().debug("Creating classpath for JMH execution");
-                final List<String> classpath = new ArrayList<>();
-                classpath.addAll(project.getRuntimeClasspathElements());
-                if (benchmarksInTestScope) {
-                    classpath.addAll(project.getTestClasspathElements());
-                }
-                classpath.addAll(dependencies);
-                getLog().debug("Classpath for JMH execution defined:");
-                classpath.forEach(c -> getLog().debug(c));
+                final List<String> classpath = getClasspathForBenchmarkRun();
 
-                final String javaHome = System.getProperty(JAVA_HOME);
-                final String javaProcess = javaHome + File.separator + BIN_FOLDER + File.separator + JAVA_PROCESS;
-                getLog().debug("Java process is '" + javaProcess + "'.");
-
-                final List<String> command = new ArrayList<>();
-                command.add(javaProcess);
-                command.add(CLASSPATH_ARG);
-                command.add(String.join(File.pathSeparator, classpath));
-                command.add(JmhRunner.class.getName());
-                getLog().debug("Running forked execution using: " + command);
-
-                final ProcessBuilder processBuilder = new ProcessBuilder(command);
-                processBuilder.directory(project.getBasedir());
-                processBuilder.redirectErrorStream(true);
-                final Process process = processBuilder.start();
-                try (final BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
-                    reader.lines().forEach(l -> getLog().debug(l));
-                }
-                final int exitCode = process.waitFor();
+                getLog().debug("Executing benchmarks run.");
+                final int exitCode = executeBenchmarkRunInForkedProcess(classpath);
                 if (exitCode != 0) {
                     throw new RuntimeException("The process failed with non-zero exit code: " + exitCode);
                 }
@@ -140,6 +111,74 @@ public class JmhMojo extends AbstractMojo {
         }
     }
 
+    /**
+     * Returns a list of all dependencies that are required for the execution of the benchmarks.
+     *
+     * @return list of all dependencies that are required for the execution of the benchmarks
+     * @throws DependencyResolutionRequiredException if the dependencies could not be resolved
+     */
+    @NonNull
+    private List<String> getClasspathForBenchmarkRun() throws DependencyResolutionRequiredException {
+        getLog().debug("Trying to extract version of plugin.");
+        final String myVersion = getMyVersion();
+        getLog().debug("Version of plugin is " + myVersion);
+
+        getLog().debug("Trying to resolve artifact of '" + MY_GROUP_ID + ":" + JMH_CLIENT_ARTIFACT_ID + ":"
+                + myVersion + "'.");
+        final List<String> dependencies = resolveArtifact(MY_GROUP_ID, JMH_CLIENT_ARTIFACT_ID, myVersion);
+        getLog().debug("All dependencies for '" + MY_GROUP_ID + ":" + JMH_CLIENT_ARTIFACT_ID + ":" + myVersion
+                + "' resolved:");
+        dependencies.forEach(d -> getLog().debug(d));
+
+        final List<String> classpath = new ArrayList<>();
+        classpath.addAll(project.getRuntimeClasspathElements());
+        if (benchmarksInTestScope) {
+            classpath.addAll(project.getTestClasspathElements());
+        }
+        classpath.addAll(dependencies);
+        getLog().debug("Classpath for JMH execution defined:");
+        classpath.forEach(c -> getLog().debug(c));
+        return classpath;
+    }
+
+    /**
+     * Executes the benchmark run in a forked process and returns the exit code of the process.
+     *
+     * @param classpath classpath for the forked process
+     * @return exit code of the forked process
+     * @throws IOException          if the forked process could not be started
+     * @throws InterruptedException if the forked process was interrupted
+     */
+    private int executeBenchmarkRunInForkedProcess(@NonNull final List<String> classpath)
+            throws IOException, InterruptedException {
+        final String javaHome = System.getProperty(JAVA_HOME);
+        final String javaProcess = javaHome + File.separator + BIN_FOLDER + File.separator + JAVA_PROCESS;
+        getLog().debug("Java process is '" + javaProcess + "'.");
+
+        final List<String> command = new ArrayList<>();
+        command.add(javaProcess);
+        command.add(CLASSPATH_ARG);
+        command.add(String.join(File.pathSeparator, classpath));
+        command.add(JmhRunner.class.getName());
+        getLog().debug("Running forked execution using: " + command);
+
+        final ProcessBuilder processBuilder = new ProcessBuilder(command);
+        processBuilder.directory(project.getBasedir());
+        processBuilder.redirectErrorStream(true);
+        final Process process = processBuilder.start();
+        try (final BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+            reader.lines().forEach(l -> getLog().debug(l));
+        }
+        final int exitCode = process.waitFor();
+        return exitCode;
+    }
+
+    /**
+     * Returns the version of the plugin that is currently executed.
+     *
+     * @return the version of the plugin that is currently executed
+     */
     @NonNull
     private String getMyVersion() {
         return project.getBuildPlugins().stream()
@@ -190,6 +229,11 @@ public class JmhMojo extends AbstractMojo {
         return elements;
     }
 
+    /**
+     * Returns the file that contains the list of all benchmarks (as defined by JMH).
+     *
+     * @return the file that contains the list of all benchmarks (as defined by JMH)
+     */
     @NonNull
     private File getBenchmarkList() {
         if (benchmarksInTestScope) {
