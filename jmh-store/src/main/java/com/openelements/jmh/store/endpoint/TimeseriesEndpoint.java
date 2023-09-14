@@ -21,8 +21,8 @@ public class TimeseriesEndpoint {
     this.dataService = Objects.requireNonNull(dataService);
   }
 
-  @CrossOrigin
   @GetMapping("/timeseries")
+  @CrossOrigin
   @ResponseBody
   List<Timeseries> getTimeseries(@RequestParam final Long benchmarkId) {
     Objects.requireNonNull(benchmarkId);
