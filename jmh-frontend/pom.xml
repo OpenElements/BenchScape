@@ -27,8 +27,8 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <nodeVersion>v16.15.0</nodeVersion>
-              <npmVersion>8.5.5</npmVersion>
+              <nodeVersion>v20.5.0</nodeVersion>
+              <npmVersion>9.8.0</npmVersion>
             </configuration>
           </execution>
 
