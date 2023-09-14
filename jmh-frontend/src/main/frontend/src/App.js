@@ -14,7 +14,6 @@ function App() {
     // Fetch data from the "/api/benchmark" endpoint
     axios
       .get(`${apiUrl}/api/benchmark`)
-      // .then((response) => response.data)
       .then((response) => {
         setData(response.data);
         setIsLoading(false);
@@ -74,15 +73,14 @@ function App() {
 export default App;
 
 const Graph = () => {
-  const [grapDocument, setGraphDocument] = useState(null);
+  const [graphDocument, setGraphDocument] = useState(null);
   const { id } = useParams();
   const env = process.env.REACT_APP_API_URL;
   const url = `${env}/timeseries/graph?id=${id}`;
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((res) => setGraphDocument(res.data))
+    getData(url)
+      .then((data) => setGraphDocument(data))
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
@@ -90,8 +88,9 @@ const Graph = () => {
 
   return (
     <React.Fragment>
-      {/****  haven't tried  this out though ***/}
-      <div dangerouslySetInnerHTML={{ __html: grapDocument }}></div>
+      {graphDocument && (
+        <div dangerouslySetInnerHTML={{ __html: graphDocument }}></div>
+      )}
     </React.Fragment>
   );
 };
@@ -103,9 +102,8 @@ const Table = () => {
   const tableUrl = `${env}/timeseries/table?id=${id}`;
 
   useEffect(() => {
-    axios
-      .get(tableUrl)
-      .then((res) => setTableDocument(res.data))
+    getData(tableUrl)
+      .then((data) => setTableDocument(data))
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
@@ -113,17 +111,19 @@ const Table = () => {
 
   return (
     <React.Fragment>
-      {/****  haven't tried  this out though ***/}
-      <div dangerouslySetInnerHTML={{ __html: tableDocument }}></div>
+      {tableDocument && (
+        <div dangerouslySetInnerHTML={{ __html: tableDocument }}></div>
+      )}
     </React.Fragment>
   );
 };
 
 async function getData(url) {
-  return await axios
-    .get(url)
-    .then((data) => data.data)
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 }
