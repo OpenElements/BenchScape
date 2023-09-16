@@ -106,4 +106,8 @@ public class JmhRunner {
             fileHandler.write(benchmarkExecutions);
         }
     }
+
+    public static void main(String[] args) throws Exception {
+        new JmhRunner(false, true).execute();
+    }
 }

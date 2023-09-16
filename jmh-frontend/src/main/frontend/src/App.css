@@ -40,6 +40,12 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
+td a {
+  margin-left: 8px;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
 th {
   background-color: #282c34; /* Header background color */
   color: white; /* Header text color */

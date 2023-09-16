@@ -1,6 +1,5 @@
 package com.openelements.benchmark;
 
-import com.openelements.benchscape.jmh.client.JmhRunner;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -35,8 +34,8 @@ public class SampleBenchmark {
         blackhole.consume(encodedhash);
     }
 
-    public static void main(final String[] args) throws Exception {
+    /*public static void main(final String[] args) throws Exception {
         JmhRunner runner = new JmhRunner();
         runner.execute();
-    }
+    }*/
 }

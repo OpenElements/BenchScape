@@ -94,3 +94,7 @@ Instead, a GitHub Action can be triggered manually to deploy the server to Azure
 - Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
 
 The workflow is defined by the `deploy-integration-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-integration-to-azure.yml).
+
+## Services used for operation
+
+A [Spring-Boot-Admin](https://github.com/codecentric/spring-boot-admin) instance is running at https://open-elements-spring-admin.azurewebsites.net/applications
