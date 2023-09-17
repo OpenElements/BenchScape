@@ -89,7 +89,7 @@ The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https:
 The branch of a PR will not automatically be deployed to Azure to save costs.
 Instead, a GitHub Action can be triggered manually to deploy the server to Azure.
 
-- The server instance can be found at https://benchscape-integration.azurewebsites.net.
+- The server instance can be found at http://backend.integration.benchscape.cloud (Azure URL: https://benchscape-integration.azurewebsites.net).
 - The frontend of the app can be found at https://proud-glacier-06e62e410.3.azurestaticapps.net
 - Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
 
