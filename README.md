@@ -78,7 +78,7 @@ The Kanban board for the project can be found here: https://github.com/orgs/Open
 The `main` branch is automatically deployed to Microsoft Azure.
 Any change on the main branch will trigger an update to Azure.
 
-- The server instance can be found at https://benchscape.azurewebsites.net.
+- The server instance can be found at https://backend.benchscape.cloud (Azure URL: https://benchscape.azurewebsites.net).
 - The frontend of the app can be found at https://proud-desert-0b7815310.3.azurestaticapps.net
 - Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
 
