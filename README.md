@@ -78,8 +78,8 @@ The Kanban board for the project can be found here: https://github.com/orgs/Open
 The `main` branch is automatically deployed to Microsoft Azure.
 Any change on the main branch will trigger an update to Azure.
 
-- The server instance can be found at https://backend.benchscape.cloud (Azure URL: https://benchscape.azurewebsites.net).
-- The frontend of the app can be found at app.benchscape.cloud (Aure URL: https://proud-desert-0b7815310.3.azurestaticapps.net).
+- The server instance can be found at https://backend.benchscape.cloud *(Azure URL: https://benchscape.azurewebsites.net)*.
+- The frontend of the app can be found at https://app.benchscape.cloud *(Aure URL: https://proud-desert-0b7815310.3.azurestaticapps.net)*.
 - Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
 
 The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-main-to-azure.yml).
@@ -89,8 +89,8 @@ The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https:
 The branch of a PR will not automatically be deployed to Azure to save costs.
 Instead, a GitHub Action can be triggered manually to deploy the server to Azure.
 
-- The server instance can be found at http://backend.integration.benchscape.cloud (Azure URL: https://benchscape-integration.azurewebsites.net).
-- The frontend of the app can be found at https://app.integration.benchscape.cloud (Azure URL: https://proud-glacier-06e62e410.3.azurestaticapps.net).
+- The server instance can be found at http://backend.integration.benchscape.cloud *(Azure URL: https://benchscape-integration.azurewebsites.net)*.
+- The frontend of the app can be found at https://app.integration.benchscape.cloud *(Azure URL: https://proud-glacier-06e62e410.3.azurestaticapps.net)*.
 - Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
 
 The workflow is defined by the `deploy-integration-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-integration-to-azure.yml).
