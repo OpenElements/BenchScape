@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import SideNav from "./components/side-nav.component";
-import TopNav from "./components/top-nav.component";
+//import TopNav from "./components/top-nav.component";
 import HomePage from "./pages/home-page";
 import SettingsPage from "./pages/settings-page";
 import AllertsPage from "./pages/allerts-page";
@@ -10,9 +10,8 @@ import RegularUpdatesPage from "./pages/regular-update-page";
 import TimeSeriesComponent from "./components/time-series.component";
 
 function App() {
-
   return (
-    <div className="bg-primary-gray w-full min-h-screen">  
+    <div className="bg-primary-gray w-full min-h-screen">
       <SideNav />
       <div className="xl:pl-72">
         <main className="w-full h-full px-4 sm:px-6 xl:px-7 xl:pb-5">
