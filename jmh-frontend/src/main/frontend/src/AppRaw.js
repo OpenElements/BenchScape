@@ -1,22 +1,44 @@
-
-import { Fragment, useState } from 'react';
-import { Dialog, Transition, Menu } from '@headlessui/react';
-import logo from "../assets/logo.svg";
+import { Fragment, useState } from 'react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   ArrowsClockwise,
   Star,
   ChartLine,
   Bell,
   Gear,
-  X,
-
   List,
   House,
   SignOut,
-  CaretDown 
+  CaretDown
 } from "@phosphor-icons/react";
+
+import {
+  Bars3Icon,
+  BellIcon,
+  CalendarIcon,
+  ChartPieIcon,
+  Cog6ToothIcon,
+  DocumentDuplicateIcon,
+  FolderIcon,
+  HomeIcon,
+  UsersIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
+
+import logo from "./assets/logo.svg";
 import { Link } from "react-router-dom";
-import user from "../assets/images/user.jpg";
+
+
+import user from "./assets/images/user.jpg";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/home-page";
+import SettingsPage from "./pages/settings-page";
+import AllertsPage from "./pages/allerts-page";
+import FavoritesPage from "./pages/favourites-page";
+import AnalyticsPage from "./pages/analystics-page";
+import RegularUpdatesPage from "./pages/regular-update-page";
+import TimeSeriesComponent from "./components/time-series.component";
+
 
 const navigation = [
   { name: 'Regular Updates', href: '/regular-updates', icon: ArrowsClockwise, current: true },
@@ -34,12 +56,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const SideNav = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function Example() {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   return (
     <>
-    {/* MobileOffCanvasSideBar */}
-     <Transition.Root show={sidebarOpen} as={Fragment}>
+      <div className="bg-primary-gray">
+        <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-50 xl:hidden" onClose={setSidebarOpen}>
             <Transition.Child
               as={Fragment}
@@ -64,20 +87,28 @@ const SideNav = () => {
                 leaveTo="-translate-x-full"
               >
                 <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
-               
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-in-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in-out duration-300"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
+                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                        <span className="sr-only">Close sidebar</span>
+                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary-navy pb-4">
-                    <div className="flex h-20 shrink-0 items-center justify-between px-6 relative">
+                    <div className="flex h-20 shrink-0 items-center justify-start px-8">
                         <Link to="/">
                           <img src={logo} className="h-10" alt="Logo" />
                         </Link>
-
-                      
-                        <button type="button" className="-m-2.5 p-2.5 text-white hover:text-red-600 transition-colors ease-in-out duration-150" onClick={() => setSidebarOpen(false)}>
-                          <span className="sr-only">Close sidebar</span>
-                          <X className="h-6 w-6 shrink-0" aria-hidden="true" />
-                        </button>
-                       
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -111,7 +142,7 @@ const SideNav = () => {
                         
                         <li className="mt-auto ">
                           <Link to="#" className="sidebar-nav-link hover:bg-indigo-700" >
-                            <span className="flex items-center gap-3">
+                            <span class="flex items-center gap-3">
                               <Gear className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" />
                               Settings
                             </span>
@@ -126,10 +157,11 @@ const SideNav = () => {
           </Dialog>
         </Transition.Root>
 
-        {/* DesktopSideNavbar */}
+        {/* Static sidebar for desktop */}
         <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary-navy px-8 pb-4">
-            <div className="flex h-20 shrink-0 items-center justify-start">
+          {/* Sidebar component, swap this element with another sidebar if you like */}
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-primary-navy px-6 pb-4">
+            <div class="flex h-20 shrink-0 items-center justify-start">
               <Link to="/">
                 <img src={logo} className="h-10" alt="Logo" />
               </Link>
@@ -166,7 +198,7 @@ const SideNav = () => {
 
                 <li className="mt-auto -mx-8">
                   <Link to="#" className="sidebar-nav-link hover:bg-indigo-700" >
-                    <span className="flex items-center gap-3">
+                    <span class="flex items-center gap-3">
                       <Gear className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" />
                       Settings
                     </span>
@@ -177,9 +209,9 @@ const SideNav = () => {
           </div>
         </div>
 
-        {/* TopNavbar */}
-        <div className="xl:pl-72">
-          <div className="sticky top-0 z-40 px-4 sm:px-6 xl:px-7 py-5 w-full">
+        <div className="xl:pl-72 min-h-screen">
+          
+          <div className="sticky top-0 z-40 px-4 sm:px-6 xl:px-7 py-5">
             <div className="flex items-center h-14 bg-white rounded-lg shadow-lg sm:gap-x-6 gap-x-4 px-5">
               <div className="xl:hidden flex items-center  xl:gap-x-6 gap-x-5">
                 <button type="button" className="-m-2.5 p-2.5 text-gray-500 hover:text-primary-navy transition-colors ease-in-out duration-150" onClick={() => setSidebarOpen(true)}>
@@ -218,7 +250,7 @@ const SideNav = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      <Menu.Items className="absolute left-4 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                         {menuNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -256,7 +288,7 @@ const SideNav = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      <Menu.Items className="absolute left-4 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                         {menuNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -294,7 +326,7 @@ const SideNav = () => {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      <Menu.Items className="absolute left-4 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                         {menuNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -314,7 +346,7 @@ const SideNav = () => {
                     </Transition>
                   </Menu> 
                 </div>
-
+ 
                 <div className=" flex items-center justify-end gap-5">
                   <Link className="flex items-center gap-3">
                     <div className="w-8 h-8 shrink-0 border-2 border-highlight-blue rounded-full overflow-hidden">
@@ -332,9 +364,30 @@ const SideNav = () => {
               </div>
             </div>
           </div>
-        </div>
-    </>
-  );
-};
 
-export default SideNav;
+          <main class="w-full h-full px-4 sm:px-6 xl:px-7 xl:pb-5">
+            <div className="bg-white rounded-lg w-full h-full shadow-lg">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/allerts" element={<AllertsPage />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path="/analystics" element={<AnalyticsPage />} />
+                <Route path="/regular-updates" element={<RegularUpdatesPage />} />
+                <Route
+                  path="/graph/:id"
+                  element={<TimeSeriesComponent type="graph" />}
+                />
+                <Route
+                  path="/table/:id"
+                  element={<TimeSeriesComponent type="table" />}
+                />
+              </Routes>
+            </div>
+          </main>
+
+        </div>
+      </div>
+    </>
+  )
+}
