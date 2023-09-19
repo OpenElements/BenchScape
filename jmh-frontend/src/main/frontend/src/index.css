@@ -4,7 +4,7 @@
 
 @layer base{
     .sidebar-nav-link{
-        @apply flex items-center px-8 hover:bg-primary-purple text-white gap-x-3 py-4 text-base transition-colors ease-in-out duration-150
+        @apply flex items-center sm:px-8 px-6 text-white gap-x-3 py-5 text-base transition-colors ease-in-out duration-150
     }
     .sidebar-badge{
         @apply bg-primary-green w-5 h-5 shrink-0 rounded-full inline-flex items-center justify-center text-xs font-medium text-primary-navy text-center
