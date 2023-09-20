@@ -7,7 +7,8 @@ import AllertsPage from "./pages/allerts-page";
 import FavoritesPage from "./pages/favourites-page";
 import AnalyticsPage from "./pages/analystics-page";
 import RegularUpdatesPage from "./pages/regular-update-page";
-import TimeSeriesComponent from "./components/time-series.component";
+import TimeSeriesTableComponent from "./components/time-series-table.component";
+import TimeSeriesGraphComponent from "./components/time-series-graph.component";
 
 function App() {
   return (
@@ -24,12 +25,12 @@ function App() {
               <Route path="/analystics" element={<AnalyticsPage />} />
               <Route path="/regular-updates" element={<RegularUpdatesPage />} />
               <Route
-                path="/graph/:id"
-                element={<TimeSeriesComponent type="graph" />}
+                path="/table/:id"
+                element={<TimeSeriesTableComponent type="table" />}
               />
               <Route
-                path="/table/:id"
-                element={<TimeSeriesComponent type="table" />}
+                path="/graph/:id"
+                element={<TimeSeriesGraphComponent type="graph" />}
               />
             </Routes>
           </div>
