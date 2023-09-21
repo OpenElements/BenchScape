@@ -80,6 +80,12 @@
       <artifactId>micrometer-registry-prometheus</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>com.github.loki4j</groupId>
+      <artifactId>loki-logback-appender</artifactId>
+      <version>1.4.1</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 
   <build>
