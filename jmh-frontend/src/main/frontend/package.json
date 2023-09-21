@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.17",
-    "@phosphor-icons/react": "^2.0.10",
+    "@phosphor-icons/react": "^2.0.13",
     "@testing-library/jest-dom": "^6.1.3",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
