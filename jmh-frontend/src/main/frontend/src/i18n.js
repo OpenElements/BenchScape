@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import enJSON from "./translations/en/translation.json";
-import geJSON from "./translations/de/translation.json";
+import deJSON from "./translations/de/translation.json";
 
 import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -29,7 +29,7 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    resources: { en: enJSON, de: geJSON },
+    resources: { en: enJSON, de: deJSON },
     fallbackLng: "en",
     debug: true,
 
