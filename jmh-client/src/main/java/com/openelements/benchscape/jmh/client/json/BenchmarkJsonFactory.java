@@ -17,7 +17,6 @@ import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import com.openelements.benchscape.jmh.model.BenchmarkMeasurementConfiguration;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -59,7 +58,7 @@ public class BenchmarkJsonFactory {
      * @return the JSON representation
      */
     @NonNull
-    public static String toJson(@NonNull final Collection<BenchmarkExecution> benchmarks) {
+    public static String toJson(@NonNull final BenchmarkConfiguration benchmarks) {
         Objects.requireNonNull(benchmarks, "benchmarks must not be null");
         return createGson().toJson(benchmarks);
     }
