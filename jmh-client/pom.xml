@@ -25,9 +25,9 @@
       <artifactId>jmh-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.openjdk.jmh</groupId>
-      <artifactId>jmh-generator-annprocess</artifactId>
-      <scope>provided</scope>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+      <version>4.7.5</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -48,7 +48,15 @@
               <artifactId>jmh-generator-annprocess</artifactId>
               <version>${jmh.version}</version>
             </path>
+            <path>
+              <groupId>info.picocli</groupId>
+              <artifactId>picocli-codegen</artifactId>
+              <version>4.7.5</version>
+            </path>
           </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

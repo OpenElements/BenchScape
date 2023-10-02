@@ -6,8 +6,11 @@ module com.openelements.benchscape.jmh.client {
     requires java.net.http;
     requires java.management;
     requires jdk.management;
+    requires info.picocli;
 
     exports com.openelements.benchscape.jmh.client.json;
     exports com.openelements.benchscape.jmh.client.jmh;
     exports com.openelements.benchscape.jmh.client;
+
+    opens com.openelements.benchscape.jmh.client to info.picocli;
 }

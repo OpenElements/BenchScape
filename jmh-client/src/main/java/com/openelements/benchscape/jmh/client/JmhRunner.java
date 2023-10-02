@@ -108,6 +108,6 @@ public class JmhRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new JmhRunner(false, true).execute();
+        new JmhRunner().execute();
     }
 }
