@@ -67,19 +67,40 @@ public class BenchmarkUnitTests {
     void testConversion() {
         // Test conversion for OPERATIONS_PER_DAY
         Assertions.assertEquals(1.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_DAY));
-        Assertions.assertEquals(24.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_HOUR));
-        Assertions.assertEquals(1440.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_MINUTE));
-        Assertions.assertEquals(86400.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_SECOND));
-        Assertions.assertEquals(8640.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(0.0001D, BenchmarkUnit.OPERATIONS_PER_MILLISECOND));
-        Assertions.assertEquals(8640.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(0.0000000001D, BenchmarkUnit.OPERATIONS_PER_NANOSECOND));
-        Assertions.assertEquals(0.1D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(10.0D, BenchmarkUnit.DAYS_PER_OPERATION));
-        Assertions.assertEquals(12.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.HOURS_PER_OPERATION));
-        Assertions.assertEquals(720.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.MINUTES_PER_OPERATION));
-        Assertions.assertEquals(43200.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.SECONDS_PER_OPERATION));
-        Assertions.assertEquals(43200.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(2000.0D, BenchmarkUnit.MILLISECONDS_PER_OPERATION));
-        Assertions.assertEquals(4320000.0D, BenchmarkUnit.OPERATIONS_PER_DAY.convert(20000000.0D, BenchmarkUnit.NANOSECONDS_PER_OPERATION));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.UNKNWOWN));
+        Assertions.assertEquals(24.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_HOUR));
+        Assertions.assertEquals(1440.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_MINUTE));
+        Assertions.assertEquals(86400.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.OPERATIONS_PER_SECOND));
+        Assertions.assertEquals(8640.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(0.0001D, BenchmarkUnit.OPERATIONS_PER_MILLISECOND));
+        Assertions.assertEquals(8640.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(0.0000000001D, BenchmarkUnit.OPERATIONS_PER_NANOSECOND));
+        Assertions.assertEquals(0.1D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(10.0D, BenchmarkUnit.DAYS_PER_OPERATION));
+        Assertions.assertEquals(12.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.HOURS_PER_OPERATION));
+        Assertions.assertEquals(720.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.MINUTES_PER_OPERATION));
+        Assertions.assertEquals(43200.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(2.0D, BenchmarkUnit.SECONDS_PER_OPERATION));
+        Assertions.assertEquals(43200.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(2000.0D, BenchmarkUnit.MILLISECONDS_PER_OPERATION));
+        Assertions.assertEquals(4320000.0D,
+                BenchmarkUnit.OPERATIONS_PER_DAY.convert(20000000.0D, BenchmarkUnit.NANOSECONDS_PER_OPERATION));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, BenchmarkUnit.UNKNWOWN));
         Assertions.assertThrows(NullPointerException.class, () -> BenchmarkUnit.OPERATIONS_PER_DAY.convert(1.0D, null));
+
+        // Test conversion for OPERATIONS_PER_HOUR
+        //TODO: add Assertions.assertEquals() statements for OPERATIONS_PER_HOUR conversions to all other units (like previous tests do for OPERATIONS_PER_DAY)
+
+        // Test conversion for OPERATIONS_PER_MINUTE
+        //TODO
+
+        // Test conversion for OPERATIONS_PER_SECOND
+        //TODO
 
     }
 
