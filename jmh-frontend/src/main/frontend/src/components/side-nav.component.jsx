@@ -3,9 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import logo from "../assets/logo.svg";
 import {
-  ArrowsClockwise,
-  Star,
-  ChartLine,
   Bell,
   Gear,
   X,
@@ -17,6 +14,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import user from "../assets/images/user.jpg";
 import { availableLanguages } from "../i18n";
+import { useBenchMarks } from "../hooks/hooks";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,6 +27,7 @@ const SideNav = () => {
   } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { pathname } = useLocation();
+  const { data } = useBenchMarks();
 
   const handleChangeLanguage = (newLanguage) => {
     changeLanguage(newLanguage);
@@ -36,17 +35,17 @@ const SideNav = () => {
 
   const navigation = [
     {
-      name: t("RegularUpdates"),
-      href: "/regular-updates",
-      icon: ArrowsClockwise,
+      name: t("Benchmarks"),
+      href: "/benchmarks",
+      icon: Bell,
+      count: data ? data.length : 0,
     },
-    { name: t("Favorites"), href: "/favorites", icon: Star },
     {
-      name: t("Analystics"),
-      href: "/analystics",
-      icon: ChartLine,
+      name: t("Environments"),
+      href: "/environment",
+      icon: Bell,
+      count: 0,
     },
-    { name: t("Alerts"), href: "/allerts", icon: Bell },
   ];
 
   const menuNavigation = [
@@ -127,7 +126,9 @@ const SideNav = () => {
                                   aria-hidden="true"
                                 />
                                 {item.name}
-                                <span className="sidebar-badge">12</span>
+                                <span className="sidebar-badge">
+                                  {item.count}
+                                </span>
                               </Link>
                             </li>
                           ))}
@@ -187,7 +188,7 @@ const SideNav = () => {
                           aria-hidden="true"
                         />
                         {item.name}
-                        <span className="sidebar-badge">12</span>
+                        <span className="sidebar-badge">{item.count}</span>
                       </Link>
                     </li>
                   ))}

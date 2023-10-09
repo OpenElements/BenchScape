@@ -1,9 +1,6 @@
 {
   "translation": {
-    "RegularUpdates": "Regelmäßige Updates",
-    "Favorites": "Favoritinnen",
-    "Analystics": "Analytik",
-    "Alerts": "Warnungen",
-    "Settings": "Einstellungen"
+    "Settings": "Einstellungen",
+    "Environments": "Umgebungen"
   }
 }
