@@ -4,6 +4,7 @@ import com.openelements.benchscape.jmh.model.BenchmarkConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionMetadata;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionResult;
+import com.openelements.benchscape.jmh.model.BenchmarkGitState;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import com.openelements.benchscape.jmh.model.BenchmarkMeasurementConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkType;
@@ -13,8 +14,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.IterationParams;
@@ -58,8 +62,16 @@ public class BenchmarkFactory {
         final BenchmarkExecutionMetadata execution = convertToBenchmarkExecution(benchmarkResult);
         final BenchmarkExecutionResult result = convertToBenchmarkResult(benchmarkResult.getPrimaryResult());
         final String benchmarkName = jmhResult.getParams().getBenchmark();
+
+        final Map<String, String> parameters = new HashMap<>();
+        jmhResult.getParams().getParamsKeys().forEach(key -> {
+            parameters.put(key, jmhResult.getParams().getParam(key));
+        });
+
+        final BenchmarkGitState gitState = new BenchmarkGitState(null, null, null, Set.of(), false);
+
         final BenchmarkExecution benchmark = new BenchmarkExecution(benchmarkName, BenchmarkType.THROUGHPUT,
-                infrastructure, configuration, execution, result);
+                infrastructure, gitState, configuration, execution, parameters, result);
         return benchmark;
     }
 

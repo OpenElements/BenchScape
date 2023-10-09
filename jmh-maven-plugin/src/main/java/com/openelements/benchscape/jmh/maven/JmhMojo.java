@@ -1,6 +1,6 @@
 package com.openelements.benchscape.jmh.maven;
 
-import com.openelements.benchscape.jmh.client.JmhRunner;
+import com.openelements.benchscape.jmh.client.JmhRunnerCommand;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.BufferedReader;
 import java.io.File;
@@ -68,6 +68,18 @@ public class JmhMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${session}", readonly = true)
     private MavenSession session;
+
+    @Parameter(defaultValue = "true")
+    private boolean writeToFile;
+
+    @Parameter(defaultValue = "${project.build.directory}/jmh-results.json")
+    private String file;
+
+    @Parameter(defaultValue = "true")
+    private boolean upload;
+
+    @Parameter(defaultValue = "https://backend.benchscape.cloud")
+    private String url;
 
     @Component
     private ArtifactHandlerManager artifactHandlerManager;
@@ -154,12 +166,26 @@ public class JmhMojo extends AbstractMojo {
         final String javaHome = System.getProperty(JAVA_HOME);
         final String javaProcess = javaHome + File.separator + BIN_FOLDER + File.separator + JAVA_PROCESS;
         getLog().debug("Java process is '" + javaProcess + "'.");
+        getLog().debug("PARAM 'writeToFile'=" + writeToFile);
+        getLog().debug("PARAM 'file'=" + file);
+        getLog().debug("PARAM 'upload'=" + upload);
+        getLog().debug("PARAM 'url'=" + url);
 
         final List<String> command = new ArrayList<>();
         command.add(javaProcess);
         command.add(CLASSPATH_ARG);
         command.add(String.join(File.pathSeparator, classpath));
-        command.add(JmhRunner.class.getName());
+        command.add(JmhRunnerCommand.class.getName());
+        if (writeToFile) {
+            command.add("--write");
+        }
+        command.add("--path");
+        command.add(file);
+        if (upload) {
+            command.add("--upload");
+        }
+        command.add("--url");
+        command.add(url);
         getLog().debug("Running forked execution using: " + command);
 
         final ProcessBuilder processBuilder = new ProcessBuilder(command);

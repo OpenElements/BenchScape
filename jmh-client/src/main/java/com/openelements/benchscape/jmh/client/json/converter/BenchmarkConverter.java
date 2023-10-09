@@ -7,13 +7,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 import com.openelements.benchscape.jmh.model.BenchmarkConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionMetadata;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionResult;
+import com.openelements.benchscape.jmh.model.BenchmarkGitState;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import com.openelements.benchscape.jmh.model.BenchmarkType;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -23,6 +26,10 @@ import java.util.Objects;
  */
 public final class BenchmarkConverter implements JsonSerializer<BenchmarkExecution>,
         JsonDeserializer<BenchmarkExecution> {
+
+    private final static Type PARAM_MAP_TYPE = new TypeToken<Map<String, String>>() {
+    }.getType();
+
     @Override
     public BenchmarkExecution deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
@@ -32,13 +39,20 @@ public final class BenchmarkConverter implements JsonSerializer<BenchmarkExecuti
         final BenchmarkType type = context.deserialize(json.getAsJsonObject().get("type"), BenchmarkType.class);
         final BenchmarkInfrastructure infrastructure = context.deserialize(json.getAsJsonObject().get("infrastructure"),
                 BenchmarkInfrastructure.class);
+        final BenchmarkGitState gitState = context.deserialize(json.getAsJsonObject().get("gitState"),
+                BenchmarkGitState.class);
         final BenchmarkConfiguration configuration = context.deserialize(json.getAsJsonObject().get("configuration"),
                 BenchmarkConfiguration.class);
         final BenchmarkExecutionMetadata execution = context.deserialize(json.getAsJsonObject().get("execution"),
                 BenchmarkExecutionMetadata.class);
         final BenchmarkExecutionResult result = context.deserialize(json.getAsJsonObject().get("result"),
                 BenchmarkExecutionResult.class);
-        return new BenchmarkExecution(benchmarkName, type, infrastructure, configuration, execution, result);
+
+        final JsonElement paramsElement = json.getAsJsonObject().get("params");
+        final Map<String, String> params = context.deserialize(paramsElement, PARAM_MAP_TYPE);
+
+        return new BenchmarkExecution(benchmarkName, type, infrastructure, gitState, configuration, execution, params,
+                result);
     }
 
     @Override
@@ -49,9 +63,11 @@ public final class BenchmarkConverter implements JsonSerializer<BenchmarkExecuti
         json.addProperty("benchmarkName", src.benchmarkName());
         json.add("type", context.serialize(src.type(), BenchmarkType.class));
         json.add("infrastructure", context.serialize(src.infrastructure(), BenchmarkInfrastructure.class));
+        json.add("gitState", context.serialize(src.gitState(), BenchmarkGitState.class));
         json.add("configuration", context.serialize(src.configuration(), BenchmarkConfiguration.class));
         json.add("execution", context.serialize(src.execution(), BenchmarkExecutionMetadata.class));
         json.add("result", context.serialize(src.result(), BenchmarkExecutionResult.class));
+        json.add("params", context.serialize(src.parameters(), PARAM_MAP_TYPE));
         return json;
     }
 }

@@ -1,6 +1,7 @@
 package com.openelements.benchscape.jmh.model;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -11,12 +12,15 @@ import java.util.Objects;
  * @param infrastructure the infrastructure on which the benchmark was executed
  * @param configuration  the configuration of the given benchmark execution
  * @param execution      the execution metadata of the given benchmark execution
+ * @param parameters     the parameters of the given benchmark execution
  * @param result         the result of the given benchmark execution
  */
 public record BenchmarkExecution(@NonNull String benchmarkName, @NonNull BenchmarkType type,
                                  @NonNull BenchmarkInfrastructure infrastructure,
+                                 @NonNull BenchmarkGitState gitState,
                                  @NonNull BenchmarkConfiguration configuration,
                                  @NonNull BenchmarkExecutionMetadata execution,
+                                 @NonNull Map<String, String> parameters,
                                  @NonNull BenchmarkExecutionResult result) {
 
     public BenchmarkExecution {
@@ -25,9 +29,13 @@ public record BenchmarkExecution(@NonNull String benchmarkName, @NonNull Benchma
             throw new IllegalArgumentException("benchmarkName must not be blank");
         }
         Objects.requireNonNull(type, "type must not be null");
+        Objects.requireNonNull(gitState, "gitState must not be null");
         Objects.requireNonNull(infrastructure, "infrastructure must not be null");
         Objects.requireNonNull(configuration, "configuration must not be null");
         Objects.requireNonNull(execution, "execution must not be null");
+        Objects.requireNonNull(parameters, "parameters must not be null");
         Objects.requireNonNull(result, "result must not be null");
+
+        parameters = Map.copyOf(parameters);
     }
 }

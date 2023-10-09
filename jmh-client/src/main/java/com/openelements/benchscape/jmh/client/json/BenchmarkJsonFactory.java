@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkConfigurationConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkExecutionConverter;
+import com.openelements.benchscape.jmh.client.json.converter.BenchmarkGitStateConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkInfrastructureConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkMeasurementConfigurationConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkResultConverter;
@@ -13,6 +14,7 @@ import com.openelements.benchscape.jmh.model.BenchmarkConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionMetadata;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionResult;
+import com.openelements.benchscape.jmh.model.BenchmarkGitState;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import com.openelements.benchscape.jmh.model.BenchmarkMeasurementConfiguration;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -44,6 +46,7 @@ public class BenchmarkJsonFactory {
                 .registerTypeAdapter(BenchmarkConfiguration.class, new BenchmarkConfigurationConverter())
                 .registerTypeAdapter(BenchmarkExecution.class, new BenchmarkConverter())
                 .registerTypeAdapter(BenchmarkExecutionMetadata.class, new BenchmarkExecutionConverter())
+                .registerTypeAdapter(BenchmarkGitState.class, new BenchmarkGitStateConverter())
                 .registerTypeAdapter(BenchmarkInfrastructure.class, new BenchmarkInfrastructureConverter())
                 .registerTypeAdapter(BenchmarkMeasurementConfiguration.class,
                         new BenchmarkMeasurementConfigurationConverter())

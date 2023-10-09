@@ -19,6 +19,7 @@ public class BenchmarkJsonFactoryTest {
         final String json = BenchmarkJsonFactory.toJson(execution);
         JsonElement jsonElement = new JsonParser().parse(json);
 
+        //then
         Assertions.assertNotNull(jsonElement);
         Assertions.assertTrue(jsonElement.isJsonObject());
 
@@ -31,5 +32,15 @@ public class BenchmarkJsonFactoryTest {
         Assertions.assertEquals("test-chip-architecture", infrastructure.get("arch").getAsString());
         Assertions.assertEquals(4, infrastructure.get("availableProcessors").getAsInt());
         Assertions.assertEquals(1024, infrastructure.get("memory").getAsLong());
+
+        final JsonObject configuration = jsonObject.get("configuration").getAsJsonObject();
+        Assertions.assertEquals(1, configuration.get("forks").getAsInt());
+        //test all other for configuration
+
+        final JsonObject executionMetadata = jsonObject.get("execution").getAsJsonObject();
+        //test all for executionMetadata
+
+        final JsonObject result = jsonObject.get("result").getAsJsonObject();
+        //test all for result
     }
 }

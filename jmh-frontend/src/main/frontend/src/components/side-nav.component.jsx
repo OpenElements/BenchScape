@@ -1,10 +1,8 @@
 import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import logo from "../assets/logo.svg";
 import {
-  ArrowsClockwise,
-  Star,
-  ChartLine,
   Bell,
   Gear,
   X,
@@ -13,32 +11,48 @@ import {
   SignOut,
   CaretDown,
 } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import user from "../assets/images/user.jpg";
-
-const navigation = [
-  {
-    name: "Regular Updates",
-    href: "/regular-updates",
-    icon: ArrowsClockwise,
-    current: true,
-  },
-  { name: "Favorites", href: "favorites", icon: Star, current: false },
-  { name: "Analystics", href: "analystics", icon: ChartLine, current: false },
-  { name: "Alerts", href: "allerts", icon: Bell, current: false },
-];
-
-const menuNavigation = [
-  { name: "Menu Item 1", href: "#" },
-  { name: "Menu Item 2", href: "#" },
-];
+import { availableLanguages } from "../i18n";
+import { useBenchMarks } from "../hooks/hooks";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const SideNav = () => {
+  const {
+    t,
+    i18n: { changeLanguage },
+  } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
+  const { data } = useBenchMarks();
+
+  const handleChangeLanguage = (newLanguage) => {
+    changeLanguage(newLanguage);
+  };
+
+  const navigation = [
+    {
+      name: t("Benchmarks"),
+      href: "/benchmarks",
+      icon: Bell,
+      count: data ? data.length : 0,
+    },
+    {
+      name: t("Environments"),
+      href: "/environment",
+      icon: Bell,
+      count: 0,
+    },
+  ];
+
+  const menuNavigation = [
+    { name: "Menu Item 1", href: "#" },
+    { name: "Menu Item 2", href: "#" },
+  ];
+
   return (
     <>
       {/* MobileOffCanvasSideBar */}
@@ -112,7 +126,9 @@ const SideNav = () => {
                                   aria-hidden="true"
                                 />
                                 {item.name}
-                                <span className="sidebar-badge">12</span>
+                                <span className="sidebar-badge">
+                                  {item.count}
+                                </span>
                               </Link>
                             </li>
                           ))}
@@ -126,7 +142,7 @@ const SideNav = () => {
                         >
                           <span className="flex items-center gap-3">
                             <Gear className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" />
-                            Settings
+                            {t("Settings")}
                           </span>
                         </Link>
                       </li>
@@ -156,7 +172,7 @@ const SideNav = () => {
                       <Link
                         to={item.href}
                         className={classNames(
-                          item.current
+                          pathname === item.href
                             ? "bg-primary-purple text-white"
                             : "text-indigo-200 hover:text-white hover:bg-indigo-700",
                           "sidebar-nav-link"
@@ -164,7 +180,7 @@ const SideNav = () => {
                       >
                         <item.icon
                           className={classNames(
-                            item.current
+                            pathname === item.href
                               ? "text-white"
                               : "text-indigo-200 group-hover:text-white",
                             "h-6 w-6 shrink-0"
@@ -172,7 +188,7 @@ const SideNav = () => {
                           aria-hidden="true"
                         />
                         {item.name}
-                        <span className="sidebar-badge">12</span>
+                        <span className="sidebar-badge">{item.count}</span>
                       </Link>
                     </li>
                   ))}
@@ -183,7 +199,7 @@ const SideNav = () => {
                 <Link to="#" className="sidebar-nav-link hover:bg-indigo-700">
                   <span className="flex items-center gap-3">
                     <Gear className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" />
-                    Settings
+                    {t("Settings")}
                   </span>
                 </Link>
               </li>
@@ -310,7 +326,7 @@ const SideNav = () => {
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
                       <span className="text-sm leading-6 " aria-hidden="true">
-                        Menu Button
+                        Select Langauge
                       </span>
                       <CaretDown
                         className="ml-2 h-3 w-3 "
@@ -329,18 +345,18 @@ const SideNav = () => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                      {menuNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
+                      {availableLanguages.map((lang) => (
+                        <Menu.Item key={lang}>
                           {({ active }) => (
-                            <a
-                              href={item.href}
+                            <div
+                              onClick={() => handleChangeLanguage(lang)}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
                                 "block px-4 py-2 text-sm leading-6 text-gray-900"
                               )}
                             >
-                              {item.name}
-                            </a>
+                              {lang}
+                            </div>
                           )}
                         </Menu.Item>
                       ))}

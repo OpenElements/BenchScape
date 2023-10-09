@@ -4,11 +4,14 @@ import com.openelements.benchscape.jmh.model.BenchmarkConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionMetadata;
 import com.openelements.benchscape.jmh.model.BenchmarkExecutionResult;
+import com.openelements.benchscape.jmh.model.BenchmarkGitState;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import com.openelements.benchscape.jmh.model.BenchmarkMeasurementConfiguration;
 import com.openelements.benchscape.jmh.model.BenchmarkType;
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import java.time.Instant;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class DummyFactory {
@@ -25,6 +28,10 @@ public class DummyFactory {
         return new BenchmarkInfrastructure("arch", 1, 1, "osName", "osVersion", "jvmVersion", "jvmName", "jmhVendor");
     }
 
+    public static BenchmarkGitState createBenchmarkGitState() {
+        return new BenchmarkGitState(null, null, null, Set.of(), true);
+    }
+
     public static BenchmarkExecutionMetadata createBenchmarkExecution() {
         return new BenchmarkExecutionMetadata(Instant.now(), Instant.now(), Instant.now(), Instant.now(), 1, 1);
     }
@@ -36,6 +43,7 @@ public class DummyFactory {
 
     public static BenchmarkExecution createBenchmark() {
         return new BenchmarkExecution("benchmarkName", BenchmarkType.THROUGHPUT, createBenchmarkInfrastructure(),
-                createBenchmarkConfiguration(), createBenchmarkExecution(), createBenchmarkResult());
+                createBenchmarkGitState(), createBenchmarkConfiguration(), createBenchmarkExecution(), Map.of(),
+                createBenchmarkResult());
     }
 }
