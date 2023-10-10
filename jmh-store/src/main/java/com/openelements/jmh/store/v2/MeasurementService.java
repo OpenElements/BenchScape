@@ -4,6 +4,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,33 @@ public class MeasurementService {
     }
 
     @NonNull
-    private Measurement map(@NonNull final MeasurementEntity entity) {
+    public Optional<Measurement> findPrevious(@NonNull final Measurement measurement) {
+        Objects.requireNonNull(measurement, "measurement must not be null");
+        final String id = Optional.ofNullable(measurement.id())
+                .map(UUID::toString)
+                .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
+        return measurementRepository.findLastBefore(id, measurement.timestamp())
+                .map(m -> map(m));
+    }
+
+    @NonNull
+    public Optional<Measurement> findNext(@NonNull final Measurement measurement) {
+        Objects.requireNonNull(measurement, "measurement must not be null");
+        final String id = Optional.ofNullable(measurement.id())
+                .map(UUID::toString)
+                .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
+        return measurementRepository.findFirstAfter(id, measurement.timestamp())
+                .map(m -> map(m));
+    }
+
+    @NonNull
+    private static Measurement map(@NonNull final MeasurementEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Measurement(entity.getId(), entity.getTimestamp(), entity.getValue(),
                 entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit());
     }
 
-    private boolean isMatchingEnvironment(@NonNull MeasurementEntity entity,
+    private static boolean isMatchingEnvironment(@NonNull MeasurementEntity entity,
             @NonNull Collection<String> environmentIds) {
         Objects.requireNonNull(entity, "entity must not be null");
         Objects.requireNonNull(environmentIds, "environmentIds must not be null");
@@ -45,5 +67,4 @@ public class MeasurementService {
         }
         return false;
     }
-
 }
