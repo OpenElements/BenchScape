@@ -1,16 +1,20 @@
 package com.openelements.jmh.store.v2.services;
 
+import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.jmh.store.v2.data.Measurement;
 import com.openelements.jmh.store.v2.data.MeasurementMetadata;
 import com.openelements.jmh.store.v2.data.MeasurementQuery;
 import com.openelements.jmh.store.v2.entities.MeasurementEntity;
 import com.openelements.jmh.store.v2.repositories.MeasurementRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +48,62 @@ public class MeasurementService {
                 .filter(m -> isMatchingEnvironment(m, query.environmentIds()))
                 .map(m -> m.withUnit(query.unit()))
                 .toList();
+    }
+
+    private List<Measurement> withSplineInterpolation(final List<Measurement> realMeasurements, int count) {
+        final SplineInterpolator splineInterpolator = new SplineInterpolator();
+        final double[] xTime = new double[realMeasurements.size()];
+        final double[] yValue = new double[realMeasurements.size()];
+        final double[] yMin = new double[realMeasurements.size()];
+        final double[] yMax = new double[realMeasurements.size()];
+        final double[] yError = new double[realMeasurements.size()];
+        for (int i = 0; i < realMeasurements.size(); i++) {
+            final Measurement measurement = realMeasurements.get(i);
+            xTime[i] = measurement.timestamp().toEpochMilli();
+            yValue[i] = BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(measurement.value(), measurement.unit());
+            yMin[i] = Optional.ofNullable(realMeasurements.get(i).min())
+                    .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
+                    .orElse(Double.NaN);
+            yMax[i] = Optional.ofNullable(realMeasurements.get(i).min())
+                    .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
+                    .orElse(Double.NaN);
+            yError[i] = Optional.ofNullable(realMeasurements.get(i).min())
+                    .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
+                    .orElse(Double.NaN);
+        }
+
+        final PolynomialSplineFunction valueFunction = splineInterpolator.interpolate(xTime, yValue);
+        final PolynomialSplineFunction minFunction = splineInterpolator.interpolate(xTime, yMin);
+        final PolynomialSplineFunction maxFunction = splineInterpolator.interpolate(xTime, yMax);
+        final PolynomialSplineFunction errorFunction = splineInterpolator.interpolate(xTime, yError);
+
+        final double step = (xTime[xTime.length - 1] - xTime[0]) / (count - 1);
+        final double start = xTime[0];
+        double millis = start;
+
+        for (int i = 0; i < count; i++) {
+            final double valueCalc = valueFunction.value(millis);
+            final double minCalc = minFunction.value(millis);
+            final double maxCalc = maxFunction.value(millis);
+            final double errorCalc = errorFunction.value(millis);
+
+            final Measurement interpolatedMeasurement = new Measurement(null, Instant.ofEpochMilli((long) millis),
+                    valueCalc,
+                    errorCalc,
+                    minCalc, maxCalc, BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
+            millis += step;
+        }
+
+        return realMeasurements;
+    }
+
+    @NonNull
+    public List<Measurement> find(final @NonNull MeasurementQuery query, int maxResults) {
+        final List<Measurement> all = find(query);
+        if (all.size() <= maxResults) {
+            return all;
+        }
+        return withSplineInterpolation(all, maxResults);
     }
 
     @NonNull

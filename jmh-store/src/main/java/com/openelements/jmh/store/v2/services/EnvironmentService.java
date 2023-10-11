@@ -62,21 +62,21 @@ public class EnvironmentService {
         Objects.requireNonNull(environment, "environment must not be null");
 
         final boolean gitOriginUrlCheck = Optional.ofNullable(environment.gitOriginUrl())
-                .map(gitUrl -> stringMetadataValueMatches(gitUrl, metadata.gitOriginUrl()))
+                .map(gitUrl -> stringMetadataValueMatches(gitUrl, metadata.gitOriginUrl(), false))
                 .orElse(true);
         if (gitOriginUrlCheck == false) {
             return false;
         }
 
         final Boolean gitBranchCheck = Optional.ofNullable(environment.gitBranch())
-                .map(gitBranch -> stringMetadataValueMatches(gitBranch, metadata.gitBranch()))
+                .map(gitBranch -> stringMetadataValueMatches(gitBranch, metadata.gitBranch(), false))
                 .orElse(true);
         if (gitBranchCheck == false) {
             return false;
         }
 
         final Boolean systemArchCheck = Optional.ofNullable(environment.systemArch())
-                .map(systemArch -> stringMetadataValueMatches(systemArch, metadata.systemArch()))
+                .map(systemArch -> stringMetadataValueMatches(systemArch, metadata.systemArch(), false))
                 .orElse(true);
         if (systemArchCheck == false) {
             return false;
@@ -91,7 +91,7 @@ public class EnvironmentService {
                 })
                 .orElse(true);
         if (systemProcessorsCheck == false) {
-            return true;
+            return false;
         }
 
         final Boolean systemProcessorsMinCheck = Optional.ofNullable(environment.systemProcessorsMin())
@@ -111,10 +111,27 @@ public class EnvironmentService {
         return true;
     }
 
-    private boolean stringMetadataValueMatches(@NonNull final String environmentValue,
-            @Nullable final String metadataValue) {
-        Objects.requireNonNull(environmentValue, "environmentValue must not be null");
-        //TODO: here we need to support * in strings, etc...
-        return Objects.equals(environmentValue, metadataValue);
+    private boolean stringMetadataValueMatches(@NonNull final String environmentPattern,
+            @Nullable final String metadataValue, boolean caseSensitive) {
+        Objects.requireNonNull(environmentPattern, "environmentPattern must not be null");
+        if (environmentPattern.isEmpty() && metadataValue.isEmpty()) {
+            return true;
+        }
+        if (environmentPattern.isEmpty() || metadataValue.isEmpty()) {
+            return false;
+        }
+        if (!caseSensitive && Objects.equals(environmentPattern.toLowerCase(), metadataValue.toLowerCase())) {
+            return true;
+        }
+        if (caseSensitive && Objects.equals(environmentPattern, metadataValue)) {
+            return true;
+        }
+        if (caseSensitive) {
+            final String pattern = environmentPattern.replace("*", ".*");
+            return metadataValue.matches(pattern);
+        } else {
+            final String pattern = environmentPattern.toLowerCase().replace("*", ".*");
+            return metadataValue.toLowerCase().matches(pattern);
+        }
     }
 }
