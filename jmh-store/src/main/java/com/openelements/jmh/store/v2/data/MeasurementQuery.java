@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.v2;
+package com.openelements.jmh.store.v2.data;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import edu.umd.cs.findbugs.annotations.NonNull;

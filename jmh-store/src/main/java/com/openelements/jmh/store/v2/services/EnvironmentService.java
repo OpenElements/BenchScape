@@ -1,0 +1,120 @@
+package com.openelements.jmh.store.v2.services;
+
+import com.openelements.jmh.store.v2.data.Environment;
+import com.openelements.jmh.store.v2.data.MeasurementMetadata;
+import com.openelements.jmh.store.v2.entities.EnvironmentEntity;
+import com.openelements.jmh.store.v2.repositories.EnvironmentRepository;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EnvironmentService {
+
+    private final EnvironmentRepository repository;
+
+    @Autowired
+    public EnvironmentService(final @NonNull EnvironmentRepository repository) {
+        this.repository = Objects.requireNonNull(repository, "repository must not be null");
+    }
+
+    public Optional<Environment> get(@NonNull final UUID id) {
+        Objects.requireNonNull(id, "id must not be null");
+        return repository.findById(id)
+                .map(EnvironmentService::map);
+    }
+
+    @NonNull
+    private static Environment map(@NonNull final EnvironmentEntity entity) {
+        Objects.requireNonNull(entity, "entity must not be null");
+        return new Environment(entity.getId(), entity.getGitOriginUrl(),
+                entity.getGitBranch(), entity.getSystemArch(),
+                entity.getSystemProcessors(), entity.getSystemProcessorsMin(),
+                entity.getSystemProcessorsMax(), entity.getSystemMemory(),
+                entity.getSystemMemoryMin(), entity.getSystemMemoryMax(),
+                entity.getOsName(), entity.getOsVersion(),
+                entity.getJvmVersion(), entity.getJvmName(),
+                entity.getJmhVersion());
+    }
+
+    public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
+            @NonNull final String environmentId) {
+        Objects.requireNonNull(environmentId, "environmentId must not be null");
+        return isMatchingEnvironment(metadata, UUID.fromString(environmentId));
+    }
+
+    public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
+            @NonNull final UUID environmentId) {
+        Objects.requireNonNull(environmentId, "environmentId must not be null");
+        final EnvironmentEntity environmentEntity = repository.findById(environmentId)
+                .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + environmentId));
+        final Environment environment = map(environmentEntity);
+        return isMatchingEnvironment(metadata, environment);
+    }
+
+    public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
+            @NonNull final Environment environment) {
+        Objects.requireNonNull(metadata, "metadata must not be null");
+        Objects.requireNonNull(environment, "environment must not be null");
+
+        final boolean gitOriginUrlCheck = Optional.ofNullable(environment.gitOriginUrl())
+                .map(gitUrl -> stringMetadataValueMatches(gitUrl, metadata.gitOriginUrl()))
+                .orElse(true);
+        if (gitOriginUrlCheck == false) {
+            return false;
+        }
+
+        final Boolean gitBranchCheck = Optional.ofNullable(environment.gitBranch())
+                .map(gitBranch -> stringMetadataValueMatches(gitBranch, metadata.gitBranch()))
+                .orElse(true);
+        if (gitBranchCheck == false) {
+            return false;
+        }
+
+        final Boolean systemArchCheck = Optional.ofNullable(environment.systemArch())
+                .map(systemArch -> stringMetadataValueMatches(systemArch, metadata.systemArch()))
+                .orElse(true);
+        if (systemArchCheck == false) {
+            return false;
+        }
+
+        final Boolean systemProcessorsCheck = Optional.ofNullable(environment.systemProcessors())
+                .map(systemProcessors -> {
+                    if (metadata.systemProcessors() == null) {
+                        return false;
+                    }
+                    return systemProcessors == metadata.systemProcessors();
+                })
+                .orElse(true);
+        if (systemProcessorsCheck == false) {
+            return true;
+        }
+
+        final Boolean systemProcessorsMinCheck = Optional.ofNullable(environment.systemProcessorsMin())
+                .map(systemProcessorsMin -> {
+                    if (metadata.systemProcessors() == null) {
+                        return false;
+                    }
+                    return systemProcessorsMin <= metadata.systemProcessors();
+                })
+                .orElse(true);
+        if (systemProcessorsMinCheck == false) {
+            return false;
+        }
+
+        //TODO: all other checks
+
+        return true;
+    }
+
+    private boolean stringMetadataValueMatches(@NonNull final String environmentValue,
+            @Nullable final String metadataValue) {
+        Objects.requireNonNull(environmentValue, "environmentValue must not be null");
+        //TODO: here we need to support * in strings, etc...
+        return Objects.equals(environmentValue, metadataValue);
+    }
+}
