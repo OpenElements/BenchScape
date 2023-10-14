@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public record Measurement(@NonNull UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
+public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
                           @Nullable Double min, @Nullable Double max,
                           @NonNull BenchmarkUnit unit) {
 

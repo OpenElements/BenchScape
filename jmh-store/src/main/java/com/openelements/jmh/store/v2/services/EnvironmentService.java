@@ -6,13 +6,16 @@ import com.openelements.jmh.store.v2.entities.EnvironmentEntity;
 import com.openelements.jmh.store.v2.repositories.EnvironmentRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class EnvironmentService {
 
     private final EnvironmentRepository repository;
@@ -39,6 +42,27 @@ public class EnvironmentService {
                 entity.getOsName(), entity.getOsVersion(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion());
+    }
+
+    private static EnvironmentEntity mapToEntity(final Environment environment) {
+        Objects.requireNonNull(environment, "environment must not be null");
+        final EnvironmentEntity entity = new EnvironmentEntity();
+        entity.setId(environment.id());
+        entity.setGitOriginUrl(environment.gitOriginUrl());
+        entity.setGitBranch(environment.gitBranch());
+        entity.setSystemArch(environment.systemArch());
+        entity.setSystemProcessors(environment.systemProcessors());
+        entity.setSystemProcessorsMin(environment.systemProcessorsMin());
+        entity.setSystemProcessorsMax(environment.systemProcessorsMax());
+        entity.setSystemMemory(environment.systemMemory());
+        entity.setSystemMemoryMin(environment.systemMemoryMin());
+        entity.setSystemMemoryMax(environment.systemMemoryMax());
+        entity.setOsName(environment.osName());
+        entity.setOsVersion(environment.osVersion());
+        entity.setJvmVersion(environment.jvmVersion());
+        entity.setJvmName(environment.jvmName());
+        entity.setJmhVersion(environment.jmhVersion());
+        return entity;
     }
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
@@ -114,11 +138,8 @@ public class EnvironmentService {
     private boolean stringMetadataValueMatches(@NonNull final String environmentPattern,
             @Nullable final String metadataValue, boolean caseSensitive) {
         Objects.requireNonNull(environmentPattern, "environmentPattern must not be null");
-        if (environmentPattern.isEmpty() && metadataValue.isEmpty()) {
+        if (environmentPattern.isBlank()) {
             return true;
-        }
-        if (environmentPattern.isEmpty() || metadataValue.isEmpty()) {
-            return false;
         }
         if (!caseSensitive && Objects.equals(environmentPattern.toLowerCase(), metadataValue.toLowerCase())) {
             return true;
@@ -133,5 +154,25 @@ public class EnvironmentService {
             final String pattern = environmentPattern.toLowerCase().replace("*", ".*");
             return metadataValue.toLowerCase().matches(pattern);
         }
+    }
+
+    public List<Environment> getAll() {
+        return repository.findAll().stream()
+                .map(EnvironmentService::map)
+                .toList();
+    }
+
+    public Environment find(String id) {
+        return repository.findById(UUID.fromString(id))
+                .map(EnvironmentService::map)
+                .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + id));
+    }
+
+    public Environment save(Environment environment) {
+        return map(repository.save(mapToEntity(environment)));
+    }
+
+    public void delete(String id) {
+        repository.deleteById(UUID.fromString(id));
     }
 }

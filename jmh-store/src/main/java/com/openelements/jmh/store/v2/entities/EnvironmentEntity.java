@@ -1,16 +1,24 @@
 package com.openelements.jmh.store.v2.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
 public class EnvironmentEntity {
 
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column
+    private String description;
 
     @Column
     private String gitOriginUrl;
@@ -174,6 +182,22 @@ public class EnvironmentEntity {
         this.jmhVersion = jmhVersion;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -183,9 +207,10 @@ public class EnvironmentEntity {
             return false;
         }
         EnvironmentEntity that = (EnvironmentEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(gitOriginUrl, that.gitOriginUrl)
-                && Objects.equals(gitBranch, that.gitBranch) && Objects.equals(systemArch,
-                that.systemArch) && Objects.equals(systemProcessors, that.systemProcessors)
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+                && Objects.equals(description, that.description) && Objects.equals(gitOriginUrl,
+                that.gitOriginUrl) && Objects.equals(gitBranch, that.gitBranch) && Objects.equals(
+                systemArch, that.systemArch) && Objects.equals(systemProcessors, that.systemProcessors)
                 && Objects.equals(systemProcessorsMin, that.systemProcessorsMin) && Objects.equals(
                 systemProcessorsMax, that.systemProcessorsMax) && Objects.equals(systemMemory, that.systemMemory)
                 && Objects.equals(systemMemoryMin, that.systemMemoryMin) && Objects.equals(
@@ -197,9 +222,9 @@ public class EnvironmentEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, gitOriginUrl, gitBranch, systemArch, systemProcessors, systemProcessorsMin,
-                systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax, osName, osVersion, jvmVersion,
-                jvmName,
-                jmhVersion);
+        return Objects.hash(id, name, description, gitOriginUrl, gitBranch, systemArch, systemProcessors,
+                systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax, osName,
+                osVersion,
+                jvmVersion, jvmName, jmhVersion);
     }
 }

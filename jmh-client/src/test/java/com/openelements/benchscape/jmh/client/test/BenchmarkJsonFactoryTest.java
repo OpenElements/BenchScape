@@ -2,13 +2,18 @@ package com.openelements.benchscape.jmh.client.test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.openelements.benchscape.jmh.client.json.BenchmarkJsonFactory;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 
 public class BenchmarkJsonFactoryTest {
+
+    @Test
+    void foo() {
+
+    }
 
     @Test
     void test() {
@@ -17,10 +22,10 @@ public class BenchmarkJsonFactoryTest {
 
         //when
         final String json = BenchmarkJsonFactory.toJson(execution);
-        JsonElement jsonElement = new JsonParser().parse(json);
+        JsonElement jsonElement = null;
 
         //then
-        Assertions.assertNotNull(jsonElement);
+        Assertions.assertNotNull(jsonElement, "JsonElement is null");
         Assertions.assertTrue(jsonElement.isJsonObject());
 
         final JsonObject jsonObject = jsonElement.getAsJsonObject();
