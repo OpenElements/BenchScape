@@ -30,7 +30,7 @@ public class MeasurementMetadataEntity {
     @Column
     private String gitCommitId;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> gitTags;
 
     @Column

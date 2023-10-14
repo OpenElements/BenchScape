@@ -25,13 +25,13 @@ public class MeasurementEntity {
     @Column(nullable = false)
     private double value;
 
-    @Column(nullable = true)
+    @Column
     private Double error;
 
-    @Column(nullable = true)
+    @Column
     private Double min;
 
-    @Column(nullable = true)
+    @Column
     private Double max;
 
     @Column(nullable = false)

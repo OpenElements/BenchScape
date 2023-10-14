@@ -52,7 +52,10 @@ public class MeasurementService {
                 .toList();
     }
 
-    private List<Measurement> withSplineInterpolation(final List<Measurement> realMeasurements, int count) {
+    @NonNull
+    private List<Measurement> withSplineInterpolation(@NonNull final List<Measurement> realMeasurements,
+            final int count) {
+        Objects.requireNonNull(realMeasurements, "realMeasurements must not be null");
         final SplineInterpolator splineInterpolator = new SplineInterpolator();
         final double[] xTime = new double[realMeasurements.size()];
         final double[] yValue = new double[realMeasurements.size()];
@@ -100,7 +103,7 @@ public class MeasurementService {
     }
 
     @NonNull
-    public List<Measurement> find(final @NonNull MeasurementQuery query, int maxResults) {
+    public List<Measurement> find(final @NonNull MeasurementQuery query, final int maxResults) {
         final List<Measurement> all = find(query);
         if (all.size() <= maxResults) {
             return all;
@@ -135,7 +138,7 @@ public class MeasurementService {
                 entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit());
     }
 
-    private boolean isMatchingEnvironment(@NonNull Measurement measurement,
+    private boolean isMatchingEnvironment(@NonNull final Measurement measurement,
             @NonNull Collection<String> environmentIds) {
         Objects.requireNonNull(measurement, "measurement must not be null");
         Objects.requireNonNull(environmentIds, "environmentIds must not be null");

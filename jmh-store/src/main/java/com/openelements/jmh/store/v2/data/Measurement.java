@@ -12,7 +12,6 @@ public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double 
                           @NonNull BenchmarkUnit unit) {
 
     public Measurement {
-        Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(timestamp, "timestamp must not be null");
         Objects.requireNonNull(unit, "unit must not be null");
     }

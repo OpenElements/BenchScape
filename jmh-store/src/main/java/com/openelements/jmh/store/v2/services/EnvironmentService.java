@@ -25,6 +25,7 @@ public class EnvironmentService {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
     }
 
+    @NonNull
     public Optional<Environment> get(@NonNull final UUID id) {
         Objects.requireNonNull(id, "id must not be null");
         return repository.findById(id)
@@ -44,7 +45,8 @@ public class EnvironmentService {
                 entity.getJmhVersion());
     }
 
-    private static EnvironmentEntity mapToEntity(final Environment environment) {
+    @NonNull
+    private static EnvironmentEntity mapToEntity(final @NonNull Environment environment) {
         Objects.requireNonNull(environment, "environment must not be null");
         final EnvironmentEntity entity = new EnvironmentEntity();
         entity.setId(environment.id());
@@ -136,7 +138,7 @@ public class EnvironmentService {
     }
 
     private boolean stringMetadataValueMatches(@NonNull final String environmentPattern,
-            @Nullable final String metadataValue, boolean caseSensitive) {
+            @Nullable final String metadataValue, final boolean caseSensitive) {
         Objects.requireNonNull(environmentPattern, "environmentPattern must not be null");
         if (environmentPattern.isBlank()) {
             return true;
@@ -156,23 +158,27 @@ public class EnvironmentService {
         }
     }
 
+    @NonNull
     public List<Environment> getAll() {
         return repository.findAll().stream()
                 .map(EnvironmentService::map)
                 .toList();
     }
 
+    @NonNull
     public Environment find(String id) {
         return repository.findById(UUID.fromString(id))
                 .map(EnvironmentService::map)
                 .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + id));
     }
 
-    public Environment save(Environment environment) {
+    @NonNull
+    public Environment save(final @NonNull Environment environment) {
         return map(repository.save(mapToEntity(environment)));
     }
 
-    public void delete(String id) {
+    public void delete(@NonNull String id) {
+        Objects.requireNonNull(id, "id must not be null");
         repository.deleteById(UUID.fromString(id));
     }
 }

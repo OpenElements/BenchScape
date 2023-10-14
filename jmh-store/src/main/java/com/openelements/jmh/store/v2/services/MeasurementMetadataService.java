@@ -24,13 +24,13 @@ public class MeasurementMetadataService {
     }
 
     @NonNull
-    public MeasurementMetadata getMetadataForMeasurement(@NonNull String measurementId) {
+    public MeasurementMetadata getMetadataForMeasurement(@NonNull final String measurementId) {
         Objects.requireNonNull(measurementId, "measurementId must not be null");
         return getMetadataForMeasurement(UUID.fromString(measurementId));
     }
 
     @NonNull
-    public MeasurementMetadata getMetadataForMeasurement(@NonNull UUID measurementId) {
+    public MeasurementMetadata getMetadataForMeasurement(@NonNull final UUID measurementId) {
         Objects.requireNonNull(measurementId, "measurementId must not be null");
         final MeasurementMetadataEntity entity = metadataRepository.findByMeasurementId(measurementId.toString())
                 .orElseThrow(
@@ -45,7 +45,7 @@ public class MeasurementMetadataService {
     }
 
     @NonNull
-    public MeasurementMetadata getMetadataForMeasurement(@NonNull Measurement measurement) {
+    public MeasurementMetadata getMetadataForMeasurement(@NonNull final Measurement measurement) {
         Objects.requireNonNull(measurement, "measurement must not be null");
         final UUID id = measurement.id();
         return getMetadataForMeasurement(id);

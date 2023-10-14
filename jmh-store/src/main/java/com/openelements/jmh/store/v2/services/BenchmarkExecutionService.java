@@ -7,6 +7,7 @@ import com.openelements.jmh.store.v2.entities.MeasurementMetadataEntity;
 import com.openelements.jmh.store.v2.repositories.BenchmarkRepository;
 import com.openelements.jmh.store.v2.repositories.MeasurementMetadataRepository;
 import com.openelements.jmh.store.v2.repositories.MeasurementRepository;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Objects;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class BenchmarkExecutionService {
 
     @Autowired
     public BenchmarkExecutionService(
-            BenchmarkRepository benchmarkRepository, MeasurementRepository measurementRepository,
-            MeasurementMetadataRepository measurementMetadataRepository) {
+            final @NonNull BenchmarkRepository benchmarkRepository,
+            final @NonNull MeasurementRepository measurementRepository,
+            final @NonNull MeasurementMetadataRepository measurementMetadataRepository) {
         this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
         this.measurementRepository = Objects.requireNonNull(measurementRepository,
                 "measurementRepository must not be null");
@@ -34,15 +36,16 @@ public class BenchmarkExecutionService {
                 "measurementMetadataRepository must not be null");
     }
 
-    public void add(final BenchmarkExecution benchmarkExecution) {
+    public void add(final @NonNull BenchmarkExecution benchmarkExecution) {
+        Objects.requireNonNull(benchmarkExecution, "benchmarkExecution must not be null");
         final UUID benchmarkEntityId = benchmarkRepository.findByName(benchmarkExecution.benchmarkName()).stream()
-                .filter(b -> b.getParams().equals(benchmarkExecution.params()))
+                .filter(b -> b.getParams().equals(benchmarkExecution.parameters()))
                 .findFirst()
                 .map(e -> e.getId())
                 .orElseGet(() -> {
                     BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
                     benchmarkEntity.setName(benchmarkExecution.benchmarkName());
-                    benchmarkEntity.setParams(benchmarkExecution.params());
+                    benchmarkEntity.setParams(benchmarkExecution.parameters());
                     return benchmarkRepository.save(benchmarkEntity).getId();
                 });
 

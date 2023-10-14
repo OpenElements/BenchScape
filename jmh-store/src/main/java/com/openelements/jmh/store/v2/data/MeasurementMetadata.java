@@ -1,19 +1,26 @@
 package com.openelements.jmh.store.v2.data;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public record MeasurementMetadata(UUID id, String gitOriginUrl,
-                                  String gitBranch, String gitCommitId,
-                                  Set<String> gitTags, Boolean gitDirty,
-                                  Integer jmhThreadCount, Integer jmhForks,
-                                  Duration jmhTimeout, Integer jmhWarmupIterations,
-                                  Duration jmhWarmupTime, Integer jmhWarmupBatchSize,
-                                  Integer jmhMeasurementIterations, Duration jmhMeasurementTime,
-                                  Integer jmhMeasurementBatchSize, String systemArch,
-                                  Integer systemProcessors, Long systemMemory,
-                                  String osName, String osVersion,
-                                  String jvmVersion, String jvmName,
-                                  String jmhVersion) {
+public record MeasurementMetadata(@Nullable UUID id, @Nullable String gitOriginUrl,
+                                  @Nullable String gitBranch, @Nullable String gitCommitId,
+                                  @NonNull Set<String> gitTags, @Nullable Boolean gitDirty,
+                                  @Nullable Integer jmhThreadCount, @Nullable Integer jmhForks,
+                                  @Nullable Duration jmhTimeout, @Nullable Integer jmhWarmupIterations,
+                                  @Nullable Duration jmhWarmupTime, @Nullable Integer jmhWarmupBatchSize,
+                                  @Nullable Integer jmhMeasurementIterations, @Nullable Duration jmhMeasurementTime,
+                                  @Nullable Integer jmhMeasurementBatchSize, @Nullable String systemArch,
+                                  @Nullable Integer systemProcessors, @Nullable Long systemMemory,
+                                  @Nullable String osName, @Nullable String osVersion,
+                                  @Nullable String jvmVersion, @Nullable String jvmName,
+                                  @Nullable String jmhVersion) {
+
+    public MeasurementMetadata {
+        Objects.requireNonNull(gitTags, "gitTags must not be null");
+    }
 }
