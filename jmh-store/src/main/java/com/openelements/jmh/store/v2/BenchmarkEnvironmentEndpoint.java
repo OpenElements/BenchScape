@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v2/environment")
-public class EnvironmentEndpoint {
+public class BenchmarkEnvironmentEndpoint {
 
     private final EnvironmentService environmentService;
 
 
     @Autowired
-    public EnvironmentEndpoint(EnvironmentService environmentService) {
+    public BenchmarkEnvironmentEndpoint(EnvironmentService environmentService) {
         this.environmentService = Objects.requireNonNull(environmentService, "environmentService must not be null");
     }
 

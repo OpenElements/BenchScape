@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "Environment")
 public class EnvironmentEntity {
 
     @Id

@@ -32,7 +32,7 @@ public class MeasurementMetadataService {
     @NonNull
     public MeasurementMetadata getMetadataForMeasurement(@NonNull final UUID measurementId) {
         Objects.requireNonNull(measurementId, "measurementId must not be null");
-        final MeasurementMetadataEntity entity = metadataRepository.findByMeasurementId(measurementId.toString())
+        final MeasurementMetadataEntity entity = metadataRepository.findByMeasurementId(measurementId)
                 .orElseThrow(
                         () -> new IllegalStateException("No metadata found for measurement of id " + measurementId));
         return new MeasurementMetadata(entity.getMeasurementId(), entity.getGitOriginUrl(), entity.getGitBranch(),

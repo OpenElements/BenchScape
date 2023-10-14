@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "MeasurementMetadata")
 public class MeasurementMetadataEntity {
 
     @Id
