@@ -35,7 +35,7 @@ public class EnvironmentService {
     @NonNull
     private static Environment map(@NonNull final EnvironmentEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
-        return new Environment(entity.getId(), entity.getGitOriginUrl(),
+        return new Environment(entity.getId(), entity.getName(), entity.getDescription(), entity.getGitOriginUrl(),
                 entity.getGitBranch(), entity.getSystemArch(),
                 entity.getSystemProcessors(), entity.getSystemProcessorsMin(),
                 entity.getSystemProcessorsMax(), entity.getSystemMemory(),
@@ -50,6 +50,8 @@ public class EnvironmentService {
         Objects.requireNonNull(environment, "environment must not be null");
         final EnvironmentEntity entity = new EnvironmentEntity();
         entity.setId(environment.id());
+        entity.setName(environment.name());
+        entity.setDescription(environment.description());
         entity.setGitOriginUrl(environment.gitOriginUrl());
         entity.setGitBranch(environment.gitBranch());
         entity.setSystemArch(environment.systemArch());
