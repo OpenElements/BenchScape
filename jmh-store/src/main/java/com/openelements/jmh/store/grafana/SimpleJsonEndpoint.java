@@ -3,8 +3,10 @@ package com.openelements.jmh.store.grafana;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.openelements.jmh.store.db.DataService;
-import com.openelements.jmh.store.shared.Timeseries;
+import com.openelements.jmh.store.store.data.Measurement;
+import com.openelements.jmh.store.store.data.MeasurementQuery;
+import com.openelements.jmh.store.store.services.BenchmarkService;
+import com.openelements.jmh.store.store.services.MeasurementService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +24,14 @@ public class SimpleJsonEndpoint {
 
     //See https://grafana.com/grafana/plugins/grafana-simple-json-datasource/
 
-    private final DataService dataService;
+    private final MeasurementService measurementService;
+
+    private final BenchmarkService benchmarkService;
 
     @Autowired
-    public SimpleJsonEndpoint(final DataService dataService) {
-        this.dataService = Objects.requireNonNull(dataService);
+    public SimpleJsonEndpoint(final BenchmarkService benchmarkService, final MeasurementService measurementService) {
+        this.benchmarkService = Objects.requireNonNull(benchmarkService, "benchmarkService must not be null");
+        this.measurementService = Objects.requireNonNull(measurementService, "measurementService must not be null");
     }
 
     @CrossOrigin
@@ -39,7 +44,7 @@ public class SimpleJsonEndpoint {
     @PostMapping("/search")
     String getSearch(@RequestBody final String jsonString) {
         final JsonArray result = new JsonArray();
-        dataService.getAllBenchmarks().stream()
+        benchmarkService.getAll().stream()
                 .map(benchmark -> benchmark.name())
                 .forEach(name -> result.add(name));
         return result.toString();
@@ -64,9 +69,10 @@ public class SimpleJsonEndpoint {
         final JsonArray resultArray = new JsonArray();
 
         targets.forEach(target -> {
-            final List<Timeseries> timeseries = dataService.getBenchmarkByName(target)
+            final List<Measurement> timeseries = benchmarkService.findByName(target)
                     .map(benchmark -> benchmark.id())
-                    .map(benchmarkId -> dataService.getAllTimeseriesForBenchmarks(benchmarkId))
+                    .map(benchmarkId -> MeasurementQuery.of(benchmarkId))
+                    .map(query -> measurementService.find(query))
                     .orElseThrow(() -> new IllegalArgumentException("Benchmark not found"));
 
             final JsonObject valueResultObject = new JsonObject();

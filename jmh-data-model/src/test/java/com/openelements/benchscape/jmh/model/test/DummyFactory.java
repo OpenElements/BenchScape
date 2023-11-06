@@ -25,7 +25,8 @@ public class DummyFactory {
     }
 
     public static BenchmarkInfrastructure createBenchmarkInfrastructure() {
-        return new BenchmarkInfrastructure("arch", 1, 1, "osName", "osVersion", "jvmVersion", "jvmName", "jmhVendor");
+        return new BenchmarkInfrastructure("arch", 1, 1, "osName", "osVersion", "jvmVersion", "jvmName", Map.of(),
+                Map.of(), "jmhVendor");
     }
 
     public static BenchmarkGitState createBenchmarkGitState() {
