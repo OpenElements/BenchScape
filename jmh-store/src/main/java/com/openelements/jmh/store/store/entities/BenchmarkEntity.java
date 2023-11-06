@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+//TODO: Define unique key over name+params
 @Entity(name = "Benchmark")
 public class BenchmarkEntity implements EntityBase {
 
@@ -17,7 +18,7 @@ public class BenchmarkEntity implements EntityBase {
     @GeneratedValue
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
