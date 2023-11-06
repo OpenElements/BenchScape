@@ -15,17 +15,17 @@ public interface MeasurementRepository extends JpaRepository<MeasurementEntity, 
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 AND m.timestamp >= ?2 AND m.timestamp <= ?3 ORDER BY m.timestamp ASC")
-    List<MeasurementEntity> find(final String benchmarkId, final Instant start, final Instant end);
+    List<MeasurementEntity> find(final UUID benchmarkId, final Instant start, final Instant end);
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 AND m.timestamp > ?2 ORDER BY m.timestamp DESC limit 1")
-    Optional<MeasurementEntity> findFirstAfter(final String benchmarkId, final Instant end);
+    Optional<MeasurementEntity> findFirstAfter(final UUID benchmarkId, final Instant end);
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 AND m.timestamp < ?2 ORDER BY m.timestamp DESC limit 1")
-    Optional<MeasurementEntity> findLastBefore(final String benchmarkId, final Instant start);
+    Optional<MeasurementEntity> findLastBefore(final UUID benchmarkId, final Instant start);
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp DESC limit 100")
-    List<MeasurementEntity> findNewest(final String benchmarkId);
+    List<MeasurementEntity> findNewest(final UUID benchmarkId);
 }

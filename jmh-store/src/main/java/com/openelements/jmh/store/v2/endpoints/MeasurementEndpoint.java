@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.v2;
+package com.openelements.jmh.store.v2.endpoints;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.jmh.store.v2.data.Measurement;

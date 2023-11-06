@@ -1,6 +1,5 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,13 +26,12 @@ public enum BenchmarkUnit {
 
     private final long factor;
 
-    BenchmarkUnit(@NonNull final String readableName, final long factor) {
+    BenchmarkUnit(final String readableName, final long factor) {
         this.readableName = readableName;
         this.factor = factor;
     }
 
-    @NonNull
-    public static BenchmarkUnit getForJmhName(@NonNull final String jmhUnitName) {
+    public static BenchmarkUnit getForJmhName(final String jmhUnitName) {
         Objects.requireNonNull(jmhUnitName, "jmhUnitName must not be null");
         return Arrays.asList(BenchmarkUnit.values()).stream()
                 .filter(unit -> Objects.equals(unit.readableName, jmhUnitName))
@@ -52,7 +50,7 @@ public enum BenchmarkUnit {
      * @param unit
      * @return
      */
-    public double convert(final double value, @NonNull final BenchmarkUnit unit) {
+    public double convert(final double value, final BenchmarkUnit unit) {
         Objects.requireNonNull(unit, "unit must not be null");
         if (this == UNKNWOWN || unit == UNKNWOWN) {
             throw new IllegalArgumentException("Can not convert for unknown unit");
@@ -67,7 +65,7 @@ public enum BenchmarkUnit {
         }
     }
 
-    private BenchmarkUnit getOpposite(@NonNull final BenchmarkUnit unit) {
+    private BenchmarkUnit getOpposite(final BenchmarkUnit unit) {
         Objects.requireNonNull(unit, "unit must not be null");
         if (this == UNKNWOWN || unit == UNKNWOWN) {
             throw new IllegalArgumentException("Can not convert for unknown unit");

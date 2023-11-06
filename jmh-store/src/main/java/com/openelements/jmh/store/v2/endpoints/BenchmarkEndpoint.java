@@ -1,4 +1,4 @@
-package com.openelements.jmh.store.v2;
+package com.openelements.jmh.store.v2.endpoints;
 
 import com.openelements.jmh.store.v2.data.Benchmark;
 import com.openelements.jmh.store.v2.services.BenchmarkService;
@@ -24,7 +24,7 @@ public class BenchmarkEndpoint {
     }
 
     @GetMapping("/all")
-    List<Benchmark> getAll() {
+    public List<Benchmark> getAll() {
         return benchmarkService.findAll();
     }
 

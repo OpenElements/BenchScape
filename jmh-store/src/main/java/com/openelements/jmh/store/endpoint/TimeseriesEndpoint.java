@@ -2,8 +2,6 @@ package com.openelements.jmh.store.endpoint;
 
 import com.openelements.jmh.store.db.DataService;
 import com.openelements.jmh.store.shared.Timeseries;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api") // Base path for all endpoints
-@Api(tags = "Benchmark API") // Swagger API tags
 public class TimeseriesEndpoint {
 
     private final DataService dataService;
@@ -25,7 +22,6 @@ public class TimeseriesEndpoint {
         this.dataService = Objects.requireNonNull(dataService);
     }
 
-    @ApiOperation("Get timeseries")
     @CrossOrigin
     @GetMapping("/timeseries/{id}")
     List<Timeseries> getTimeseries(@PathVariable final Long id) {

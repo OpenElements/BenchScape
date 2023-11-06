@@ -22,7 +22,7 @@ public class MeasurementEntity {
     @Column(nullable = false)
     private Instant timestamp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "measurement")
     private double value;
 
     @Column

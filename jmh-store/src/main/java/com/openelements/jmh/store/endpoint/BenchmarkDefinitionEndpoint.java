@@ -7,8 +7,6 @@ import com.openelements.jmh.store.shared.BenchmarkDefinition;
 import com.openelements.jmh.store.shared.BenchmarkWithTimeseriesResult;
 import com.openelements.jmh.store.shared.Timeseries;
 import com.openelements.jmh.store.shared.Violation;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -23,20 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api") // Base path for all endpoints
-@Api(tags = "Benchmark API") // Swagger API tags
-public class BenchmarkEndpoint {
+public class BenchmarkDefinitionEndpoint {
 
     private final DataService dataService;
 
     private final QualityGate qualityGate;
 
     @Autowired
-    public BenchmarkEndpoint(final DataService dataService, final QualityGate qualityGate) {
+    public BenchmarkDefinitionEndpoint(final DataService dataService, final QualityGate qualityGate) {
         this.dataService = Objects.requireNonNull(dataService);
         this.qualityGate = Objects.requireNonNull(qualityGate);
     }
 
-    @ApiOperation("Store benchmark")
     @CrossOrigin
     @PostMapping("/benchmark")
     public StoreBenchmarkResult storeBenchmark(@RequestBody final BenchmarkExecution benchmark) {
@@ -52,14 +48,12 @@ public class BenchmarkEndpoint {
         return new StoreBenchmarkResult(benchmarkDefinition.id(), timeseries.id(), checkResult);
     }
 
-    @ApiOperation("Get all benchmarks")
     @CrossOrigin
     @GetMapping("/benchmark")
     public List<BenchmarkDefinition> getAllBenchmarks() {
         return dataService.getAllBenchmarks();
     }
 
-    @ApiOperation("Get benchmark by ID")
     @CrossOrigin
     @GetMapping("/benchmark/{id}")
     public BenchmarkDefinition getBenchmarkById(@PathVariable final Long id) {

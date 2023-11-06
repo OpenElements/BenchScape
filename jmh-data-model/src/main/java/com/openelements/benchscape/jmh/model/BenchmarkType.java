@@ -1,6 +1,6 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The type of a benchmark.
@@ -10,7 +10,7 @@ public enum BenchmarkType {
 
     private final String readableName;
 
-    BenchmarkType(@NonNull final String readableName) {
+    BenchmarkType(@NotNull final String readableName) {
         this.readableName = readableName;
     }
 

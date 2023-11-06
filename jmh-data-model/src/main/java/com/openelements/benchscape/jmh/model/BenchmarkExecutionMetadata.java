@@ -1,6 +1,7 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -14,9 +15,9 @@ import java.util.Objects;
  * @param warmupOps       the number of operations executed during the warmup phase
  * @param measurementOps  the number of operations executed during the measurement phase
  */
-public record BenchmarkExecutionMetadata(@NonNull Instant startTime, @NonNull Instant warmupTime,
-                                         @NonNull Instant measurementTime, @NonNull Instant stopTime,
-                                         long warmupOps, long measurementOps) {
+public record BenchmarkExecutionMetadata(@NotNull Instant startTime, @NotNull Instant warmupTime,
+                                         @NotNull Instant measurementTime, @NotNull Instant stopTime,
+                                         @Min(1) long warmupOps, @Min(1) long measurementOps) {
 
     public BenchmarkExecutionMetadata {
         Objects.requireNonNull(startTime, "startTime must not be null");

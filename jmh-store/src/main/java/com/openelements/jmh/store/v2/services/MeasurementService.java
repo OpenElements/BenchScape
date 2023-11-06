@@ -44,7 +44,7 @@ public class MeasurementService {
     @NonNull
     public List<Measurement> find(final @NonNull MeasurementQuery query) {
         Objects.requireNonNull(query, "query must not be null");
-        return measurementRepository.find(query.benchmarkId(), query.start(), query.end())
+        return measurementRepository.find(UUID.fromString(query.benchmarkId()), query.start(), query.end())
                 .stream()
                 .map(m -> map(m))
                 .filter(m -> isMatchingEnvironment(m, query.environmentIds()))
@@ -114,8 +114,7 @@ public class MeasurementService {
     @NonNull
     public Optional<Measurement> findPrevious(@NonNull final Measurement measurement) {
         Objects.requireNonNull(measurement, "measurement must not be null");
-        final String id = Optional.ofNullable(measurement.id())
-                .map(UUID::toString)
+        final UUID id = Optional.ofNullable(measurement.id())
                 .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
         return measurementRepository.findLastBefore(id, measurement.timestamp())
                 .map(m -> map(m));
@@ -124,8 +123,7 @@ public class MeasurementService {
     @NonNull
     public Optional<Measurement> findNext(@NonNull final Measurement measurement) {
         Objects.requireNonNull(measurement, "measurement must not be null");
-        final String id = Optional.ofNullable(measurement.id())
-                .map(UUID::toString)
+        final UUID id = Optional.ofNullable(measurement.id())
                 .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
         return measurementRepository.findFirstAfter(id, measurement.timestamp())
                 .map(m -> map(m));

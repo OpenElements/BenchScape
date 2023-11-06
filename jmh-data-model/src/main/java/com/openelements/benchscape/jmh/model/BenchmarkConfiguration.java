@@ -1,6 +1,7 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -15,9 +16,10 @@ import java.util.concurrent.TimeUnit;
  * @param measurementConfiguration configuration for the measurement phase
  * @param warmupConfiguration      configuration for the warmup phase
  */
-public record BenchmarkConfiguration(int threads, int forks, long timeout, @NonNull TimeUnit timeoutUnit,
-                                     @NonNull BenchmarkMeasurementConfiguration measurementConfiguration,
-                                     @NonNull BenchmarkMeasurementConfiguration warmupConfiguration) {
+public record BenchmarkConfiguration(@Min(1) int threads, @Min(0) int forks, @Min(1) long timeout,
+                                     @NotNull TimeUnit timeoutUnit,
+                                     @NotNull BenchmarkMeasurementConfiguration measurementConfiguration,
+                                     @NotNull BenchmarkMeasurementConfiguration warmupConfiguration) {
 
     public BenchmarkConfiguration {
         if (threads < 1) {

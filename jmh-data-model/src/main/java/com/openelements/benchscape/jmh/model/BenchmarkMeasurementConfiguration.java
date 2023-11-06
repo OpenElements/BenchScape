@@ -1,6 +1,7 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +14,8 @@ import java.util.concurrent.TimeUnit;
  * @param timeUnit   unit of the time
  * @param batchSize  number of operations to execute in a batch
  */
-public record BenchmarkMeasurementConfiguration(int iterations, long time, @NonNull TimeUnit timeUnit, int batchSize) {
+public record BenchmarkMeasurementConfiguration(@Min(1) int iterations, @Min(1) long time, @NotNull TimeUnit timeUnit,
+                                                @Min(1) int batchSize) {
 
     public BenchmarkMeasurementConfiguration {
         if (iterations < 1) {

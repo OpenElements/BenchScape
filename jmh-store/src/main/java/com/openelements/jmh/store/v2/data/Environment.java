@@ -5,7 +5,8 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Objects;
 import java.util.UUID;
 
-public record Environment(@Nullable UUID id, @NonNull String name, @Nullable String description,
+public record Environment(@Nullable UUID id, @NonNull String name,
+                          @Nullable String description,
                           @Nullable String gitOriginUrl,
                           @Nullable String gitBranch, @Nullable String systemArch,
                           @Nullable Integer systemProcessors, @Nullable Integer systemProcessorsMin,

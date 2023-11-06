@@ -1,6 +1,8 @@
 package com.openelements.jmh.store.v2;
 
 import com.openelements.jmh.store.v2.data.Environment;
+import com.openelements.jmh.store.v2.endpoints.BenchmarkEndpoint;
+import com.openelements.jmh.store.v2.endpoints.BenchmarkEnvironmentEndpoint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
