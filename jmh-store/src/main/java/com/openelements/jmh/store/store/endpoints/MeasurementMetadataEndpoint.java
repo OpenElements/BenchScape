@@ -1,5 +1,7 @@
 package com.openelements.jmh.store.store.endpoints;
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.jmh.store.store.data.MeasurementMetadata;
 import com.openelements.jmh.store.store.services.MeasurementService;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/measurement/metadata")
+@RequestMapping(V2 + "/measurement/metadata")
 public class MeasurementMetadataEndpoint {
 
     private final MeasurementService measurementService;
@@ -24,7 +26,7 @@ public class MeasurementMetadataEndpoint {
     }
 
     @GetMapping
-    public MeasurementMetadata find(@RequestParam final String measurementId) {
+    public MeasurementMetadata getByMeasurementId(@RequestParam final String measurementId) {
         Objects.requireNonNull(measurementId, "measurementId must not be null");
         return measurementService.getMetadataForMeasurement(measurementId);
     }

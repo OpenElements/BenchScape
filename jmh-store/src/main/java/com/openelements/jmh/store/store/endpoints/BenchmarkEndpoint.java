@@ -1,5 +1,8 @@
 package com.openelements.jmh.store.store.endpoints;
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.ALL;
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.jmh.store.store.data.Benchmark;
 import com.openelements.jmh.store.store.services.BenchmarkService;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/benchmark")
+@RequestMapping(V2 + "/benchmark")
 public class BenchmarkEndpoint {
 
     private final BenchmarkService benchmarkService;
@@ -23,7 +26,7 @@ public class BenchmarkEndpoint {
         this.benchmarkService = Objects.requireNonNull(benchmarkService, "benchmarkService must not be null");
     }
 
-    @GetMapping("/all")
+    @GetMapping(ALL)
     public List<Benchmark> getAll() {
         return benchmarkService.getAll();
     }

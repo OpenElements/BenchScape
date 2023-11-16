@@ -1,5 +1,8 @@
 package com.openelements.jmh.store.store.endpoints;
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.FIND;
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.jmh.store.store.data.Measurement;
 import com.openelements.jmh.store.store.data.MeasurementQuery;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/measurement")
+@RequestMapping(V2 + "/measurement")
 public class MeasurementEndpoint {
 
     private final MeasurementService measurementService;
@@ -32,7 +35,7 @@ public class MeasurementEndpoint {
         this.measurementService = Objects.requireNonNull(measurementService, "measurementService must not be null");
     }
 
-    @GetMapping("/find")
+    @GetMapping(FIND)
     List<Measurement> find(@RequestParam final String benchmarkId,
             @RequestParam(required = false) final BenchmarkUnit unit,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,

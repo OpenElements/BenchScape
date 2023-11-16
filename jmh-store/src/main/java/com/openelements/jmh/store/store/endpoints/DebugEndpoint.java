@@ -1,5 +1,7 @@
 package com.openelements.jmh.store.store.endpoints;
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.jmh.store.store.entities.BenchmarkEntity;
 import com.openelements.jmh.store.store.entities.EnvironmentEntity;
 import com.openelements.jmh.store.store.entities.MeasurementEntity;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/debug")
+@RequestMapping(V2 + "/debug")
 public class DebugEndpoint {
 
     private final BenchmarkRepository benchmarkRepository;

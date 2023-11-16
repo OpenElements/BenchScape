@@ -1,6 +1,8 @@
 package com.openelements.jmh.store.store.endpoints;
 
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
 import com.openelements.jmh.store.store.services.BenchmarkExecutionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/execution")
+@RequestMapping(V2 + "/execution")
 public class BenchmarkExecutionEndpoint {
 
     private final BenchmarkExecutionService benchmarkExecutionService;

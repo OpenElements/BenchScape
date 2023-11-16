@@ -1,5 +1,9 @@
 package com.openelements.jmh.store.store.endpoints;
 
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.ALL;
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.FIND;
+import static com.openelements.jmh.store.store.endpoints.EndpointsConstants.V2;
+
 import com.openelements.jmh.store.store.data.Environment;
 import com.openelements.jmh.store.store.services.EnvironmentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v2/environment")
+@RequestMapping(V2 + "/environment")
 public class BenchmarkEnvironmentEndpoint {
 
     private final EnvironmentService environmentService;
@@ -37,12 +41,12 @@ public class BenchmarkEnvironmentEndpoint {
             @ApiResponse(responseCode = "200", description = "request handled without error",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Environment.class))})})
-    @GetMapping("/all")
+    @GetMapping(ALL)
     public List<Environment> getAll() {
         return environmentService.getAll();
     }
 
-    @GetMapping("/find")
+    @GetMapping(FIND)
     public Environment find(@RequestParam final String id) {
         return environmentService.find(id);
     }
