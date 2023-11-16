@@ -27,7 +27,6 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>4.7.5</version>
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -56,7 +55,7 @@
             <path>
               <groupId>info.picocli</groupId>
               <artifactId>picocli-codegen</artifactId>
-              <version>4.7.5</version>
+              <version>${picocli.version}</version>
             </path>
           </annotationProcessorPaths>
           <compilerArgs>

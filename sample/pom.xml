@@ -33,11 +33,13 @@
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+      <!--
       <plugin>
         <groupId>${project.groupId}</groupId>
         <artifactId>jmh-maven-plugin</artifactId>
         <version>${project.version}</version>
       </plugin>
+      -->
     </plugins>
   </build>
 
