@@ -23,7 +23,7 @@ public class MeasurementMetadataEndpoint {
         this.measurementService = Objects.requireNonNull(measurementService, "measurementService must not be null");
     }
 
-    @GetMapping("/find")
+    @GetMapping
     public MeasurementMetadata find(@RequestParam final String measurementId) {
         Objects.requireNonNull(measurementId, "measurementId must not be null");
         return measurementService.getMetadataForMeasurement(measurementId);
