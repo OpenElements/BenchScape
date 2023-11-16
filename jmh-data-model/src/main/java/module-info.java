@@ -4,5 +4,5 @@
 module com.openelements.benchscape.jmh.model {
     exports com.openelements.benchscape.jmh.model;
 
-    requires static com.github.spotbugs.annotations;
+    requires jakarta.validation;
 }

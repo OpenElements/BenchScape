@@ -1,6 +1,6 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Objects;
 
@@ -15,13 +15,13 @@ import java.util.Objects;
  * @param parameters     the parameters of the given benchmark execution
  * @param result         the result of the given benchmark execution
  */
-public record BenchmarkExecution(@NonNull String benchmarkName, @NonNull BenchmarkType type,
-                                 @NonNull BenchmarkInfrastructure infrastructure,
-                                 @NonNull BenchmarkGitState gitState,
-                                 @NonNull BenchmarkConfiguration configuration,
-                                 @NonNull BenchmarkExecutionMetadata execution,
-                                 @NonNull Map<String, String> parameters,
-                                 @NonNull BenchmarkExecutionResult result) {
+public record BenchmarkExecution(@NotNull String benchmarkName, @NotNull BenchmarkType type,
+                                 @NotNull BenchmarkInfrastructure infrastructure,
+                                 @NotNull BenchmarkGitState gitState,
+                                 @NotNull BenchmarkConfiguration configuration,
+                                 @NotNull BenchmarkExecutionMetadata execution,
+                                 @NotNull Map<String, String> parameters,
+                                 @NotNull BenchmarkExecutionResult result) {
 
     public BenchmarkExecution {
         Objects.requireNonNull(benchmarkName, "benchmarkName must not be null");

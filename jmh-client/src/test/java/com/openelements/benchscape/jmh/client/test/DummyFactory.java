@@ -26,7 +26,7 @@ public class DummyFactory {
 
     public static BenchmarkInfrastructure createBenchmarkInfrastructure() {
         return new BenchmarkInfrastructure("test-chip-architecture", 4, 1024, "osName", "osVersion", "jvmVersion",
-                "jvmName", "jmhVendor");
+                "jvmName", Map.of(), Map.of(), "jmhVendor");
     }
 
     public static BenchmarkExecutionMetadata createBenchmarkExecution() {

@@ -1,7 +1,6 @@
 package com.openelements.benchscape.jmh.model;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -17,8 +16,8 @@ import java.util.Objects;
  *              unit that is provided by {@link #unit}.
  * @param unit  the unit of the benchmark execution.
  */
-public record BenchmarkExecutionResult(double value, @Nullable Double error, @Nullable Double min, @Nullable Double max,
-                                       @NonNull BenchmarkUnit unit) {
+public record BenchmarkExecutionResult(double value, Double error, @NotNull Double min, Double max,
+                                       @NotNull BenchmarkUnit unit) {
 
     public BenchmarkExecutionResult {
         Objects.requireNonNull(value, "value must not be null");

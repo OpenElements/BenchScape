@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.open-elements.benchscape</groupId>
     <artifactId>benchscape-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>sample</artifactId>
@@ -28,16 +28,18 @@
             <path>
               <groupId>org.openjdk.jmh</groupId>
               <artifactId>jmh-generator-annprocess</artifactId>
-              <version>1.34</version>
+              <version>${jmh.version}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
       </plugin>
+      <!--
       <plugin>
         <groupId>${project.groupId}</groupId>
         <artifactId>jmh-maven-plugin</artifactId>
         <version>${project.version}</version>
       </plugin>
+      -->
     </plugins>
   </build>
 

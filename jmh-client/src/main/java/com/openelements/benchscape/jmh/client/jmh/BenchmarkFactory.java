@@ -98,7 +98,7 @@ public class BenchmarkFactory {
         final String osVersion = osBean.getVersion();
         final String osName = osBean.getName();
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                jmhVersion);
+                Map.of(), Map.of(), jmhVersion);
     }
 
     /**
