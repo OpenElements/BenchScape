@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializer;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -35,7 +36,7 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         final String jvmName = json.getAsJsonObject().get("jvmName").getAsString();
         final String jmhVersion = json.getAsJsonObject().get("jmhVersion").getAsString();
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                jmhVersion);
+                Map.of(), Map.of(), jmhVersion);
     }
 
     @Override
