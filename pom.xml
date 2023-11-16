@@ -21,10 +21,10 @@
   <modules>
     <module>jmh-data-model</module>
     <module>jmh-client</module>
-    <module>jmh-store</module>
-    <module>sample</module>
-    <module>jmh-frontend</module>
     <module>jmh-maven-plugin</module>
+    <module>server</module>
+    <module>frontend</module>
+    <module>sample</module>
   </modules>
 
   <dependencyManagement>
