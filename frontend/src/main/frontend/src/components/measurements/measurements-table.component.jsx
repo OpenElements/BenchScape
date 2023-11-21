@@ -1,8 +1,8 @@
 import React from "react";
-import { useTimeSeries } from "../hooks/hooks";
+import { useTimeSeries } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
 
-const TimeSeriesTableComponent = ({ type }) => {
+const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
   const { data } = useTimeSeries(id);
 
@@ -73,4 +73,4 @@ const tableCellStyle = {
   textAlign: "right", // Align numbers to the right
 };
 
-export default TimeSeriesTableComponent;
+export default MeasurementsTableComponent;

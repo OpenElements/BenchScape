@@ -1,9 +1,14 @@
 import { Route, Routes } from "react-router-dom";
-import SideNav from "./components/side-nav.component";
+import {
+  SideNav,
+  MeasurementsGraphComponent,
+  MeasurementsTableComponent,
+} from "./components";
+// import SideNav from "./components/side-nav.component";
 import HomePage from "./pages/home-page";
 import SettingsPage from "./pages/settings-page";
-import TimeSeriesTableComponent from "./components/time-series-table.component";
-import TimeSeriesGraphComponent from "./components/time-series-graph.component";
+// import TimeSeriesTableComponent from "./components/time-series-table.component";
+// import TimeSeriesGraphComponent from "./components/time-series-graph.component";
 import BenchmarkPage from "./pages/benchmarks-page";
 import EnvironmentsPage from "./pages/environments-page";
 
@@ -21,11 +26,11 @@ function App() {
               <Route path="/environment" element={<EnvironmentsPage />} />
               <Route
                 path="/table/:id"
-                element={<TimeSeriesTableComponent type="table" />}
+                element={<MeasurementsTableComponent type="table" />}
               />
               <Route
                 path="/graph/:id"
-                element={<TimeSeriesGraphComponent type="graph" />}
+                element={<MeasurementsGraphComponent type="graph" />}
               />
             </Routes>
           </div>

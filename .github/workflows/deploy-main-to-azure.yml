@@ -4,15 +4,14 @@ env:
   AZURE_WEBAPP_NAME: benchscape
   AZURE_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BENCHSCAPE_MAIN }}
   AZURE_FRONTEND_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BENCHSCAPE_MAIN }}
-  JAVA_VERSION: '17'
+  JAVA_VERSION: "17"
   DISTRIBUTION: temurin
-  FRONTEND_LOCATION: "jmh-frontend/src/main/frontend/build"
-  SERVER_LOCATION: "${{ github.workspace }}/jmh-store/target/app.jar"
-
+  FRONTEND_LOCATION: "frontend/src/main/frontend/build"
+  SERVER_LOCATION: "${{ github.workspace }}/server/target/app.jar"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -31,14 +30,14 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.DISTRIBUTION }}
-          cache: 'maven'
+          cache: "maven"
 
       - name: Set up npm cache
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
       - name: Build with Maven
         run: mvn verify

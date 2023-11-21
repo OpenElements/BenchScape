@@ -10,6 +10,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "/jmh-frontend/src/main/frontend/"
+    directory: "/frontend/src/main/frontend/"
     schedule:
       interval: "daily"
