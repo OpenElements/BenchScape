@@ -5,11 +5,6 @@ import { List, House, SignOut, CaretDown } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { availableLanguages } from "../../i18n";
 
-// const menuNavigationss = [
-//   { name: "Menu Item 1", href: "#" },
-//   { name: "Menu Item 2", href: "#" },
-// ];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }

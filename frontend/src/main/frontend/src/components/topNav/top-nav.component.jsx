@@ -6,8 +6,8 @@ const TopNav = () => {
     i18n: { changeLanguage },
   } = useTranslation();
   const menuNavigations = [
-    { name: "New item", href: "#" },
-    { name: "New item", href: "#" },
+    { name: "New item 1", href: "#" },
+    { name: "New item 2", href: "#" },
   ];
 
   const handleChangeLanguage = (newLanguage) => {
