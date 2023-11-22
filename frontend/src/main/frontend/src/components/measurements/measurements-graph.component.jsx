@@ -1,5 +1,5 @@
 import React from "react";
-import { useTimeSeries } from "../hooks/hooks";
+import { useMeasurements } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
 import {
   Chart as ChartJS,
@@ -14,16 +14,14 @@ import {
 
 import { Line } from "react-chartjs-2";
 
-const TimeSeriesGraphComponent = ({ type }) => {
+const MeasurementsGraphComponent = ({ type }) => {
   const { id } = useParams();
-  const { data, isLoading } = useTimeSeries(id);
+  const { data, isLoading } = useMeasurements(id);
 
   console.log(data, "getting data");
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  // import React, { useState, useEffect } from "react";
 
   ChartJS.register(
     CategoryScale,
@@ -90,4 +88,4 @@ const TimeSeriesGraphComponent = ({ type }) => {
   );
 };
 
-export default TimeSeriesGraphComponent;
+export default MeasurementsGraphComponent;
