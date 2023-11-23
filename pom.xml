@@ -194,6 +194,11 @@
           <artifactId>maven-source-plugin</artifactId>
           <version>3.3.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.jreleaser</groupId>
+          <artifactId>jreleaser-maven-plugin</artifactId>
+          <version>1.9.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -208,6 +213,30 @@
       </plugin>
     </plugins>
   </build>
+
+  <developers>
+    <developer>
+      <id>hendrikebbers</id>
+      <name>Hendrik Ebbers</name>
+      <organization>Open Elements</organization>
+      <organizationUrl>https://open-elements.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache-2.0</name>
+      <url>https://spdx.org/licenses/Apache-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:https://github.com/OpenElements/BenchScape.git</connection>
+    <developerConnection>scm:git:https://github.com/OpenElements/BenchScape.git</developerConnection>
+    <url>https://github.com/OpenElements/BenchScape.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <profiles>
     <profile>
@@ -251,14 +280,29 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <extensions>true</extensions>
+            <groupId>org.jreleaser</groupId>
+            <artifactId>jreleaser-maven-plugin</artifactId>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-              <autoDropAfterRelease>false</autoDropAfterRelease>
-              <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+              <jreleaser>
+                <signing>
+                  <active>ALWAYS</active>
+                  <armored>true</armored>
+                </signing>
+                <deploy>
+                  <maven>
+                    <nexus2>
+                      <maven-central>
+                        <active>ALWAYS</active>
+                        <url>https://s01.oss.sonatype.org/service/local</url>
+                        <snapshotUrl>https://s01.oss.sonatype.org/content/repositories/snapshots/</snapshotUrl>
+                        <closeRepository>true</closeRepository>
+                        <releaseRepository>true</releaseRepository>
+                        <stagingRepositories>target/staging-deploy</stagingRepositories>
+                      </maven-central>
+                    </nexus2>
+                  </maven>
+                </deploy>
+              </jreleaser>
             </configuration>
           </plugin>
         </plugins>
