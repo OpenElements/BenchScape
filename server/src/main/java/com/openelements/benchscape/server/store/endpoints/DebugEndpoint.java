@@ -105,6 +105,50 @@ public class DebugEndpoint {
 
         Random random = new Random(System.currentTimeMillis());
 
+        if (environmentRepository.findAll().isEmpty()) {
+            EnvironmentEntity entity1 = new EnvironmentEntity();
+            entity1.setName("benchScape-main-mac");
+            entity1.setDescription("BenchScape main branch on MacOS");
+            entity1.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entity1.setGitBranch("main");
+            entity1.setOsName("Mac OS X");
+            environmentRepository.save(entity1);
+
+            EnvironmentEntity entity2 = new EnvironmentEntity();
+            entity2.setName("benchScape-main-win");
+            entity2.setDescription("BenchScape main branch on Windows");
+            entity2.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entity2.setGitBranch("main");
+            entity2.setOsName("Windows");
+            environmentRepository.save(entity2);
+
+            EnvironmentEntity entity3 = new EnvironmentEntity();
+            entity3.setName("benchScape-main-linux");
+            entity3.setDescription("BenchScape main branch on Linux");
+            entity3.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entity3.setGitBranch("main");
+            entity3.setOsName("Linux");
+            environmentRepository.save(entity3);
+
+            EnvironmentEntity entity4 = new EnvironmentEntity();
+            entity4.setName("4-plus-cores");
+            entity4.setDescription("Execution on machine with more than 4 cores");
+            entity4.setSystemProcessorsMin(4);
+            environmentRepository.save(entity4);
+
+            EnvironmentEntity entity5 = new EnvironmentEntity();
+            entity5.setName("less-32-cores");
+            entity5.setDescription("Execution on machine with less than 32 cores");
+            entity5.setSystemProcessorsMax(32);
+            environmentRepository.save(entity5);
+
+            EnvironmentEntity entity6 = new EnvironmentEntity();
+            entity6.setName("java-17");
+            entity6.setDescription("Execution with Java 17");
+            entity6.setJvmVersion("17.0.1");
+            environmentRepository.save(entity6);
+        }
+
         Stream.of("test-1", "test-2", "test-3")
                 .forEach(name -> {
                     if (random.nextBoolean() || random.nextBoolean()) {
