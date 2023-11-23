@@ -1,10 +1,12 @@
 import React from "react";
-import { useTimeSeries } from "../../hooks/hooks";
+//import { useTimeSeries } from "../../hooks/hooks";
+import { useMeasurements } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
-  const { data } = useTimeSeries(id);
+  //const { data } = useTimeSeries(id);
+  const { data } = useMeasurements(id);
 
   console.log(data, "getting data");
 
