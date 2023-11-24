@@ -9,6 +9,9 @@
     <version>0.4.0-SNAPSHOT</version>
   </parent>
   <artifactId>jmh-client</artifactId>
+  <name>BenchScape JMH Client</name>
+  <description>Client lib to execute JMH benchmark and upload the results to BenchScape</description>
+  <url>https://app.benchscape.cloud</url>
 
   <dependencies>
     <dependency>
@@ -56,6 +59,13 @@
           <compilerArgs>
             <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
           </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jreleaser</groupId>
+        <artifactId>jreleaser-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>

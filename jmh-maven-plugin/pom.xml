@@ -10,6 +10,9 @@
   </parent>
   <artifactId>jmh-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
+  <name>BenchScape JMH Maven Plugin</name>
+  <description>Maven Plugin to execute JMH benchmarks and upload results to BenchScape</description>
+  <url>https://app.benchscape.cloud</url>
 
   <dependencies>
     <dependency>
@@ -50,6 +53,13 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <configuration>
           <goalPrefix>benchscape</goalPrefix>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jreleaser</groupId>
+        <artifactId>jreleaser-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>

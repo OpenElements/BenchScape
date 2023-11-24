@@ -9,6 +9,9 @@
     <version>0.4.0-SNAPSHOT</version>
   </parent>
   <artifactId>jmh-data-model</artifactId>
+  <name>BenchScape JMH data model</name>
+  <description>Data model for JMH benchmark results for BenchScape</description>
+  <url>https://app.benchscape.cloud</url>
 
   <dependencies>
     <dependency>
@@ -21,4 +24,16 @@
       <artifactId>jakarta.validation-api</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jreleaser</groupId>
+        <artifactId>jreleaser-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
