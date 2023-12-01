@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import user from "../../assets/images/user.jpg";
-import { List, House, SignOut, CaretDown } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
+import { CaretDown, List } from "@phosphor-icons/react";
 import { availableLanguages } from "../../i18n";
+import logo from "../../assets/logo.svg";
+import { Link } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -12,181 +12,130 @@ function classNames(...classes) {
 const AppBar = ({ label, menuNavigations, handleChangeLanguage }) => {
   const [setSidebarOpen] = useState(false);
   return (
-    <div className="xl:pl-72">
-      <div className="sticky top-0 z-40 px-4 sm:px-6 xl:px-7 py-5 w-full">
-        <div className="flex items-center h-14 bg-white rounded-lg shadow-lg sm:gap-x-6 gap-x-4 px-5">
-          <div className="xl:hidden flex items-center  xl:gap-x-6 gap-x-5">
+    <div>
+          <div className="lg:hidden flex items-center justify-between gap-5 2xl:px-8 2xl:py-7 px-5 py-4 bg-primary-navy">
+            <Link to="/">
+              <img src={logo} className="h-12 object-contain" alt="Logo" />
+            </Link>
             <button
               type="button"
-              className="-m-2.5 p-2.5 text-gray-500 hover:text-primary-navy transition-colors ease-in-out duration-150"
+              className="-m-2.5 p-2.5 text-white hover:text-primary-green transition-colors ease-in-out duration-150"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
-              <List className="h-6 w-6 fill-current" aria-hidden="true" />
+              <List className="h-7 w-7 fill-current" aria-hidden="true" />
             </button>
-            <div
-              className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"
-              aria-hidden="true"
-            ></div>
           </div>
-          <div className="flex flex-1 gap-x-4 self-stretch justify-end xl:gap-x-6">
-            <div className="flex-1 lg:flex hidden items-center gap-5">
-              <div className="h-full ">
-                <Link
-                  to="/"
-                  className="xl:w-12 w-10 h-full flex items-center justify-center lg:text-primary-navy border-b-2 border-highlight-blue"
-                >
-                  <House className="w-5 h-5 -mb-1" weight="bold" />
-                </Link>
+      <div className="flex items-center bg-winkle 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
+          <div className="flex-1 flex flex-col items-center gap-5">
+            <div className="flex md:flex-row flex-col md:items-center md:justify-between gap-5 text-primary-navy w-full">
+              <div className="space-y-0.5">
+                <p className=" text-[22px] font-semibold">
+                BenchScape V1.1
+                </p>
+                <p className="text-sm text-dark">
+                Sed metus metus scelerisque diam.
+                </p>
               </div>
-              <div className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"></div>
-
-              <Menu as="div" className="relative">
-                <Menu.Button className="-m-1.5 flex items-center p-1.5">
-                  <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
-                    <span className="text-sm leading-6 " aria-hidden="true">
-                      {label}
-                    </span>
-                    <CaretDown
-                      className="ml-2 h-3 w-3 "
-                      weight="fill"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                    {menuNavigations.map((item) => (
-                      <Menu.Item key={item.name}>
-                        {({ active }) => (
-                          <a
-                            href={item.href}
-                            className={classNames(
-                              active ? "bg-gray-50" : "",
-                              "block px-4 py-2 text-sm leading-6 text-gray-900"
-                            )}
-                          >
-                            {item.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-              <div className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"></div>
-              <Menu as="div" className="relative">
-                <Menu.Button className="-m-1.5 flex items-center p-1.5">
-                  <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
-                    <span className="text-sm leading-6 " aria-hidden="true">
-                      {label}
-                    </span>
-                    <CaretDown
-                      className="ml-2 h-3 w-3 "
-                      weight="fill"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                    {menuNavigations.map((item) => (
-                      <Menu.Item key={item.name}>
-                        {({ active }) => (
-                          <a
-                            href={item.href}
-                            className={classNames(
-                              active ? "bg-gray-50" : "",
-                              "block px-4 py-2 text-sm leading-6 text-gray-900"
-                            )}
-                          >
-                            {item.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-              <div className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"></div>
-              <Menu as="div" className="relative">
-                <Menu.Button className="-m-1.5 flex items-center p-1.5">
-                  <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
-                    <span className="text-sm leading-6 " aria-hidden="true">
-                      Select Langauge
-                    </span>
-                    <CaretDown
-                      className="ml-2 h-3 w-3 "
-                      weight="fill"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                    {availableLanguages.map((lang) => (
-                      <Menu.Item key={lang}>
-                        {({ active }) => (
-                          <div
-                            onClick={() => handleChangeLanguage(lang)}
-                            className={classNames(
-                              active ? "bg-gray-50" : "",
-                              "block px-4 py-2 text-sm leading-6 text-gray-900"
-                            )}
-                          >
-                            {lang}
-                          </div>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Items>
-                </Transition>
-              </Menu>
+              <div className="flex items-center gap-2 text-sm">
+                  <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
+                    TableView
+                  </button>
+                  <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
+                    Export
+                  </button>
+                  <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
+                    Settings
+                  </button>
+              </div>
             </div>
-
-            <div className=" flex items-center justify-end gap-5">
-              <Link className="flex items-center gap-3">
-                <div className="w-8 h-8 shrink-0 border-2 border-highlight-blue rounded-full overflow-hidden">
-                  <img src={user} alt="User" className="w-full h-full" />
-                </div>
-                <p className="text-primary-navy text-sm">Margo Doe</p>
-              </Link>
-
-              <div
-                className="w-0.5 h-4 bg-primary-navy/10"
-                aria-hidden="true"
-              ></div>
-              <button className="text-primary-navy hover:text-red-600 transition-colors ease-in-out duration-150">
-                <span className="sr-only">Sign out</span>
-                <SignOut className="w-5 h-5" weight="bold" />
-              </button>
+            <div className="hidden">
+                <div className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"></div>
+                <Menu as="div" className="relative">
+                  <Menu.Button className="-m-1.5 flex items-center p-1.5">
+                    <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
+                      <span className="text-sm leading-6 " aria-hidden="true">
+                        {label}
+                      </span>
+                      <CaretDown
+                        className="ml-2 h-3 w-3 "
+                        weight="fill"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      {menuNavigations.map((item) => (
+                        <Menu.Item key={item.name}>
+                          {({ active }) => (
+                            <a
+                              href={item.href}
+                              className={classNames(
+                                active ? "bg-gray-50" : "",
+                                "block px-4 py-2 text-sm leading-6 text-gray-900"
+                              )}
+                            >
+                              {item.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                <div className="w-0.5 h-4 bg-primary-navy/10 lg:block hidden"></div>
+                <Menu as="div" className="relative">
+                  <Menu.Button className="-m-1.5 flex items-center p-1.5">
+                    <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
+                      <span className="text-sm leading-6 " aria-hidden="true">
+                        Select Langauge
+                      </span>
+                      <CaretDown
+                        className="ml-2 h-3 w-3 "
+                        weight="fill"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute left-0 z-10 mt-3 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      {availableLanguages.map((lang) => (
+                        <Menu.Item key={lang}>
+                          {({ active }) => (
+                            <div
+                              onClick={() => handleChangeLanguage(lang)}
+                              className={classNames(
+                                active ? "bg-gray-50" : "",
+                                "block px-4 py-2 text-sm leading-6 text-gray-900"
+                              )}
+                            >
+                              {lang}
+                            </div>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );
