@@ -1,6 +1,7 @@
 import React from "react";
 import { useMeasurements } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
+import { tableCellStyle, tableHeaderStyle } from "./measurementsStyles";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
@@ -57,20 +58,6 @@ const MeasurementsTableComponent = ({ type }) => {
       )}
     </React.Fragment>
   );
-};
-
-const tableHeaderStyle = {
-  backgroundColor: "#f2f2f2",
-  fontWeight: "bold",
-  border: "1px solid #ddd",
-  padding: "8px",
-  textAlign: "right", // Align numbers to the right
-};
-
-const tableCellStyle = {
-  border: "1px solid #ddd",
-  padding: "8px",
-  textAlign: "right", // Align numbers to the right
 };
 
 export default MeasurementsTableComponent;
