@@ -45,10 +45,10 @@ const HomePage = () => {
                           15
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
-                        <a href="#" className="text-primary-green text-xs group-hover:text-primary-navy transition-colors ease-in-out duration-150">View Graph</a> 
+                        <a href="#" className="text-primary-green text-xs font-medium transition-colors ease-in-out duration-150">View Graph</a> 
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
-                          <a href="#" className="text-primary-green text-xs group-hover:text-primary-navy transition-colors ease-in-out duration-150">View Table</a>
+                          <a href="#" className="text-primary-green text-xs font-medium transition-colors ease-in-out duration-150">View Table</a>
                         </td>
                       </tr>
                       <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
@@ -62,10 +62,10 @@ const HomePage = () => {
                           15
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
-                        <a href="#" className="text-primary-green text-xs group-hover:text-primary-navy transition-colors ease-in-out duration-150">View Graph</a> 
+                        <a href="#" className="text-primary-green font-medium text-xs transition-colors ease-in-out duration-150">View Graph</a> 
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
-                          <a href="#" className="text-primary-green text-xs group-hover:text-primary-navy transition-colors ease-in-out duration-150">View Table</a>
+                          <a href="#" className="text-primary-green font-medium text-xs transition-colors ease-in-out duration-150">View Table</a>
                         </td>
                       </tr>
                     {/* {data.map((benchmark) => (

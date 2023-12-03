@@ -11,6 +11,7 @@ import SettingsPage from "./pages/settings-page";
 // import TimeSeriesGraphComponent from "./components/time-series-graph.component";
 import BenchmarkPage from "./pages/benchmarks-page";
 import EnvironmentsPage from "./pages/environments-page";
+import EnvSettings from "./pages/env-settings";
 import TopNav from "./components/topNav/top-nav.component";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/benchmarks" element={<BenchmarkPage />} />
                   <Route path="/environment" element={<EnvironmentsPage />} />
+                  <Route path="/env-settings" element={<EnvSettings />} />
                   <Route
                     path="/table/:id"
                     element={<MeasurementsTableComponent type="table" />}

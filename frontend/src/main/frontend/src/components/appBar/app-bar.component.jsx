@@ -13,7 +13,7 @@ const AppBar = ({ label, menuNavigations, handleChangeLanguage }) => {
   const [setSidebarOpen] = useState(false);
   return (
     <div>
-          <div className="lg:hidden flex items-center justify-between gap-5 2xl:px-8 2xl:py-7 px-5 py-4 bg-primary-navy">
+          <div className="xl:hidden flex items-center justify-between gap-5 2xl:px-8 2xl:py-7 px-5 py-4 bg-primary-navy">
             <Link to="/">
               <img src={logo} className="h-12 object-contain" alt="Logo" />
             </Link>

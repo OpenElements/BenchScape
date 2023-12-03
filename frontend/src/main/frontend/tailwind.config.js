@@ -17,12 +17,13 @@ module.exports = {
           blue: '#2926FC',
         },
         azure: '#E1F0EC',
-        winkle: '#D4D4FE'
+        winkle: '#D4D4FE',
+        'alice-blue': '#DFF1FD',
       }
     },
   },
   plugins: [
-
+    require('@tailwindcss/forms'),
   ],
 }
 
