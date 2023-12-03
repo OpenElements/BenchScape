@@ -81,6 +81,12 @@ public class JmhMojo extends AbstractMojo {
     @Parameter(defaultValue = "https://backend.benchscape.cloud")
     private String url;
 
+    @Parameter
+    private String apiPrincipal;
+
+    @Parameter
+    private String apiKey;
+
     @Component
     private ArtifactHandlerManager artifactHandlerManager;
 
@@ -170,6 +176,8 @@ public class JmhMojo extends AbstractMojo {
         getLog().debug("PARAM 'file'=" + file);
         getLog().debug("PARAM 'upload'=" + upload);
         getLog().debug("PARAM 'url'=" + url);
+        getLog().debug("PARAM 'apiPrincipal'=" + apiPrincipal);
+        getLog().debug("PARAM 'apiKey'=" + apiKey);
 
         final List<String> command = new ArrayList<>();
         command.add(javaProcess);
@@ -186,6 +194,10 @@ public class JmhMojo extends AbstractMojo {
         }
         command.add("--url");
         command.add(url);
+        command.add("--apiPrincipal");
+        command.add(apiPrincipal);
+        command.add("--apiKey");
+        command.add(apiKey);
         getLog().debug("Running forked execution using: " + command);
 
         final ProcessBuilder processBuilder = new ProcessBuilder(command);

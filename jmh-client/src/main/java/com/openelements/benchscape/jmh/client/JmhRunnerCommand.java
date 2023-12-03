@@ -1,5 +1,6 @@
 package com.openelements.benchscape.jmh.client;
 
+import com.openelements.benchscape.jmh.client.io.RestHandlerConfig;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.concurrent.Callable;
@@ -22,17 +23,26 @@ public class JmhRunnerCommand implements Callable<Integer> {
             "--path"}, description = "The path of the directory to write the results to. If null, the default directory is used")
     private Path resultsPath;
 
+    @Parameters(paramLabel = "INCLUDES", description = "The names of the benchmarks to run. If empty, all benchmarks are run")
+    private Collection<String> includes;
+
     @Option(names = {
             "--url"}, description = "The base URL of the server to post the results to. If null, the default server is used")
     private String uploadBaseUrl;
 
-    @Parameters(paramLabel = "INCLUDES", description = "The names of the benchmarks to run. If empty, all benchmarks are run")
-    private Collection<String> includes;
+    @Option(names = {
+            "--apiPrincipal"}, description = "TODO")
+    private String apiPrincipal;
+
+    @Option(names = {
+            "--apiKey"}, description = "TODO")
+    private String apiKey;
 
     @Override
     public Integer call() {
         try {
-            new JmhRunner(uploadResults, writeResults, resultsPath, uploadBaseUrl, includes).execute();
+            new JmhRunner(uploadResults, writeResults, resultsPath,
+                    new RestHandlerConfig(uploadBaseUrl, apiPrincipal, apiKey), includes).execute();
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
