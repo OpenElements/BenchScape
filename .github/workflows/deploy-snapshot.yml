@@ -32,4 +32,4 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.OPEN_ELEMENTS_GPG_PRIVATE_KEY }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.OPEN_ELEMENTS_GPG_PASSPHRASE }}
           JRELEASER_GITHUB_TOKEN: FOOBAR
-        run: ./mvnw -Pdeploy deploy jreleaser:deploy
+        run: ./mvnw -Pdeploy clean deploy && ./mvnw jreleaser:deploy
