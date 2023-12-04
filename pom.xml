@@ -247,8 +247,6 @@
                     <active>ALWAYS</active>
                     <url>https://s01.oss.sonatype.org/service/local</url>
                     <snapshotUrl>https://s01.oss.sonatype.org/content/repositories/snapshots/</snapshotUrl>
-                    <closeRepository>false</closeRepository>
-                    <releaseRepository>false</releaseRepository>
                     <stagingRepositories>target/staging-deploy</stagingRepositories>
                   </maven-central>
                 </nexus2>
