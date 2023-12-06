@@ -1,5 +1,3 @@
-import react from "react";
-
 function Select(props) {
   return (
     <div className="w-auto">

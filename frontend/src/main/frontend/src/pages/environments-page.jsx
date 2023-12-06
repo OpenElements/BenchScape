@@ -1,12 +1,12 @@
 import React from "react";
 import Select from "../components/tags/select";
 
-const OSList = [
-  { id: 1, value: "11", name: "Windows 11" },
-  { id: 2, value: "10", name: "Windows 10" },
-  { id: 3, value: "7", name: "Windows 7" },
-  { id: 4, value: "mac", name: "Mac OS" },
-];
+// const OSList = [
+//   { id: 1, value: "11", name: "Windows 11" },
+//   { id: 2, value: "10", name: "Windows 10" },
+//   { id: 3, value: "7", name: "Windows 7" },
+//   { id: 4, value: "mac", name: "Mac OS" },
+// ];
 
 function EnvironmentsPage() {
   return (
