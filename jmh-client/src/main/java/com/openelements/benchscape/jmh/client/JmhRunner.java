@@ -2,6 +2,7 @@ package com.openelements.benchscape.jmh.client;
 
 import com.openelements.benchscape.jmh.client.io.FileHandler;
 import com.openelements.benchscape.jmh.client.io.RestHandler;
+import com.openelements.benchscape.jmh.client.io.RestHandlerConfig;
 import com.openelements.benchscape.jmh.client.jmh.BenchmarkFactory;
 import com.openelements.benchscape.jmh.client.jmh.JmhExecutor;
 import com.openelements.benchscape.jmh.model.BenchmarkExecution;
@@ -9,6 +10,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import org.openjdk.jmh.results.RunResult;
 
@@ -27,7 +29,7 @@ public class JmhRunner {
 
     private final Path resultsPath;
 
-    private final String uploadBaseUrl;
+    private final RestHandlerConfig restHandlerConfig;
 
     private final Collection<String> includes;
 
@@ -45,25 +47,26 @@ public class JmhRunner {
      * @param writeResults  whether to write the results to disc
      */
     public JmhRunner(boolean uploadResults, boolean writeResults) {
-        this(uploadResults, writeResults, null, null, null);
+        this(uploadResults, writeResults, null, new RestHandlerConfig(), null);
     }
 
     /**
      * Constructor.
      *
-     * @param uploadResults whether to post the results to a server
-     * @param writeResults  whether to write the results to disc
-     * @param resultsPath   the path of  the directory to write the results to. If null, the default directory is used
-     * @param uploadBaseUrl the base URL of the server to post the results to. If null, the default server is used
-     * @param includes      the names of the benchmarks to run. If empty, all benchmarks are run
+     * @param uploadResults     whether to post the results to a server
+     * @param writeResults      whether to write the results to disc
+     * @param resultsPath       the path of  the directory to write the results to. If null, the default directory is
+     *                          used
+     * @param restHandlerConfig TODO
+     * @param includes          the names of the benchmarks to run. If empty, all benchmarks are run
      */
     public JmhRunner(boolean uploadResults, boolean writeResults, @Nullable Path resultsPath,
-            @Nullable String uploadBaseUrl,
+            @Nullable RestHandlerConfig restHandlerConfig,
             @Nullable Collection<String> includes) {
         this.uploadResults = uploadResults;
         this.writeResults = writeResults;
         this.resultsPath = resultsPath;
-        this.uploadBaseUrl = uploadBaseUrl;
+        this.restHandlerConfig = Objects.requireNonNull(restHandlerConfig, "restHandlerConfig must not be null");
         if (includes == null) {
             this.includes = Set.of();
         } else {
@@ -87,12 +90,7 @@ public class JmhRunner {
         final Collection<BenchmarkExecution> benchmarkExecutions = BenchmarkFactory.convert(runResults);
 
         if (uploadResults) {
-            final RestHandler restHandler;
-            if (uploadBaseUrl == null) {
-                restHandler = new RestHandler();
-            } else {
-                restHandler = new RestHandler(uploadBaseUrl);
-            }
+            final RestHandler restHandler = new RestHandler(restHandlerConfig);
             restHandler.post(benchmarkExecutions);
         }
 

@@ -70,7 +70,7 @@
       <dependency>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-annotations</artifactId>
-        <version>4.8.1</version>
+        <version>4.8.2</version>
       </dependency>
       <dependency>
         <groupId>org.openjdk.jmh</groupId>
@@ -95,7 +95,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
-        <version>3.9.5</version>
+        <version>3.9.6</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
@@ -105,7 +105,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-core</artifactId>
-        <version>3.9.5</version>
+        <version>3.9.6</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -115,7 +115,7 @@
       <dependency>
         <groupId>de.codecentric</groupId>
         <artifactId>spring-boot-admin-starter-client</artifactId>
-        <version>3.1.7</version>
+        <version>3.1.8</version>
       </dependency>
       <dependency>
         <groupId>org.springdoc</groupId>
@@ -181,7 +181,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.6.2</version>
+          <version>3.6.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -247,8 +247,6 @@
                     <active>ALWAYS</active>
                     <url>https://s01.oss.sonatype.org/service/local</url>
                     <snapshotUrl>https://s01.oss.sonatype.org/content/repositories/snapshots/</snapshotUrl>
-                    <closeRepository>false</closeRepository>
-                    <releaseRepository>false</releaseRepository>
                     <stagingRepositories>target/staging-deploy</stagingRepositories>
                   </maven-central>
                 </nexus2>

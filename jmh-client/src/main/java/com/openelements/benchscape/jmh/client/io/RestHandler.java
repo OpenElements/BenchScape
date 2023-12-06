@@ -20,25 +20,29 @@ import java.util.Objects;
 public class RestHandler {
 
     public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+    public static final String BENCHSCAPE_API_PRINCIPAL_HEADER_NAME = "Benchscape-Api-Principal";
+
+    public static final String BENCHSCAPE_API_KEY_HEADER_NAME = "Benchscape-Api-Key";
+
     public static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    public static final String LOCALHOST = "http://localhost:8080";
     private final String baseUrl;
+
+    private final String apiPrincipal;
+
+    private final String apiKey;
 
     /**
      * Creates a new instance.
      *
-     * @param baseUrl the base url of the endpoint
+     * @param config the config to call the endpoint
      */
-    public RestHandler(@NonNull String baseUrl) {
-        this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl must not be null");
+    public RestHandler(@NonNull RestHandlerConfig config) {
+        Objects.requireNonNull(config, "config must not be null");
+        this.baseUrl = config.getBaseUrl();
+        this.apiPrincipal = config.getApiPrincipal();
+        this.apiKey = config.getApiKey();
     }
 
-    /**
-     * Creates a new instance that uses {@code http://localhost:8080} as base url for the endpoint.
-     */
-    public RestHandler() {
-        this(LOCALHOST);
-    }
 
     /***
      * Posts the benchmark execution to the endpoint.
@@ -62,11 +66,18 @@ public class RestHandler {
      */
     private void post(@NonNull String json) throws URISyntaxException, IOException, InterruptedException {
         final BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(json);
-        final HttpRequest request = HttpRequest.newBuilder()
+
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
                 .uri(getUrl())
-                .header(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_HEADER_VALUE)
                 .POST(bodyPublisher)
-                .build();
+                .header(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_HEADER_VALUE);
+        if (apiPrincipal != null) {
+            builder = builder.header(BENCHSCAPE_API_PRINCIPAL_HEADER_NAME, apiPrincipal);
+        }
+        if (apiKey != null) {
+            builder = builder.header(BENCHSCAPE_API_KEY_HEADER_NAME, apiKey);
+        }
+        final HttpRequest request = builder.build();
 
         final HttpClient httpClient = HttpClient.newBuilder().build();
         final BodyHandler<Void> bodyHandler = HttpResponse.BodyHandlers.discarding();
