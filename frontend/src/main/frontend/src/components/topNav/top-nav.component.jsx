@@ -1,7 +1,7 @@
 import AppBar from "../appBar/app-bar.component";
 import { useTranslation } from "react-i18next";
 
-const TopNav = () => {
+const TopNav = ({ setSidebarOpen }) => {
   const {
     i18n: { changeLanguage },
   } = useTranslation();
@@ -18,6 +18,7 @@ const TopNav = () => {
       label="Menu button"
       menuNavigations={menuNavigations}
       handleChangeLanguage={handleChangeLanguage}
+      setSidebarOpen={setSidebarOpen}
     />
   );
 };
