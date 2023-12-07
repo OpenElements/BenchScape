@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "../components/tags/select";
+import { useEnvironmentMetadata, useEnvironments } from "../hooks/hooks";
 
 // const OSList = [
 //   { id: 1, value: '11', name: 'Windows 11' },
@@ -9,24 +10,34 @@ import Select from "../components/tags/select";
 // ]
 
 function EnvironmentsPage() {
+  const { data: environments } = useEnvironments();
+  const { data: osOptions } = useEnvironmentMetadata("os");
+  const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
+  const { data: archOptions } = useEnvironmentMetadata("arch");
+  const { data: memoryOptions } = useEnvironmentMetadata("memory");
+  const { data: jvmVersionOptions } = useEnvironmentMetadata("jvmVersion");
+  const { data: coresOptions } = useEnvironmentMetadata("cores");
+  const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
+  const { data: jvhVersionOptions } = useEnvironmentMetadata("jvhVersion");
+  // const { data: osOptions } = useEnvironmentMetadata('os');
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
         <div className="flex flex-wrap gap-x-4 gap-y-6">
-          <Select label="OS" />
-          <Select label="OS Version" />
-          <Select label="Architecture" />
-          <Select label="CPU Cores" />
-          <Select label="Memory" />
-          <Select label="JVM Name" />
-          <Select label="JVM Version" />
-          <Select label="JMH Version" />
-          <Select label="Thread Count" />
-          <Select label="Fork Count" />
+          <Select label="OS" options={osOptions} />
+          <Select label="OS Version" options={osVersionOptions} />
+          <Select label="Architecture" options={archOptions} />
+          <Select label="CPU Cores" options={coresOptions} />
+          <Select label="Memory" options={memoryOptions} />
+          <Select label="JVM Name" options={jvmNameOptions} />
+          <Select label="JVM Version" options={jvmVersionOptions} />
+          <Select label="JMH Version" options={jvhVersionOptions} />
+          {/* <Select label="Thread Count" /> */}
+          {/* <Select label="Fork Count" />
           <Select label="Warmup Interactions" />
           <Select label="Warmup Time" />
           <Select label="Measurement Interactions" />
-          <Select label="Measurement Time" />
+          <Select label="Measurement Time" /> */}
         </div>
       </div>
 
@@ -62,13 +73,7 @@ function EnvironmentsPage() {
                       >
                         JMH
                       </th>
-                      <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
-                      >
-                        Threads
-                      </th>
-                      <th
+                      {/* <th
                         scope="col"
                         className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
                       >
@@ -85,88 +90,35 @@ function EnvironmentsPage() {
                         className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
                       >
                         Measurement
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                        Test Enviroment
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Ubuntu 24.0.5
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Temurin 11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        6
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                    </tr>
-                    <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                        Test Enviroment
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Ubuntu 24.0.5
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Temurin 11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        6
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                    </tr>
-                    <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                        Test Enviroment
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Ubuntu 24.0.5
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        Temurin 11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        11.0.7
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        6
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                      <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                        4 X 8 sec
-                      </td>
-                    </tr>
+                    {environments?.map((environment) => (
+                      <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
+                          {environment.name ?? "--"}
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          {environment.osName ?? "--"}
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          {environment.jvmVersion ?? "--"}
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          {environment.jmhVersion ?? "--"}
+                        </td>
+                        {/* <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          4
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          4 X 8 sec
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          4 X 8 sec
+                        </td> */}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

@@ -18,4 +18,8 @@ export function useMeasurements(id) {
   );
 }
 
+export function useEnvironmentMetadata(data) {
+  return useSwr(`${apiUrl}/api/v2/environment/metadata/${data}`, dataFetcher);
+}
+
 // SWR documentation: https://swr.vercel.app/docs/getting-started
