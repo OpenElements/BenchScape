@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Dialog, Transition } from "@headlessui/react";
 import { CirclesThree, Wrench, Gear, Globe } from "@phosphor-icons/react";
 import { Link, useLocation } from "react-router-dom";
-import { useBenchMarks } from "../../hooks/hooks";
+import { useBenchMarks, useEnvironments } from "../../hooks/hooks";
 import { availableLanguages } from "../../i18n";
 import { Menu } from "@headlessui/react";
 import logo from "../../assets/logo.svg";
@@ -18,20 +18,21 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
     i18n: { changeLanguage },
   } = useTranslation();
   const { pathname } = useLocation();
-  const { data } = useBenchMarks();
+  const { data: benchmarks } = useBenchMarks();
+  const { data: environments } = useEnvironments();
 
   const navigation = [
     {
       name: t("Benchmarks"),
       href: "/benchmarks",
       icon: CirclesThree,
-      count: data ? data.length : 0,
+      count: benchmarks ? benchmarks.length : 0,
     },
     {
       name: t("Environments"),
       href: "/environment",
       icon: Wrench,
-      count: 0,
+      count: environments ? environments.length : 0,
     },
   ];
 
