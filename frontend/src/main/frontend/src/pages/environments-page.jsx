@@ -10,7 +10,7 @@ import { useEnvironmentMetadata, useEnvironments } from "../hooks/hooks";
 // ]
 
 function EnvironmentsPage() {
-  const { data: environments, isLoading } = useEnvironments();
+  const { data: environments } = useEnvironments();
   const { data: osOptions } = useEnvironmentMetadata("os");
   const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
   const { data: archOptions } = useEnvironmentMetadata("arch");
