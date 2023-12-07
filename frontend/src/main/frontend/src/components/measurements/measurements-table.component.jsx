@@ -1,7 +1,6 @@
 import React from "react";
 import { useMeasurements } from "../../hooks/hooks";
 import { useParams } from "react-router-dom";
-import { tableCellStyle, tableHeaderStyle } from "./measurementsStyles";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
