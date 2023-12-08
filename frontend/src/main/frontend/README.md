@@ -34,6 +34,8 @@ BenchScape is a web application that consists of a React frontend and a Spring B
 
     d. Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
 
+    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
+
 2.  **_Scenario B: Fetching Data from a Cloud-Based Backend_**
 
     If you want to run the frontend and have it fetch data from a backend hosted in the cloud, follow these steps:
@@ -47,6 +49,8 @@ BenchScape is a web application that consists of a React frontend and a Spring B
         REACT_APP_API_URL=https://your-cloud-backend.com/api
 
     d. Start the React frontend for production deployment (e.g., using npm build and a suitable web server). The frontend will now make API requests to your cloud-based backend.
+
+    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
 
 `Receive and Display Data:` The frontend receives JSON data from the backend as responses to its API requests. It then processes this data and displays it in a user-friendly format, such as a table.
 
