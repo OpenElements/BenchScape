@@ -106,13 +106,23 @@ public class DebugEndpoint {
         Random random = new Random(System.currentTimeMillis());
 
         if (environmentRepository.findAll().isEmpty()) {
-            EnvironmentEntity entity1 = new EnvironmentEntity();
-            entity1.setName("benchScape-main-mac");
-            entity1.setDescription("BenchScape main branch on MacOS");
-            entity1.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
-            entity1.setGitBranch("main");
-            entity1.setOsName("Mac OS X");
-            environmentRepository.save(entity1);
+            EnvironmentEntity entityMac1 = new EnvironmentEntity();
+            entityMac1.setName("benchScape-main-mac-14");
+            entityMac1.setDescription("BenchScape main branch on MacOS");
+            entityMac1.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityMac1.setGitBranch("main");
+            entityMac1.setOsName("Mac OS X");
+            entityMac1.setOsVersion("14.1.1");
+            environmentRepository.save(entityMac1);
+
+            EnvironmentEntity entityMac2 = new EnvironmentEntity();
+            entityMac2.setName("benchScape-main-mac-13");
+            entityMac2.setDescription("BenchScape main branch on MacOS");
+            entityMac2.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityMac2.setGitBranch("main");
+            entityMac2.setOsName("Mac OS X");
+            entityMac2.setOsVersion("13.0.0");
+            environmentRepository.save(entityMac2);
 
             EnvironmentEntity entity2 = new EnvironmentEntity();
             entity2.setName("benchScape-main-win");
@@ -145,8 +155,24 @@ public class DebugEndpoint {
             EnvironmentEntity entity6 = new EnvironmentEntity();
             entity6.setName("java-17");
             entity6.setDescription("Execution with Java 17");
+            entity6.setJvmName("Eclipse Temurin");
             entity6.setJvmVersion("17.0.1");
             environmentRepository.save(entity6);
+
+            EnvironmentEntity entityFull = new EnvironmentEntity();
+            entityFull.setName("A concrete system");
+            entityFull.setDescription("A system with all definitions");
+            entityFull.setOsName("Linux");
+            entityFull.setOsVersion("5.4.0-90-generic");
+            entityFull.setSystemProcessors(8);
+            entityFull.setSystemMemory(68_719_476_736L);
+            entityFull.setSystemArch("amd64");
+            entityFull.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityFull.setGitBranch("main");
+            entityFull.setJvmName("Eclipse Temurin");
+            entityFull.setJvmVersion("21.0.1");
+            entityFull.setJmhVersion("1.37");
+            environmentRepository.save(entityFull);
         }
 
         Stream.of("test-1", "test-2", "test-3")
