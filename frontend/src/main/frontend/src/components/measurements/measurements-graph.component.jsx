@@ -1,6 +1,10 @@
 import React from "react";
 import 'chartjs-adapter-date-fns';
-import {useMeasurements, useMeasurementsInterpolated} from "../../hooks/hooks";
+import {
+  useMeasurements,
+  useMeasurementsInterpolated,
+  useMeasurementsSmooth
+} from "../../hooks/hooks";
 import {useParams} from "react-router-dom";
 import {
   CategoryScale,
@@ -19,14 +23,23 @@ import {Line} from "react-chartjs-2";
 const MeasurementsGraphComponent = ({type}) => {
   const {id} = useParams();
   const realData = useMeasurements(id);
+  const smoothData = useMeasurementsSmooth(id);
 
-  const spline10 = useMeasurementsInterpolated(id, 'LOESS', 1000);
-  const spline1000 = useMeasurementsInterpolated(id, 'LINEAR', 100);
+  const loess10 = useMeasurementsInterpolated(id, 'LOESS', 10);
+  const loess100 = useMeasurementsInterpolated(id, 'LOESS', 100);
+  const loess1000 = useMeasurementsInterpolated(id, 'LOESS', 1000);
 
-  if (realData.isLoading || spline10.isLoading || spline1000.isLoading) {
+  const spline10 = useMeasurementsInterpolated(id, 'SPLINE', 10);
+  const spline100 = useMeasurementsInterpolated(id, 'SPLINE', 100);
+  const spline1000 = useMeasurementsInterpolated(id, 'SPLINE', 1000);
+
+  const linear10 = useMeasurementsInterpolated(id, 'LINEAR', 10);
+  const linear100 = useMeasurementsInterpolated(id, 'LINEAR', 100);
+  const linear1000 = useMeasurementsInterpolated(id, 'LINEAR', 1000);
+
+  if (realData.isLoading) {
     return <div>Loading...</div>;
   }
-  console.log(spline10.data, "getting data");
 
   ChartJS.register(
       CategoryScale,
@@ -45,23 +58,89 @@ const MeasurementsGraphComponent = ({type}) => {
         label: `REAL DATA`,
         data: realData.data?.map((d) => ({x: d.timestamp, y: d.value})),
         borderWidth: 4,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
       },
       {
-        label: `SPLINE 1`,
-        data: spline10.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        label: `SMOOTH DATA`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        borderColor: '#4233c9',
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+      },/*
+      {
+        label: `LOESS 10`,
+        data: loess10.data?.map((d) => ({x: d.timestamp, y: d.value})),
         borderWidth: 2,
         cubicInterpolationMode: 'monotone',
         tension: 0.4,
-        borderColor: '#99cd15',
+        borderColor: '#40de8a',
       },
       {
-        label: `SPLINE 2`,
-        data: spline1000.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        label: `LOESS 100`,
+        data: loess100.data?.map((d) => ({x: d.timestamp, y: d.value})),
         borderWidth: 2,
         cubicInterpolationMode: 'monotone',
         tension: 0.4,
         borderColor: '#36A2EB',
       },
+      {
+        label: `LOESS 1000`,
+        data: loess1000.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#9b821f',
+      },
+      {
+        label: `SPAN 10`,
+        data: spline10.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#40de8a',
+      },
+      {
+        label: `SPAN 100`,
+        data: spline100.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#36A2EB',
+      },
+      {
+        label: `SPAN 1000`,
+        data: spline1000.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#9b821f',
+      },
+      {
+        label: `LINEAR 10`,
+        data: linear10.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#40de8a',
+      },
+         {
+           label: `LINEAR 100`,
+           data: linear100.data?.map((d) => ({x: d.timestamp, y: d.value})),
+           borderWidth: 2,
+           cubicInterpolationMode: 'monotone',
+           tension: 0.4,
+           borderColor: '#36A2EB',
+         },
+         {
+           label: `LINEAR 1000`,
+           data: linear1000.data?.map((d) => ({x: d.timestamp, y: d.value})),
+           borderWidth: 2,
+           cubicInterpolationMode: 'monotone',
+           tension: 0.4,
+           borderColor: '#9b821f',
+         },'*/
     ],
   };
 

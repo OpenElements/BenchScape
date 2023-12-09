@@ -18,6 +18,13 @@ export function useMeasurements(id) {
   );
 }
 
+export function useMeasurementsSmooth(id) {
+  return useSwr(
+      `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}&smooth=true`,
+      dataFetcher
+  );
+}
+
 export function useMeasurementsInterpolated(id, interpolationType, points) {
   return useSwr(
       `${apiUrl}/api/v2/measurement/findInterpolated?benchmarkId=${id}&interpolationType=${interpolationType}&interpolationPoints=${points}`,
