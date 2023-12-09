@@ -16,28 +16,24 @@ public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double 
         Objects.requireNonNull(timestamp, "timestamp must not be null");
         Objects.requireNonNull(unit, "unit must not be null");
 
-//        if (value < 0.0d) {
-//            throw new IllegalArgumentException("value '" + value + "' must be >= 0.0d");
-//        }
-
-//        if (min != null) {
-//            if (value < min) {
-//                throw new IllegalStateException("value '" + value + "' must be >= min '" + min + "'");
-//            }
-//        }
-
-//        if (max != null) {
-//            if (value > max) {
-//                throw new IllegalStateException("value '" + value + "' must be <= max '" + max + "'");
-//            }
-//        }
-
-//        if (min != null && max != null) {
-//            if (min > max) {
-//                throw new IllegalStateException("min '" + min + "' must be <= max '" + max + "'");
-//            }
-//        }
-
+        if (value < 0.0d) {
+            throw new IllegalArgumentException("value '" + value + "' must be >= 0.0d");
+        }
+        if (min != null) {
+            if (value < min) {
+                throw new IllegalStateException("value '" + value + "' must be >= min '" + min + "'");
+            }
+        }
+        if (max != null) {
+            if (value > max) {
+                throw new IllegalStateException("value '" + value + "' must be <= max '" + max + "'");
+            }
+        }
+        if (min != null && max != null) {
+            if (min > max) {
+                throw new IllegalStateException("min '" + min + "' must be <= max '" + max + "'");
+            }
+        }
     }
 
     public Measurement withUnit(@NonNull BenchmarkUnit unit) {
