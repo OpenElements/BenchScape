@@ -1,67 +1,66 @@
 import React from "react";
-import { useMeasurements } from "../../hooks/hooks";
-import { useParams } from "react-router-dom";
+import 'chartjs-adapter-date-fns';
+import {useMeasurements, useMeasurementsInterpolated} from "../../hooks/hooks";
+import {useParams} from "react-router-dom";
 import {
-  Chart as ChartJS,
   CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
+  Chart as ChartJS,
   Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip
 } from "chart.js";
+import {enUS} from 'date-fns/locale';
+import {Line} from "react-chartjs-2";
 
-import { Line } from "react-chartjs-2";
+const MeasurementsGraphComponent = ({type}) => {
+  const {id} = useParams();
+  const realData = useMeasurements(id);
 
-const MeasurementsGraphComponent = ({ type }) => {
-  const { id } = useParams();
-  const { data, isLoading } = useMeasurements(id);
+  const spline10 = useMeasurementsInterpolated(id, 'LOESS', 1000);
+  const spline1000 = useMeasurementsInterpolated(id, 'LINEAR', 100);
 
-  console.log(data, "getting data");
-  if (isLoading) {
+  if (realData.isLoading || spline10.isLoading || spline1000.isLoading) {
     return <div>Loading...</div>;
   }
+  console.log(spline10.data, "getting data");
 
   ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend,
+      TimeScale
   );
 
   let graphData = {
-    labels: data?.map((x) => {
-      return new Date(x.timestamp).toLocaleString("default", {
-        day: "numeric",
-        year: "numeric",
-        month: "short",
-      });
-    }),
     datasets: [
       {
-        label: `OPERATIONS_PER_MILLISECOND`,
-        data: data?.map((x) => x.min),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
+        label: `REAL DATA`,
+        data: realData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 4,
+      },
+      {
+        label: `SPLINE 1`,
+        data: spline10.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#99cd15',
+      },
+      {
+        label: `SPLINE 2`,
+        data: spline1000.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderWidth: 2,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        borderColor: '#36A2EB',
       },
     ],
   };
@@ -71,7 +70,12 @@ const MeasurementsGraphComponent = ({ type }) => {
     scales: {
       y: {},
       x: {
-        stepSize: 5,
+        type: 'time',
+        adapters: {
+          date: {
+            locale: enUS,
+          },
+        },
       },
     },
     legend: {
@@ -82,9 +86,9 @@ const MeasurementsGraphComponent = ({ type }) => {
   };
 
   return (
-    <div>
-      <Line data={graphData} height={800} options={options} />
-    </div>
+      <div>
+        <Line data={graphData} height={800} options={options}/>
+      </div>
   );
 };
 
