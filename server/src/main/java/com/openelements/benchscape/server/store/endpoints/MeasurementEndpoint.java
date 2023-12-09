@@ -7,6 +7,7 @@ import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.benchscape.server.store.data.DateTimePeriode;
 import com.openelements.benchscape.server.store.data.Measurement;
 import com.openelements.benchscape.server.store.data.MeasurementQuery;
+import com.openelements.benchscape.server.store.math.InterpolationUtils;
 import com.openelements.benchscape.server.store.services.MeasurementService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.LocalDateTime;
@@ -56,7 +57,7 @@ public class MeasurementEndpoint {
                 queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
         final List<Measurement> measurements = measurementService.find(query);
         if (splineInterpolation) {
-            return measurementService.withSplineInterpolation(measurements, splineInterpolationSteps);
+            return InterpolationUtils.withSplineInterpolation(measurements, splineInterpolationSteps);
         }
         return measurements;
     }
