@@ -8,6 +8,8 @@ public class EndpointsConstants {
 
     public final static String ALL = "/all";
 
+    public final static String COUNT = "/count";
+
     public final static String FIND = "/find";
 
 }

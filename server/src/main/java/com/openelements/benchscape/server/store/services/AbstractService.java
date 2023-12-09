@@ -67,4 +67,8 @@ public abstract class AbstractService<ENTITY extends EntityBase, DAO> {
         Objects.requireNonNull(id, "id must not be null");
         getRepository().deleteById(id);
     }
+
+    public long getCount() {
+        return getRepository().count();
+    }
 }

@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.endpoints;
 
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.ALL;
+import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.COUNT;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
 import com.openelements.benchscape.server.store.data.Benchmark;
@@ -31,4 +32,8 @@ public class BenchmarkEndpoint {
         return benchmarkService.getAll();
     }
 
+    @GetMapping(COUNT)
+    public long getCount() {
+        return benchmarkService.getCount();
+    }
 }

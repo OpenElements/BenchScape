@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.endpoints;
 
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.ALL;
+import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.COUNT;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.FIND;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
@@ -49,6 +50,11 @@ public class BenchmarkEnvironmentEndpoint {
     @GetMapping(FIND)
     public Environment find(@RequestParam final String id) {
         return environmentService.find(id);
+    }
+
+    @GetMapping(COUNT)
+    public long getCount() {
+        return environmentService.getCount();
     }
 
     @PostMapping
