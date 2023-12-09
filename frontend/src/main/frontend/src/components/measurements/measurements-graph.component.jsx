@@ -1,11 +1,11 @@
 import React from "react";
-import 'chartjs-adapter-date-fns';
+import "chartjs-adapter-date-fns";
 import {
   useMeasurements,
-  useMeasurementsInterpolated,
-  useMeasurementsSmooth
+  // useMeasurementsInterpolated,
+  useMeasurementsSmooth,
 } from "../../hooks/hooks";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -15,60 +15,60 @@ import {
   PointElement,
   TimeScale,
   Title,
-  Tooltip
+  Tooltip,
 } from "chart.js";
-import {enUS} from 'date-fns/locale';
-import {Line} from "react-chartjs-2";
+import { enUS } from "date-fns/locale";
+import { Line } from "react-chartjs-2";
 
-const MeasurementsGraphComponent = ({type}) => {
-  const {id} = useParams();
+const MeasurementsGraphComponent = ({ type }) => {
+  const { id } = useParams();
   const realData = useMeasurements(id);
   const smoothData = useMeasurementsSmooth(id);
 
-  const loess10 = useMeasurementsInterpolated(id, 'LOESS', 10);
-  const loess100 = useMeasurementsInterpolated(id, 'LOESS', 100);
-  const loess1000 = useMeasurementsInterpolated(id, 'LOESS', 1000);
+  // const loess10 = useMeasurementsInterpolated(id, 'LOESS', 10);
+  // const loess100 = useMeasurementsInterpolated(id, 'LOESS', 100);
+  // const loess1000 = useMeasurementsInterpolated(id, 'LOESS', 1000);
 
-  const spline10 = useMeasurementsInterpolated(id, 'SPLINE', 10);
-  const spline100 = useMeasurementsInterpolated(id, 'SPLINE', 100);
-  const spline1000 = useMeasurementsInterpolated(id, 'SPLINE', 1000);
+  // const spline10 = useMeasurementsInterpolated(id, 'SPLINE', 10);
+  // const spline100 = useMeasurementsInterpolated(id, 'SPLINE', 100);
+  // const spline1000 = useMeasurementsInterpolated(id, 'SPLINE', 1000);
 
-  const linear10 = useMeasurementsInterpolated(id, 'LINEAR', 10);
-  const linear100 = useMeasurementsInterpolated(id, 'LINEAR', 100);
-  const linear1000 = useMeasurementsInterpolated(id, 'LINEAR', 1000);
+  // const linear10 = useMeasurementsInterpolated(id, 'LINEAR', 10);
+  // const linear100 = useMeasurementsInterpolated(id, 'LINEAR', 100);
+  // const linear1000 = useMeasurementsInterpolated(id, 'LINEAR', 1000);
 
   if (realData.isLoading) {
     return <div>Loading...</div>;
   }
 
   ChartJS.register(
-      CategoryScale,
-      LinearScale,
-      PointElement,
-      LineElement,
-      Title,
-      Tooltip,
-      Legend,
-      TimeScale
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    TimeScale
   );
 
   let graphData = {
     datasets: [
       {
         label: `REAL DATA`,
-        data: realData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        data: realData.data?.map((d) => ({ x: d.timestamp, y: d.value })),
         borderWidth: 4,
-        cubicInterpolationMode: 'monotone',
+        cubicInterpolationMode: "monotone",
         tension: 0.4,
       },
       {
         label: `SMOOTH DATA`,
-        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        data: smoothData.data?.map((d) => ({ x: d.timestamp, y: d.value })),
         borderWidth: 2,
-        borderColor: '#4233c9',
-        cubicInterpolationMode: 'monotone',
+        borderColor: "#4233c9",
+        cubicInterpolationMode: "monotone",
         tension: 0.4,
-      },/*
+      } /*
       {
         label: `LOESS 10`,
         data: loess10.data?.map((d) => ({x: d.timestamp, y: d.value})),
@@ -140,7 +140,7 @@ const MeasurementsGraphComponent = ({type}) => {
            cubicInterpolationMode: 'monotone',
            tension: 0.4,
            borderColor: '#9b821f',
-         },'*/
+         },'*/,
     ],
   };
 
@@ -149,7 +149,7 @@ const MeasurementsGraphComponent = ({type}) => {
     scales: {
       y: {},
       x: {
-        type: 'time',
+        type: "time",
         adapters: {
           date: {
             locale: enUS,
@@ -165,9 +165,9 @@ const MeasurementsGraphComponent = ({type}) => {
   };
 
   return (
-      <div>
-        <Line data={graphData} height={800} options={options}/>
-      </div>
+    <div>
+      <Line data={graphData} height={800} options={options} />
+    </div>
   );
 };
 
