@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.services;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
+import com.openelements.benchscape.server.store.data.DateTimePeriode;
 import com.openelements.benchscape.server.store.data.Measurement;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.data.MeasurementQuery;
@@ -195,5 +196,22 @@ public class MeasurementService extends AbstractService<MeasurementEntity, Measu
                 entity.getOsName(), entity.getOsVersion(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion());
+    }
+
+    public DateTimePeriode getPeriode(String benchmarkId) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        return getPeriode(UUID.fromString(benchmarkId));
+    }
+
+    public DateTimePeriode getPeriode(UUID benchmarkId) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        final Instant start = measurementRepository.findFirst(benchmarkId)
+                .map(m -> m.getTimestamp())
+                .orElseThrow(() -> new IllegalArgumentException("No measurement for benchmark " + benchmarkId));
+
+        final Instant end = measurementRepository.findLast(benchmarkId)
+                .map(m -> m.getTimestamp())
+                .orElseThrow(() -> new IllegalArgumentException("No measurement for benchmark " + benchmarkId));
+        return DateTimePeriode.between(start, end);
     }
 }

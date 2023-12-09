@@ -27,5 +27,13 @@ public interface MeasurementRepository extends JpaRepository<MeasurementEntity, 
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp DESC limit 100")
-    List<MeasurementEntity> findNewest(final UUID benchmarkId);
+    List<MeasurementEntity> findNewest100(final UUID benchmarkId);
+
+    @NonNull
+    @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp ASC limit 1")
+    Optional<MeasurementEntity> findFirst(final UUID benchmarkId);
+
+    @NonNull
+    @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp DESC limit 1")
+    Optional<MeasurementEntity> findLast(final UUID benchmarkId);
 }

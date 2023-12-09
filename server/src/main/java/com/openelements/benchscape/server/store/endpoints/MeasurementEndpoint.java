@@ -4,6 +4,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
+import com.openelements.benchscape.server.store.data.DateTimePeriode;
 import com.openelements.benchscape.server.store.data.Measurement;
 import com.openelements.benchscape.server.store.data.MeasurementQuery;
 import com.openelements.benchscape.server.store.services.MeasurementService;
@@ -52,6 +53,12 @@ public class MeasurementEndpoint {
         final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
                 queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
         return measurementService.find(query);
+    }
+
+    @GetMapping("/periode")
+    DateTimePeriode getPeriode(@RequestParam final String benchmarkId) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        return measurementService.getPeriode(benchmarkId);
     }
 
 }
