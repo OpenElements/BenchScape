@@ -1,17 +1,18 @@
 package com.openelements.benchscape.server.store.repositories;
 
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
+import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MeasurementRepository extends JpaRepository<MeasurementEntity, UUID> {
+public interface MeasurementRepository extends EntityRepository<MeasurementEntity> {
+
 
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 AND m.timestamp >= ?2 AND m.timestamp <= ?3 ORDER BY m.timestamp ASC")

@@ -3,6 +3,7 @@ package com.openelements.benchscape.server.store.data;
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -15,7 +16,7 @@ public record MeasurementQuery(@NonNull String benchmarkId,
                                @NonNull BenchmarkUnit unit,
                                @NonNull Instant start,
                                @NonNull Instant end,
-                               @NonNull Collection<String> environmentIds) {
+                               @NonNull Collection<String> environmentIds) implements Serializable {
 
     private static ZoneOffset DEFAULT_ZONE_OFFSET = ZoneOffset.UTC;
 

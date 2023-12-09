@@ -1,23 +1,18 @@
 package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
+import com.openelements.server.base.data.AbstractEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "Measurement")
-public class MeasurementEntity implements EntityBase {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class MeasurementEntity extends AbstractEntity {
 
     @Column(nullable = false)
     private UUID benchmarkId;
@@ -42,14 +37,6 @@ public class MeasurementEntity implements EntityBase {
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, optional = false, cascade = CascadeType.ALL)
     private MeasurementMetadataEntity metadata;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public UUID getBenchmarkId() {
         return benchmarkId;
@@ -124,7 +111,7 @@ public class MeasurementEntity implements EntityBase {
             return false;
         }
         MeasurementEntity that = (MeasurementEntity) o;
-        return Double.compare(value, that.value) == 0 && Objects.equals(id, that.id)
+        return Double.compare(value, that.value) == 0 && Objects.equals(getId(), that.getId())
                 && Objects.equals(benchmarkId, that.benchmarkId) && Objects.equals(timestamp,
                 that.timestamp) && Objects.equals(error, that.error) && Objects.equals(min, that.min)
                 && Objects.equals(max, that.max) && unit == that.unit;
@@ -132,6 +119,6 @@ public class MeasurementEntity implements EntityBase {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, benchmarkId, timestamp, value, error, min, max, unit);
+        return Objects.hash(getId(), benchmarkId, timestamp, value, error, min, max, unit);
     }
 }

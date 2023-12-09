@@ -53,6 +53,7 @@
     <module>jmh-data-model</module>
     <module>jmh-client</module>
     <module>jmh-maven-plugin</module>
+    <module>server-base</module>
     <module>server</module>
     <module>frontend</module>
     <module>sample</module>
@@ -141,6 +142,11 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-csv</artifactId>
         <version>1.10.0</version>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>2.2.15</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

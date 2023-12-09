@@ -1,5 +1,6 @@
 package com.openelements.benchscape.server.store.data;
 
+import com.openelements.server.base.data.DataBase;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.time.Duration;
@@ -18,7 +19,7 @@ public record MeasurementMetadata(@Nullable UUID id, @Nullable String gitOriginU
                                   @Nullable Integer systemProcessors, @Nullable Long systemMemory,
                                   @Nullable String osName, @Nullable String osVersion,
                                   @Nullable String jvmVersion, @Nullable String jvmName,
-                                  @Nullable String jmhVersion) {
+                                  @Nullable String jmhVersion) implements DataBase {
 
     public MeasurementMetadata {
         Objects.requireNonNull(gitTags, "gitTags must not be null");

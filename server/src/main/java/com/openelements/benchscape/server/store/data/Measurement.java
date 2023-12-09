@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.data;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
+import com.openelements.server.base.data.DataBase;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.time.Instant;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
                           @Nullable Double min, @Nullable Double max,
-                          @NonNull BenchmarkUnit unit) {
+                          @NonNull BenchmarkUnit unit) implements DataBase {
 
     public Measurement {
         Objects.requireNonNull(timestamp, "timestamp must not be null");

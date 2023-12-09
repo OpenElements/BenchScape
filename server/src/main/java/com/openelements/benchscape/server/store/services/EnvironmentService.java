@@ -4,13 +4,14 @@ import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
+import com.openelements.server.base.data.AbstractService;
+import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +28,13 @@ public class EnvironmentService extends AbstractService<EnvironmentEntity, Envir
 
     @NonNull
     @Override
-    protected JpaRepository<EnvironmentEntity, UUID> getRepository() {
+    protected EntityRepository<EnvironmentEntity> getRepository() {
         return repository;
     }
 
     @NonNull
-    protected Environment map(@NonNull final EnvironmentEntity entity) {
+    @Override
+    protected Environment mapToData(@NonNull EnvironmentEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Environment(entity.getId(), entity.getName(), entity.getDescription(), entity.getGitOriginUrl(),
                 entity.getGitBranch(), entity.getSystemArch(),
@@ -45,9 +47,9 @@ public class EnvironmentService extends AbstractService<EnvironmentEntity, Envir
     }
 
     @NonNull
-    protected EnvironmentEntity mapToEntity(final @NonNull Environment environment) {
-        Objects.requireNonNull(environment, "environment must not be null");
-        final EnvironmentEntity entity = new EnvironmentEntity();
+    @Override
+    protected EnvironmentEntity updateEntity(@NonNull EnvironmentEntity entity,
+            @NonNull Environment environment) {
         entity.setId(environment.id());
         entity.setName(environment.name());
         entity.setDescription(environment.description());
@@ -68,6 +70,12 @@ public class EnvironmentService extends AbstractService<EnvironmentEntity, Envir
         return entity;
     }
 
+    @NonNull
+    @Override
+    protected EnvironmentEntity createNewEntity() {
+        return new EnvironmentEntity();
+    }
+
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
             @NonNull final String environmentId) {
         Objects.requireNonNull(environmentId, "environmentId must not be null");
@@ -79,7 +87,7 @@ public class EnvironmentService extends AbstractService<EnvironmentEntity, Envir
         Objects.requireNonNull(environmentId, "environmentId must not be null");
         final EnvironmentEntity environmentEntity = repository.findById(environmentId)
                 .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + environmentId));
-        final Environment environment = map(environmentEntity);
+        final Environment environment = mapToData(environmentEntity);
         return isMatchingEnvironment(metadata, environment);
     }
 

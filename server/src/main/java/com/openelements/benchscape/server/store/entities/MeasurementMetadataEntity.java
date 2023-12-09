@@ -1,22 +1,16 @@
 package com.openelements.benchscape.server.store.entities;
 
+import com.openelements.server.base.data.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity(name = "MeasurementMetadata")
-public class MeasurementMetadataEntity implements EntityBase {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class MeasurementMetadataEntity extends AbstractEntity {
 
     @Column
     private String gitOriginUrl;
@@ -83,14 +77,6 @@ public class MeasurementMetadataEntity implements EntityBase {
 
     @Column
     private String jmhVersion;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getGitOriginUrl() {
         return gitOriginUrl;
@@ -277,7 +263,7 @@ public class MeasurementMetadataEntity implements EntityBase {
             return false;
         }
         MeasurementMetadataEntity that = (MeasurementMetadataEntity) o;
-        return Objects.equals(id, that.id)
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(gitOriginUrl, that.gitOriginUrl) && Objects.equals(gitBranch,
                 that.gitBranch) && Objects.equals(gitCommitId, that.gitCommitId) && Objects.equals(
                 gitTags, that.gitTags) && Objects.equals(gitDirty, that.gitDirty) && Objects.equals(
@@ -296,7 +282,7 @@ public class MeasurementMetadataEntity implements EntityBase {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, gitOriginUrl, gitBranch, gitCommitId, gitTags, gitDirty, jmhThreadCount,
+        return Objects.hash(getId(), gitOriginUrl, gitBranch, gitCommitId, gitTags, gitDirty, jmhThreadCount,
                 jmhForks, jmhTimeout, jmhWarmupIterations, jmhWarmupTime, jmhWarmupBatchSize, jmhMeasurementIterations,
                 jmhMeasurementTime, jmhMeasurementBatchSize, systemArch, systemProcessors, systemMemory, osName,
                 osVersion,

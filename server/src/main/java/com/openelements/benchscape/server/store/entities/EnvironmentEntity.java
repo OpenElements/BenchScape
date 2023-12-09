@@ -1,18 +1,12 @@
 package com.openelements.benchscape.server.store.entities;
 
+import com.openelements.server.base.data.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity(name = "Environment")
-public class EnvironmentEntity implements EntityBase {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class EnvironmentEntity extends AbstractEntity {
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -61,14 +55,6 @@ public class EnvironmentEntity implements EntityBase {
 
     @Column
     private String jmhVersion;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getGitOriginUrl() {
         return gitOriginUrl;
@@ -207,7 +193,7 @@ public class EnvironmentEntity implements EntityBase {
             return false;
         }
         EnvironmentEntity that = (EnvironmentEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+        return Objects.equals(getId(), that.getId()) && Objects.equals(name, that.name)
                 && Objects.equals(description, that.description) && Objects.equals(gitOriginUrl,
                 that.gitOriginUrl) && Objects.equals(gitBranch, that.gitBranch) && Objects.equals(
                 systemArch, that.systemArch) && Objects.equals(systemProcessors, that.systemProcessors)
@@ -222,7 +208,7 @@ public class EnvironmentEntity implements EntityBase {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, gitOriginUrl, gitBranch, systemArch, systemProcessors,
+        return Objects.hash(getId(), name, description, gitOriginUrl, gitBranch, systemArch, systemProcessors,
                 systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax, osName,
                 osVersion,
                 jvmVersion, jvmName, jmhVersion);

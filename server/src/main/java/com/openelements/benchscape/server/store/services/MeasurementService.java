@@ -8,6 +8,8 @@ import com.openelements.benchscape.server.store.data.MeasurementQuery;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
+import com.openelements.server.base.data.AbstractService;
+import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
 import java.util.Collection;
@@ -18,7 +20,6 @@ import java.util.UUID;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,7 @@ public class MeasurementService extends AbstractService<MeasurementEntity, Measu
         Objects.requireNonNull(query, "query must not be null");
         return measurementRepository.find(UUID.fromString(query.benchmarkId()), query.start(), query.end())
                 .stream()
-                .map(m -> map(m))
+                .map(m -> mapToData(m))
                 .filter(m -> isMatchingEnvironment(m, query.environmentIds()))
                 .map(m -> m.withUnit(query.unit()))
                 .toList();
@@ -115,7 +116,7 @@ public class MeasurementService extends AbstractService<MeasurementEntity, Measu
         final UUID id = Optional.ofNullable(measurement.id())
                 .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
         return measurementRepository.findLastBefore(id, measurement.timestamp())
-                .map(m -> map(m));
+                .map(m -> mapToData(m));
     }
 
     @NonNull
@@ -124,27 +125,30 @@ public class MeasurementService extends AbstractService<MeasurementEntity, Measu
         final UUID id = Optional.ofNullable(measurement.id())
                 .orElseThrow(() -> new IllegalArgumentException("measurement.id() must not be null"));
         return measurementRepository.findFirstAfter(id, measurement.timestamp())
-                .map(m -> map(m));
+                .map(m -> mapToData(m));
     }
 
     @NonNull
     @Override
-    protected JpaRepository<MeasurementEntity, UUID> getRepository() {
+    protected EntityRepository<MeasurementEntity> getRepository() {
         return measurementRepository;
     }
 
     @NonNull
-    protected Measurement map(@NonNull final MeasurementEntity entity) {
+    @Override
+    protected Measurement mapToData(@NonNull MeasurementEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Measurement(entity.getId(), entity.getTimestamp(), entity.getValue(),
                 entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit());
+
     }
 
     @NonNull
     @Override
-    protected MeasurementEntity mapToEntity(@NonNull Measurement measurement) {
+    protected MeasurementEntity updateEntity(@NonNull MeasurementEntity entity,
+            @NonNull Measurement measurement) {
+        Objects.requireNonNull(entity, "entity must not be null");
         Objects.requireNonNull(measurement, "measurement must not be null");
-        MeasurementEntity entity = new MeasurementEntity();
         entity.setId(measurement.id());
         entity.setTimestamp(measurement.timestamp());
         entity.setValue(measurement.value());
@@ -153,6 +157,12 @@ public class MeasurementService extends AbstractService<MeasurementEntity, Measu
         entity.setMax(measurement.max());
         entity.setUnit(measurement.unit());
         return entity;
+    }
+
+    @NonNull
+    @Override
+    protected MeasurementEntity createNewEntity() {
+        return new MeasurementEntity();
     }
 
     private boolean isMatchingEnvironment(@NonNull final Measurement measurement,
