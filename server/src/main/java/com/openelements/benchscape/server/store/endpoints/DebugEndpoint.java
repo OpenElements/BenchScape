@@ -22,6 +22,7 @@ import com.openelements.benchscape.server.store.repositories.MeasurementReposito
 import com.openelements.benchscape.server.store.services.BenchmarkExecutionService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -189,12 +190,13 @@ public class DebugEndpoint {
                                                                     if (random.nextBoolean()) {
                                                                         double baseValue = random.nextDouble() * 1000.0;
                                                                         Instant startTime = Instant.now()
-                                                                                .plusSeconds(
-                                                                                        random.nextLong(
-                                                                                                60 * 60 * 24 * 7));
+                                                                                .minus(
+                                                                                        random.nextInt(300),
+                                                                                        ChronoUnit.DAYS);
                                                                         IntStream.range(0, 100 + random.nextInt(200))
                                                                                 .mapToObj(i -> startTime.plusSeconds(
-                                                                                        random.nextLong(60 * 60 * 24)))
+                                                                                                random.nextLong(60 * 60))
+                                                                                        .plus(i, ChronoUnit.DAYS))
                                                                                 .forEach(time -> {
                                                                                     if (random.nextBoolean()
                                                                                             || random.nextBoolean()) {

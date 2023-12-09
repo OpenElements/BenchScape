@@ -41,7 +41,9 @@ public class MeasurementEndpoint {
             @RequestParam(required = false) final BenchmarkUnit unit,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
-            @RequestParam(required = false) final List<String> environmentIds) {
+            @RequestParam(required = false) final List<String> environmentIds,
+            @RequestParam(required = false, defaultValue = "false") final boolean splineInterpolation,
+            @RequestParam(required = false, defaultValue = "10") final int splineInterpolationSteps) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
         final ZonedDateTime queryStart = Optional.ofNullable(start)
@@ -52,7 +54,11 @@ public class MeasurementEndpoint {
                 .map(list -> Collections.unmodifiableList(list)).orElse(List.of());
         final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
                 queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
-        return measurementService.find(query);
+        final List<Measurement> measurements = measurementService.find(query);
+        if (splineInterpolation) {
+            return measurementService.withSplineInterpolation(measurements, splineInterpolationSteps);
+        }
+        return measurements;
     }
 
     @GetMapping("/periode")
