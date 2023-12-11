@@ -83,7 +83,7 @@ public class KeyDataService extends AbstractServiceWithTenant<ApiKeyEntity, ApiK
         if (key.isBlank()) {
             throw new IllegalArgumentException("Key must not be blank");
         }
-        final List<ApiKeyEntity> collect = getRepository().getAllByTenantId(getCurrentTenantId()).stream()
+        final List<ApiKeyEntity> collect = getRepository().findAllByTenantId(getCurrentTenantId()).stream()
                 .filter(e -> Objects.equals(e.getUser(), user))
                 .filter(e -> Objects.equals(e.getKey(), key))
                 .collect(Collectors.toList());

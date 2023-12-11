@@ -15,12 +15,11 @@ import com.openelements.benchscape.server.store.entities.BenchmarkEntity;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
-import com.openelements.benchscape.server.store.repositories.BenchmarkRepository;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
-import com.openelements.benchscape.server.store.repositories.MeasurementMetadataRepository;
-import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
 import com.openelements.benchscape.server.store.services.BenchmarkExecutionService;
+import com.openelements.server.base.tenant.TenantService;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -46,67 +45,116 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(V2 + "/debug")
 public class DebugEndpoint {
 
-    private final BenchmarkRepository benchmarkRepository;
-
     private final EnvironmentRepository environmentRepository;
-
-    private final MeasurementMetadataRepository measurementMetadataRepository;
-
-    private final MeasurementRepository measurementRepository;
 
     private final BenchmarkExecutionService benchmarkExecutionService;
 
+    private final TenantService tenantService;
+
+    private final EntityManager entityManager;
 
     @Autowired
-    public DebugEndpoint(@NonNull final BenchmarkRepository benchmarkRepository,
-            @NonNull final EnvironmentRepository environmentRepository,
-            @NonNull final MeasurementMetadataRepository measurementMetadataRepository,
-            @NonNull final MeasurementRepository measurementRepository,
-            BenchmarkExecutionService benchmarkExecutionService) {
-        this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
+    public DebugEndpoint(@NonNull final EnvironmentRepository environmentRepository,
+            BenchmarkExecutionService benchmarkExecutionService, TenantService tenantService,
+            EntityManager entityManager) {
         this.environmentRepository = Objects.requireNonNull(environmentRepository,
                 "environmentRepository must not be null");
-        this.measurementMetadataRepository = Objects.requireNonNull(measurementMetadataRepository,
-                "measurementMetadataRepository must not be null");
-        this.measurementRepository = Objects.requireNonNull(measurementRepository,
-                "measurementRepository must not be null");
-        this.benchmarkExecutionService = benchmarkExecutionService;
+
+        this.benchmarkExecutionService = Objects.requireNonNull(benchmarkExecutionService,
+                "benchmarkExecutionService must not be null");
+        this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
+        this.entityManager = Objects.requireNonNull(entityManager, "entityManager must not be null");
     }
 
     @GetMapping("/benchmarks")
     public List<BenchmarkEntity> getAllBenchmarkEntities() {
-        return benchmarkRepository.findAll();
+        return entityManager.createQuery("SELECT b FROM Benchmark b", BenchmarkEntity.class).getResultList();
     }
 
     @GetMapping("/environments")
     public List<EnvironmentEntity> getAllEnvironmentEntities() {
-        return environmentRepository.findAll();
+        return entityManager.createQuery("SELECT e FROM Environment e", EnvironmentEntity.class).getResultList();
     }
 
     @GetMapping("/measurementmetadata")
     public List<MeasurementMetadataEntity> getAllMeasurementMetadataEntities() {
-        return measurementMetadataRepository.findAll();
+        return entityManager.createQuery("SELECT m FROM MeasurementMetadata m", MeasurementMetadataEntity.class)
+                .getResultList();
     }
 
     @GetMapping("/measurements")
     public List<MeasurementEntity> getAllMeasurementEntities() {
-        return measurementRepository.findAll().stream()
+        return entityManager.createQuery("SELECT m FROM Measurement m", MeasurementEntity.class).getResultList()
+                .stream()
                 .peek(e -> e.setMetadata(null))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/measurementCount")
     public long getMeasurementCount() {
-        return measurementRepository.count();
+        return entityManager.createQuery("SELECT COUNT(m) FROM Measurement m", Long.class).getSingleResult();
     }
 
     @Transactional
     @PostMapping("/create-test-data")
     public void createTestData() {
 
-        Random random = new Random(System.currentTimeMillis());
+        createDemoEnvironments();
 
-        if (environmentRepository.findAll().isEmpty()) {
+        Stream.of("test-1", "test-2", "test-3")
+                .forEach(name -> createMeasurements(name));
+    }
+
+    private void createMeasurements(String name) {
+        Random random = new Random(System.currentTimeMillis());
+        if (random.nextBoolean() || random.nextBoolean()) {
+            IntStream.of(4, 16)
+                    .forEach(availableProcessors -> {
+                        if (random.nextBoolean() || random.nextBoolean()) {
+                            Stream.of("10.15.7", "11.0.8")
+                                    .forEach(osVersion -> {
+                                        if (random.nextBoolean()) {
+                                            Stream.of("17.0.1", "21.0.1")
+                                                    .forEach(jvmVersion -> {
+                                                        if (random.nextBoolean()) {
+                                                            double baseValue = random.nextDouble() * 1000.0;
+                                                            Instant startTime = Instant.now()
+                                                                    .minus(
+                                                                            random.nextInt(300),
+                                                                            ChronoUnit.DAYS);
+                                                            IntStream.range(0, 100 + random.nextInt(200))
+                                                                    .mapToObj(i -> startTime.plusSeconds(
+                                                                                    random.nextLong(60 * 60))
+                                                                            .plus(i, ChronoUnit.DAYS))
+                                                                    .forEach(time -> {
+                                                                        if (random.nextBoolean()
+                                                                                || random.nextBoolean()) {
+                                                                            double value =
+                                                                                    baseValue +
+                                                                                            random.nextDouble()
+                                                                                                    * 100.0;
+                                                                            BenchmarkExecution execution = create(
+                                                                                    name,
+                                                                                    time,
+                                                                                    availableProcessors,
+                                                                                    osVersion,
+                                                                                    jvmVersion,
+                                                                                    value);
+                                                                            benchmarkExecutionService.store(
+                                                                                    execution);
+                                                                        }
+                                                                    });
+                                                        }
+                                                    });
+                                        }
+                                    });
+                        }
+                    });
+        }
+    }
+
+    private void createDemoEnvironments() {
+        if (getAllEnvironmentEntities().isEmpty()) {
             EnvironmentEntity entityMac1 = new EnvironmentEntity();
             entityMac1.setName("benchScape-main-mac-14");
             entityMac1.setDescription("BenchScape main branch on MacOS");
@@ -114,6 +162,7 @@ public class DebugEndpoint {
             entityMac1.setGitBranch("main");
             entityMac1.setOsName("Mac OS X");
             entityMac1.setOsVersion("14.1.1");
+            entityMac1.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entityMac1);
 
             EnvironmentEntity entityMac2 = new EnvironmentEntity();
@@ -123,6 +172,7 @@ public class DebugEndpoint {
             entityMac2.setGitBranch("main");
             entityMac2.setOsName("Mac OS X");
             entityMac2.setOsVersion("13.0.0");
+            entityMac2.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entityMac2);
 
             EnvironmentEntity entity2 = new EnvironmentEntity();
@@ -131,6 +181,7 @@ public class DebugEndpoint {
             entity2.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
             entity2.setGitBranch("main");
             entity2.setOsName("Windows");
+            entity2.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity2);
 
             EnvironmentEntity entity3 = new EnvironmentEntity();
@@ -139,18 +190,21 @@ public class DebugEndpoint {
             entity3.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
             entity3.setGitBranch("main");
             entity3.setOsName("Linux");
+            entity3.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity3);
 
             EnvironmentEntity entity4 = new EnvironmentEntity();
             entity4.setName("4-plus-cores");
             entity4.setDescription("Execution on machine with more than 4 cores");
             entity4.setSystemProcessorsMin(4);
+            entity4.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity4);
 
             EnvironmentEntity entity5 = new EnvironmentEntity();
             entity5.setName("less-32-cores");
             entity5.setDescription("Execution on machine with less than 32 cores");
             entity5.setSystemProcessorsMax(32);
+            entity5.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity5);
 
             EnvironmentEntity entity6 = new EnvironmentEntity();
@@ -158,6 +212,7 @@ public class DebugEndpoint {
             entity6.setDescription("Execution with Java 17");
             entity6.setJvmName("Eclipse Temurin");
             entity6.setJvmVersion("17.0.1");
+            entity6.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity6);
 
             EnvironmentEntity entityFull = new EnvironmentEntity();
@@ -173,56 +228,9 @@ public class DebugEndpoint {
             entityFull.setJvmName("Eclipse Temurin");
             entityFull.setJvmVersion("21.0.1");
             entityFull.setJmhVersion("1.37");
+            entityFull.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entityFull);
         }
-
-        Stream.of("test-1", "test-2", "test-3")
-                .forEach(name -> {
-                    if (random.nextBoolean() || random.nextBoolean()) {
-                        IntStream.of(4, 16)
-                                .forEach(availableProcessors -> {
-                                    if (random.nextBoolean() || random.nextBoolean()) {
-                                        Stream.of("10.15.7", "11.0.8")
-                                                .forEach(osVersion -> {
-                                                    if (random.nextBoolean()) {
-                                                        Stream.of("17.0.1", "21.0.1")
-                                                                .forEach(jvmVersion -> {
-                                                                    if (random.nextBoolean()) {
-                                                                        double baseValue = random.nextDouble() * 1000.0;
-                                                                        Instant startTime = Instant.now()
-                                                                                .minus(
-                                                                                        random.nextInt(300),
-                                                                                        ChronoUnit.DAYS);
-                                                                        IntStream.range(0, 100 + random.nextInt(200))
-                                                                                .mapToObj(i -> startTime.plusSeconds(
-                                                                                                random.nextLong(60 * 60))
-                                                                                        .plus(i, ChronoUnit.DAYS))
-                                                                                .forEach(time -> {
-                                                                                    if (random.nextBoolean()
-                                                                                            || random.nextBoolean()) {
-                                                                                        double value =
-                                                                                                baseValue +
-                                                                                                        random.nextDouble()
-                                                                                                                * 100.0;
-                                                                                        BenchmarkExecution execution = create(
-                                                                                                name,
-                                                                                                time,
-                                                                                                availableProcessors,
-                                                                                                osVersion,
-                                                                                                jvmVersion,
-                                                                                                value);
-                                                                                        benchmarkExecutionService.store(
-                                                                                                execution);
-                                                                                    }
-                                                                                });
-                                                                    }
-                                                                });
-                                                    }
-                                                });
-                                    }
-                                });
-                    }
-                });
     }
 
     private BenchmarkExecution create(String name, Instant startTime, int availableProcessors, String osVersion,

@@ -2,6 +2,7 @@ package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.server.base.data.AbstractEntity;
+import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "Measurement")
-public class MeasurementEntity extends AbstractEntity {
+public class MeasurementEntity extends AbstractEntityWithTenant {
 
     @Column(nullable = false)
     private UUID benchmarkId;

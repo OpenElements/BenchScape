@@ -38,7 +38,7 @@ public abstract class AbstractServiceWithTenant<ENTITY extends AbstractEntityWit
     @NonNull
     @Override
     public List<DATA> getAll() {
-        return getRepository().getAllByTenantId(getCurrentTenantId()).stream()
+        return getRepository().findAllByTenantId(getCurrentTenantId()).stream()
                 .map(entity -> mapToData(entity))
                 .toList();
     }

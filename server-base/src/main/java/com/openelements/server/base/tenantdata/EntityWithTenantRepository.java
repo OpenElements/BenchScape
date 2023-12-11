@@ -1,6 +1,6 @@
 package com.openelements.server.base.tenantdata;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -12,7 +12,7 @@ public interface EntityWithTenantRepository<ENTITY extends AbstractEntityWithTen
 
     Optional<ENTITY> findByIdAndTenantId(UUID id, String currentTenantId);
 
-    Collection<ENTITY> getAllByTenantId(String currentTenantId);
+    List<ENTITY> findAllByTenantId(String currentTenantId);
 
     ENTITY save(ENTITY entity);
 

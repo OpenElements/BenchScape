@@ -1,7 +1,7 @@
 package com.openelements.benchscape.server.store.repositories;
 
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
-import com.openelements.server.base.data.EntityRepository;
+import com.openelements.server.base.tenantdata.EntityWithTenantRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MeasurementRepository extends EntityRepository<MeasurementEntity> {
+public interface MeasurementRepository extends EntityWithTenantRepository<MeasurementEntity> {
 
 
     @NonNull

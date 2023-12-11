@@ -7,8 +7,8 @@ import com.openelements.benchscape.server.store.data.MeasurementQuery;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
-import com.openelements.server.base.data.AbstractDataService;
-import com.openelements.server.base.data.EntityRepository;
+import com.openelements.server.base.tenant.TenantService;
+import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
 import java.util.Collection;
@@ -22,19 +22,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class MeasurementService extends AbstractDataService<MeasurementEntity, Measurement> {
+public class MeasurementService extends AbstractServiceWithTenant<MeasurementEntity, Measurement> {
 
     private final MeasurementRepository measurementRepository;
 
     private final EnvironmentService environmentService;
 
+    private final TenantService tenantService;
+
     @Autowired
     public MeasurementService(@NonNull final MeasurementRepository measurementRepository,
-            @NonNull final EnvironmentService environmentService) {
+            @NonNull final EnvironmentService environmentService, TenantService tenantService) {
         this.measurementRepository = Objects.requireNonNull(measurementRepository,
                 "measurementRepository must not be null");
         this.environmentService = Objects.requireNonNull(environmentService,
                 "environmentService must not be null");
+        this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
+    }
+
+    @Override
+    protected TenantService getTenantService() {
+        return tenantService;
     }
 
     @NonNull
@@ -68,7 +76,7 @@ public class MeasurementService extends AbstractDataService<MeasurementEntity, M
 
     @NonNull
     @Override
-    protected EntityRepository<MeasurementEntity> getRepository() {
+    protected MeasurementRepository getRepository() {
         return measurementRepository;
     }
 
@@ -123,7 +131,7 @@ public class MeasurementService extends AbstractDataService<MeasurementEntity, M
     }
 
     public MeasurementMetadata getMetadataForMeasurement(UUID measurementId) {
-        return measurementRepository.findById(measurementId)
+        return measurementRepository.findByIdAndTenantId(measurementId, getCurrentTenantId())
                 .map(m -> m.getMetadata())
                 .map(m -> convertMetadataEntity(m))
                 .orElseThrow(() -> new IllegalArgumentException("No measurement with id " + measurementId));

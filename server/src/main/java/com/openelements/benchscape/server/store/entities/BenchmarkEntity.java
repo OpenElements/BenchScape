@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.server.base.data.AbstractEntity;
+import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 //TODO: Define unique key over name+params
 @Entity(name = "Benchmark")
-public class BenchmarkEntity extends AbstractEntity {
+public class BenchmarkEntity extends AbstractEntityWithTenant {
 
     @Column(nullable = false)
     private String name;
