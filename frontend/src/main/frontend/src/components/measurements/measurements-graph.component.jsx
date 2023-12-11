@@ -1,11 +1,7 @@
 import React from "react";
 import "chartjs-adapter-date-fns";
-import {
-  useMeasurements,
-  // useMeasurementsInterpolated,
-  useMeasurementsSmooth,
-} from "../../hooks/hooks";
-import { useParams } from "react-router-dom";
+import {useMeasurements, useMeasurementsSmooth,} from "../../hooks/hooks";
+import {useParams} from "react-router-dom";
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -17,11 +13,11 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { enUS } from "date-fns/locale";
-import { Line } from "react-chartjs-2";
+import {enUS} from "date-fns/locale";
+import {Line} from "react-chartjs-2";
 
-const MeasurementsGraphComponent = ({ type }) => {
-  const { id } = useParams();
+const MeasurementsGraphComponent = ({type}) => {
+  const {id} = useParams();
   const realData = useMeasurements(id);
   const smoothData = useMeasurementsSmooth(id);
 
@@ -42,33 +38,50 @@ const MeasurementsGraphComponent = ({ type }) => {
   }
 
   ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-    TimeScale
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend,
+      TimeScale
   );
 
   let graphData = {
     datasets: [
       {
         label: `REAL DATA`,
-        data: realData.data?.map((d) => ({ x: d.timestamp, y: d.value })),
-        borderWidth: 4,
-        cubicInterpolationMode: "monotone",
-        tension: 0.4,
+        data: realData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        showLine: false,
       },
       {
         label: `SMOOTH DATA`,
-        data: smoothData.data?.map((d) => ({ x: d.timestamp, y: d.value })),
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.value})),
         borderWidth: 2,
         borderColor: "#4233c9",
-        cubicInterpolationMode: "monotone",
-        tension: 0.4,
-      } /*
+        pointStyle: false,
+        backgroundColor: '#f50320',
+        fill: 'origin'
+      },
+      {
+        label: `SMOOTH DATA MIN`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.min})),
+        borderWidth: 2,
+        borderColor: '#f50320',
+        pointStyle: false,
+        backgroundColor: '#f50320',
+      },
+      {
+        label: `SMOOTH DATA MAX`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.max})),
+        borderWidth: 2,
+        borderColor: '#ef0505',
+        pointStyle: false,
+        backgroundColor: '#f50320',
+        fill: {value: 25}
+      }
+      /*
       {
         label: `LOESS 10`,
         data: loess10.data?.map((d) => ({x: d.timestamp, y: d.value})),
@@ -165,9 +178,9 @@ const MeasurementsGraphComponent = ({ type }) => {
   };
 
   return (
-    <div>
-      <Line data={graphData} height={800} options={options} />
-    </div>
+      <div>
+        <Line data={graphData} height={800} options={options}/>
+      </div>
   );
 };
 
