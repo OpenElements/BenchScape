@@ -6,7 +6,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class AbstractService<ENTITY extends EntityBase, DATA extends DataBase> {
+public abstract class AbstractDataService<ENTITY extends EntityBase, DATA extends DataBase> implements
+        DataService<DATA> {
 
     @NonNull
     protected abstract EntityRepository<ENTITY> getRepository();
@@ -42,12 +43,6 @@ public abstract class AbstractService<ENTITY extends EntityBase, DATA extends Da
     }
 
     @NonNull
-    public Optional<DATA> get(@NonNull final String id) {
-        Objects.requireNonNull(id, "id must not be null");
-        return get(UUID.fromString(id));
-    }
-
-    @NonNull
     public List<DATA> getAll() {
         return getRepository().findAll().stream()
                 .map(e -> mapToData(e))
@@ -63,25 +58,9 @@ public abstract class AbstractService<ENTITY extends EntityBase, DATA extends Da
     }
 
     @NonNull
-    public DATA find(@NonNull String id) {
-        Objects.requireNonNull(id, "id must not be null");
-        return find(UUID.fromString(id));
-    }
-
-    @NonNull
     public DATA save(final @NonNull DATA data) {
         Objects.requireNonNull(data, "dao must not be null");
         return mapToData(getRepository().save(mapToEntity(data)));
-    }
-
-    public void delete(@NonNull DATA data) {
-        Objects.requireNonNull(data, "data must not be null");
-        delete(data.id());
-    }
-
-    public void delete(@NonNull String id) {
-        Objects.requireNonNull(id, "id must not be null");
-        delete(UUID.fromString(id));
     }
 
     public void delete(@NonNull UUID id) {

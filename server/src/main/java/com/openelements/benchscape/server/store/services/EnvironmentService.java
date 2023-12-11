@@ -4,7 +4,7 @@ import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
-import com.openelements.server.base.data.AbstractService;
+import com.openelements.server.base.data.AbstractDataService;
 import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class EnvironmentService extends AbstractService<EnvironmentEntity, Environment> {
+public class EnvironmentService extends AbstractDataService<EnvironmentEntity, Environment> {
 
     private final EnvironmentRepository repository;
 

@@ -3,7 +3,7 @@ package com.openelements.benchscape.server.store.services;
 import com.openelements.benchscape.server.store.data.Benchmark;
 import com.openelements.benchscape.server.store.entities.BenchmarkEntity;
 import com.openelements.benchscape.server.store.repositories.BenchmarkRepository;
-import com.openelements.server.base.data.AbstractService;
+import com.openelements.server.base.data.AbstractDataService;
 import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class BenchmarkService extends AbstractService<BenchmarkEntity, Benchmark> {
+public class BenchmarkService extends AbstractDataService<BenchmarkEntity, Benchmark> {
 
     private final BenchmarkRepository benchmarkRepository;
 

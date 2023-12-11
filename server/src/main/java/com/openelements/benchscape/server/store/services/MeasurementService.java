@@ -7,7 +7,7 @@ import com.openelements.benchscape.server.store.data.MeasurementQuery;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
-import com.openelements.server.base.data.AbstractService;
+import com.openelements.server.base.data.AbstractDataService;
 import com.openelements.server.base.data.EntityRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Instant;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class MeasurementService extends AbstractService<MeasurementEntity, Measurement> {
+public class MeasurementService extends AbstractDataService<MeasurementEntity, Measurement> {
 
     private final MeasurementRepository measurementRepository;
 
