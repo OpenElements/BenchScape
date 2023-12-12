@@ -1,5 +1,5 @@
 import React from "react";
-import { useMeasurements } from "../../hooks/hooks";
+import { useMeasurements } from "../../hooks";
 import { useParams } from "react-router-dom";
 
 const MeasurementsTableComponent = ({ type }) => {

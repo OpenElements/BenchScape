@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
-import { useBenchMarks } from "../hooks/hooks";
+import { useBenchMarks } from "../hooks";
 
 const HomePage = () => {
-  const { data, isLoading } = useBenchMarks();
+  const { data, isLoading, error } = useBenchMarks();
+
+  if (error) {
+    return <h1>SERVER DOWN</h1>;
+  }
   return (
     <div className="App">
       {isLoading ? (

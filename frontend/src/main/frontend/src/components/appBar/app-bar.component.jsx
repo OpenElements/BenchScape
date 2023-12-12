@@ -4,6 +4,7 @@ import { CaretDown, List } from "@phosphor-icons/react";
 import { availableLanguages } from "../../i18n";
 import logo from "../../assets/logo.svg";
 import { Link, useLocation } from "react-router-dom";
+import { exportBenchmarksCsv } from "../../api";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -46,7 +47,10 @@ const AppBar = ({
                 <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
                   TableView
                 </button>
-                <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
+                <button
+                  onClick={exportBenchmarksCsv}
+                  className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150"
+                >
                   Export
                 </button>
                 <button className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150">
