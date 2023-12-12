@@ -1,6 +1,6 @@
 import React from "react";
 import Select from "../components/tags/select";
-import { useEnvironmentMetadata, useEnvironments } from "../hooks/hooks";
+import { useEnvironmentMetadata, useEnvironments } from "../hooks";
 
 // const OSList = [
 //   { id: 1, value: '11', name: 'Windows 11' },
@@ -18,7 +18,7 @@ function EnvironmentsPage() {
   const { data: jvmVersionOptions } = useEnvironmentMetadata("jvmVersion");
   const { data: coresOptions } = useEnvironmentMetadata("cores");
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
-  const { data: jvhVersionOptions } = useEnvironmentMetadata("jvhVersion");
+  const { data: jvhVersionOptions } = useEnvironmentMetadata("jmhVersion");
   // const { data: osOptions } = useEnvironmentMetadata('os');
   return (
     <div>
@@ -59,7 +59,13 @@ function EnvironmentsPage() {
                         scope="col"
                         className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
                       >
-                        Operating Sysytem
+                        Operating System
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
+                      >
+                        Hardware
                       </th>
                       <th
                         scope="col"
@@ -101,6 +107,9 @@ function EnvironmentsPage() {
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.osName ?? "--"}
+                        </td>
+                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
+                          {"--"}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jvmVersion ?? "--"}

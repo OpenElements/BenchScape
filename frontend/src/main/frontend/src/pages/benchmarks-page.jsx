@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useBenchMarks } from "../hooks/hooks";
+import { useBenchMarks } from "../hooks";
 
 const BenchmarksPage = () => {
   const { data, isLoading } = useBenchMarks();
