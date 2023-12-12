@@ -6,13 +6,14 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LinearScale,
   LineElement,
   PointElement,
   TimeScale,
   Title,
-  Tooltip,
+  Tooltip
 } from "chart.js";
 import {Line} from "react-chartjs-2";
 
@@ -28,6 +29,7 @@ const MeasurementsGraphComponent = ({type}) => {
   ChartJS.register(
       CategoryScale,
       LinearScale,
+      Filler,
       PointElement,
       BarElement,
       LineElement,
@@ -55,14 +57,14 @@ const MeasurementsGraphComponent = ({type}) => {
         data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.min})),
         borderColor: '#f50320',
         pointStyle: false,
-        backgroundColor: '#FFC04EFF',
-        fill: 3
       },
       {
         label: `SMOOTH DATA MAX`,
         data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.max})),
         borderColor: '#ef0505',
-        pointStyle: false
+        pointStyle: false,
+        backgroundColor: 'rgba(255,192,78,0.8)',
+        fill: '-1'
       }
     ],
   };
