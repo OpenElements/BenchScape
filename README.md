@@ -103,7 +103,6 @@ A [Spring-Boot-Admin](https://github.com/codecentric/spring-boot-admin) instance
 
 The server provides a REST API to push / get data. The following should give an overview of the different endpoints. To test the endpoints the swagger-ui at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) can be used.
 
-- `SERVER-URL/grafana/*` All that endpoints are used to provide the benchmark data to grafana. Teh endpoints are not used by the frontend. See [the grafana doc](https://grafana.com/grafana/plugins/simpod-json-datasource/) for more information
 - `SERVER-URL/api/v2/execution` The endpoint is used by the maven plugin / the JMH-client to upload new benchmark data.
 - `SERVER-URL/api/v2/benchmark/all` The endpoint returns all benchmarks (only the basoic metadata and not any measurements)
 - `SERVER-URL/api/v2/environment` The endpoints for the new environment dialogs & data. An environment can be created or deleted.
