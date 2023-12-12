@@ -21,5 +21,7 @@ public class SpringTestSupportService {
     public void clearDatabase() {
         entityManager.createQuery("DELETE FROM Benchmark").executeUpdate();
         entityManager.createQuery("DELETE FROM Environment").executeUpdate();
+        entityManager.createQuery("DELETE FROM Measurement").executeUpdate();
+        entityManager.createQuery("DELETE FROM MeasurementMetadata").executeUpdate();
     }
 }
