@@ -4,8 +4,8 @@ import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
-import com.openelements.server.base.data.AbstractService;
-import com.openelements.server.base.data.EntityRepository;
+import com.openelements.server.base.tenant.TenantService;
+import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Objects;
@@ -17,18 +17,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class EnvironmentService extends AbstractService<EnvironmentEntity, Environment> {
+public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEntity, Environment> {
 
     private final EnvironmentRepository repository;
 
+    private final TenantService tenantService;
+
     @Autowired
-    public EnvironmentService(final @NonNull EnvironmentRepository repository) {
+    public EnvironmentService(final @NonNull EnvironmentRepository repository, TenantService tenantService) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
+        this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
+    }
+
+    @Override
+    protected TenantService getTenantService() {
+        return tenantService;
     }
 
     @NonNull
     @Override
-    protected EntityRepository<EnvironmentEntity> getRepository() {
+    protected EnvironmentRepository getRepository() {
         return repository;
     }
 
@@ -85,7 +93,7 @@ public class EnvironmentService extends AbstractService<EnvironmentEntity, Envir
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
             @NonNull final UUID environmentId) {
         Objects.requireNonNull(environmentId, "environmentId must not be null");
-        final EnvironmentEntity environmentEntity = repository.findById(environmentId)
+        final EnvironmentEntity environmentEntity = repository.findByIdAndTenantId(environmentId, getCurrentTenantId())
                 .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + environmentId));
         final Environment environment = mapToData(environmentEntity);
         return isMatchingEnvironment(metadata, environment);

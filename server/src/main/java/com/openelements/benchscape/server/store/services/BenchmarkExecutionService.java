@@ -6,6 +6,7 @@ import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.BenchmarkRepository;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
+import com.openelements.server.base.tenant.TenantService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Duration;
 import java.util.Objects;
@@ -22,13 +23,16 @@ public class BenchmarkExecutionService {
 
     private final MeasurementRepository measurementRepository;
 
+    private final TenantService tenantService;
+
     @Autowired
     public BenchmarkExecutionService(
             final @NonNull BenchmarkRepository benchmarkRepository,
-            final @NonNull MeasurementRepository measurementRepository) {
+            final @NonNull MeasurementRepository measurementRepository, TenantService tenantService) {
         this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
         this.measurementRepository = Objects.requireNonNull(measurementRepository,
                 "measurementRepository must not be null");
+        this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
     }
 
     public void store(final @NonNull BenchmarkExecution benchmarkExecution) {
@@ -40,6 +44,7 @@ public class BenchmarkExecutionService {
                     BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
                     benchmarkEntity.setName(benchmarkExecution.benchmarkName());
                     benchmarkEntity.setParams(benchmarkExecution.parameters());
+                    benchmarkEntity.setTenantId(tenantService.getCurrentTenant());
                     return benchmarkRepository.save(benchmarkEntity).getId();
                 });
 
@@ -51,6 +56,7 @@ public class BenchmarkExecutionService {
         measurementEntity.setMin(benchmarkExecution.result().min());
         measurementEntity.setMax(benchmarkExecution.result().max());
         measurementEntity.setError(benchmarkExecution.result().error());
+        measurementEntity.setTenantId(tenantService.getCurrentTenant());
 
         MeasurementMetadataEntity metadataEntity = new MeasurementMetadataEntity();
         metadataEntity.setGitBranch(benchmarkExecution.gitState().branch());
@@ -84,6 +90,7 @@ public class BenchmarkExecutionService {
         metadataEntity.setSystemArch(benchmarkExecution.infrastructure().arch());
         metadataEntity.setSystemMemory(benchmarkExecution.infrastructure().memory());
         metadataEntity.setSystemProcessors(benchmarkExecution.infrastructure().availableProcessors());
+        metadataEntity.setTenantId(tenantService.getCurrentTenant());
         measurementEntity.setMetadata(metadataEntity);
         measurementRepository.save(measurementEntity);
     }

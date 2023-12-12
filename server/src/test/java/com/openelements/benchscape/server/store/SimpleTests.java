@@ -3,12 +3,15 @@ package com.openelements.benchscape.server.store;
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.endpoints.BenchmarkEndpoint;
 import com.openelements.benchscape.server.store.endpoints.BenchmarkEnvironmentEndpoint;
+import com.openelements.benchscape.server.store.util.SpringTestSupportService;
+import com.openelements.benchscape.server.tenant.SimpleTenantConfig;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = StoreConfig.class)
+@SpringBootTest(classes = {StoreConfig.class, SimpleTenantConfig.class})
 public class SimpleTests {
 
     @Autowired
@@ -16,6 +19,14 @@ public class SimpleTests {
 
     @Autowired
     private BenchmarkEnvironmentEndpoint environmentEndpoint;
+
+    @Autowired
+    private SpringTestSupportService testSupportService;
+
+    @BeforeEach
+    public void init() {
+        testSupportService.clearDatabase();
+    }
 
     @Test
     public void contextLoads() throws Exception {

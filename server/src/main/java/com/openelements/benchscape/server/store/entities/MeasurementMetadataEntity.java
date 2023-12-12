@@ -1,6 +1,6 @@
 package com.openelements.benchscape.server.store.entities;
 
-import com.openelements.server.base.data.AbstractEntity;
+import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "MeasurementMetadata")
-public class MeasurementMetadataEntity extends AbstractEntity {
+public class MeasurementMetadataEntity extends AbstractEntityWithTenant {
 
     @Column
     private String gitOriginUrl;
