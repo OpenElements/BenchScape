@@ -1,4 +1,4 @@
-package com.openelements.server.base.test;
+package com.openelements.server.base.test.apikey;
 
 import com.openelements.server.base.apikey.ApiKeyData;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class ApiKeyDataTests {
 
     @Test
-    public void testApiKeyData() {
+    public void testConstruction() {
         Assertions.assertDoesNotThrow(() -> {
             new ApiKeyData(null, "name", "user", "key", LocalDateTime.now());
         }, "id can be null");
