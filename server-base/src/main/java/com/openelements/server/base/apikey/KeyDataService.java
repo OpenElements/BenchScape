@@ -70,7 +70,7 @@ public class KeyDataService extends AbstractServiceWithTenant<ApiKeyEntity, ApiK
         if (name.isBlank()) {
             throw new IllegalArgumentException("name must not be blank");
         }
-        ApiKeyData data = new ApiKeyData(null, name, getCurrentUser(), UUID.randomUUID().toString(), null);
+        ApiKeyData data = new ApiKeyData(null, name, getCurrentUser(), UUID.randomUUID().toString(), validUntil);
         return save(data);
     }
 

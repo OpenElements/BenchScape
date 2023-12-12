@@ -8,13 +8,13 @@ import java.time.LocalDateTime;
 @Entity
 public class ApiKeyEntity extends AbstractEntityWithTenant {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "api_key_name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "api_key_user")
     private String user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "api_key_key")
     private String key;
 
     @Column(nullable = false)
