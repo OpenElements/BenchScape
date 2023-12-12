@@ -1,5 +1,5 @@
 import useSwr from "swr";
-import { dataFetcher } from "../api/api";
+import {dataFetcher} from "../api/api";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -13,8 +13,22 @@ export function useEnvironments() {
 
 export function useMeasurements(id) {
   return useSwr(
-    `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}`,
-    dataFetcher
+      `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}`,
+      dataFetcher
+  );
+}
+
+export function useMeasurementsSmooth(id) {
+  return useSwr(
+      `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}&smooth=true`,
+      dataFetcher
+  );
+}
+
+export function useMeasurementsInterpolated(id, interpolationType, points) {
+  return useSwr(
+      `${apiUrl}/api/v2/measurement/findInterpolated?benchmarkId=${id}&interpolationType=${interpolationType}&interpolationPoints=${points}`,
+      dataFetcher
   );
 }
 

@@ -1,90 +1,88 @@
 import React from "react";
-import { useMeasurements } from "../../hooks/hooks";
-import { useParams } from "react-router-dom";
+import "chartjs-adapter-date-fns";
+import {useMeasurements, useMeasurementsSmooth,} from "../../hooks/hooks";
+import {useParams} from "react-router-dom";
 import {
-  Chart as ChartJS,
+  BarElement,
   CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
+  Chart as ChartJS,
+  Filler,
   Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip
 } from "chart.js";
+import {Line} from "react-chartjs-2";
 
-import { Line } from "react-chartjs-2";
+const MeasurementsGraphComponent = ({type}) => {
+  const {id} = useParams();
+  const realData = useMeasurements(id);
+  const smoothData = useMeasurementsSmooth(id);
 
-const MeasurementsGraphComponent = ({ type }) => {
-  const { id } = useParams();
-  const { data, isLoading } = useMeasurements(id);
-
-  console.log(data, "getting data");
-  if (isLoading) {
+  if (realData.isLoading) {
     return <div>Loading...</div>;
   }
 
   ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+      CategoryScale,
+      LinearScale,
+      Filler,
+      PointElement,
+      BarElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend,
+      TimeScale
   );
 
   let graphData = {
-    labels: data?.map((x) => {
-      return new Date(x.timestamp).toLocaleString("default", {
-        day: "numeric",
-        year: "numeric",
-        month: "short",
-      });
-    }),
     datasets: [
       {
-        label: `OPERATIONS_PER_MILLISECOND`,
-        data: data?.map((x) => x.min),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
+        label: `REAL DATA`,
+        data: realData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        showLine: false,
       },
+      {
+        label: `SMOOTH DATA`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.value})),
+        borderColor: "#4233c9",
+        pointStyle: false
+      },
+      {
+        label: `SMOOTH DATA MIN`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.min})),
+        borderColor: '#f50320',
+        pointStyle: false,
+      },
+      {
+        label: `SMOOTH DATA MAX`,
+        data: smoothData.data?.map((d) => ({x: d.timestamp, y: d.max})),
+        borderColor: '#ef0505',
+        pointStyle: false,
+        backgroundColor: 'rgba(255,192,78,0.8)',
+        fill: '-1'
+      }
     ],
   };
+
+  let plugins = [];
 
   var options = {
     maintainAspectRatio: false,
     scales: {
-      y: {},
-      x: {
-        stepSize: 5,
-      },
-    },
-    legend: {
-      labels: {
-        fontSize: 25,
-      },
-    },
+      x: {type: "time"},
+    }
   };
 
   return (
-    <div>
-      <Line data={graphData} height={800} options={options} />
-    </div>
+      <div>
+        <Line data={graphData} height={600} plugins={plugins}
+              options={options}/>
+      </div>
   );
 };
 
