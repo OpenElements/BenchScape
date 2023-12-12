@@ -4,7 +4,9 @@ import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
+import com.openelements.benchscape.server.store.util.SpringTestSupportService;
 import com.openelements.benchscape.server.store.util.TestDataFactory;
+import com.openelements.benchscape.server.tenant.SimpleTenantConfig;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-@SpringBootTest(classes = StoreConfig.class)
+@SpringBootTest(classes = {StoreConfig.class, SimpleTenantConfig.class})
 public class EnvironmentServiceTests {
 
     @Autowired
@@ -25,9 +27,12 @@ public class EnvironmentServiceTests {
     @Autowired
     private EnvironmentRepository environmentRepository;
 
+    @Autowired
+    private SpringTestSupportService testSupportService;
+
     @BeforeEach
     public void init() {
-        environmentRepository.deleteAll();
+        testSupportService.clearDatabase();
     }
 
     @Test
