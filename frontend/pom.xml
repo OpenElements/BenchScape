@@ -53,7 +53,7 @@
         </executions>
         <configuration>
           <nodeVersion>${node.version}</nodeVersion>
-          <workingDirectory>src/main/frontend</workingDirectory>
+          <workingDirectory>./</workingDirectory>
           <npmVersion>${npm.version}</npmVersion>
         </configuration>
       </plugin>
