@@ -1,13 +1,13 @@
 import React from "react";
 import Select from "../components/tags/select";
 import { useEnvironmentMetadata, useEnvironments } from "../hooks";
-
-// const OSList = [
-//   { id: 1, value: '11', name: 'Windows 11' },
-//   { id: 2, value: '10', name: 'Windows 10' },
-//   { id: 3, value: '7', name: 'Windows 7' },
-//   { id: 4, value: 'mac', name: 'Mac OS' },
-// ]
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faApple,
+  faWindows,
+  faLinux,
+} from "@fortawesome/free-brands-svg-icons";
+import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
 
 function EnvironmentsPage() {
   const { data: environments } = useEnvironments();
@@ -19,7 +19,6 @@ function EnvironmentsPage() {
   const { data: coresOptions } = useEnvironmentMetadata("cores");
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
   const { data: jvhVersionOptions } = useEnvironmentMetadata("jmhVersion");
-  // const { data: osOptions } = useEnvironmentMetadata('os');
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
@@ -32,12 +31,6 @@ function EnvironmentsPage() {
           <Select label="JVM Name" options={jvmNameOptions} />
           <Select label="JVM Version" options={jvmVersionOptions} />
           <Select label="JMH Version" options={jvhVersionOptions} />
-          {/* <Select label="Thread Count" /> */}
-          {/* <Select label="Fork Count" />
-          <Select label="Warmup Interactions" />
-          <Select label="Warmup Time" />
-          <Select label="Measurement Interactions" />
-          <Select label="Measurement Time" /> */}
         </div>
       </div>
 
@@ -79,24 +72,6 @@ function EnvironmentsPage() {
                       >
                         JMH
                       </th>
-                      {/* <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
-                      >
-                        Forks
-                      </th>
-                      <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
-                      >
-                        Warmap
-                      </th>
-                      <th
-                        scope="col"
-                        className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
-                      >
-                        Measurement
-                      </th> */}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -106,26 +81,45 @@ function EnvironmentsPage() {
                           {environment.name ?? "--"}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {environment.osName ?? "--"}
+                          {environment.osName === "Mac OS X" && (
+                            <FontAwesomeIcon icon={faApple} className="mr-2" />
+                          )}
+                          {environment.osName === "Windows" && (
+                            <FontAwesomeIcon
+                              icon={faWindows}
+                              className="mr-2"
+                            />
+                          )}
+                          {environment.osName === "Linux" && (
+                            <FontAwesomeIcon icon={faLinux} className="mr-2" />
+                          )}
+                          {`${environment.osName ?? "--"} ${
+                            environment.osVersion ?? "--"
+                          }`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {"--"}
+                          {`${environment.systemArch ?? "--"}`}
+                          <FontAwesomeIcon
+                            icon={faMicrochip}
+                            className="ml-2"
+                            style={{}}
+                          />
+                          {`${environment.systemProcessors ?? "--"}`}
+                          <FontAwesomeIcon
+                            icon={faMemory}
+                            className="ml-2"
+                            style={{}}
+                          />
+                          {`${environment.systemMemory ?? "--"}`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {environment.jvmVersion ?? "--"}
+                          {`${environment.jvmName ?? "--"} ${
+                            environment.jvmVersion ?? "--"
+                          }`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jmhVersion ?? "--"}
                         </td>
-                        {/* <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          4
-                        </td>
-                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          4 X 8 sec
-                        </td>
-                        <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          4 X 8 sec
-                        </td> */}
                       </tr>
                     ))}
                   </tbody>
