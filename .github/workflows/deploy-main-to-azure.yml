@@ -6,7 +6,7 @@ env:
   AZURE_FRONTEND_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BENCHSCAPE_MAIN }}
   JAVA_VERSION: "17"
   DISTRIBUTION: temurin
-  FRONTEND_LOCATION: "frontend/src/main/frontend/build"
+  FRONTEND_LOCATION: "frontend/build"
   SERVER_LOCATION: "${{ github.workspace }}/server/target/app.jar"
 
 on:
