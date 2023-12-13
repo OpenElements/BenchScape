@@ -60,6 +60,47 @@ npm start
 
 The Frontend development server should start and be accessible at http://localhost:3000.
 
+## Communication between Frontend and Backend
+
+`API URL Configuration:` The React frontend uses environment variables (defined in .env.development and .env.production) to configure the API URL. This allows it to target the correct backend server based on the development or production environment.
+
+`Fetch Data:` When the frontend component loads or when a user interacts with the application, it makes HTTP requests (e.g., GET, POST) to the Spring Boot backend's API endpoints.
+
+1.  **_Scenario A: Fetching Data from a Local Backend_**
+
+    To run the frontend and have it fetch data from a backend hosted on your local machine, follow these steps:
+
+    a. Ensure that you have the backend server running locally on your machine, typically on localhost or a specific port (e.g., http://localhost:8080).
+
+    b. In your frontend project directory `cd jmh-frontend/src/main/frontend`, locate the `.env.development` file. This file contains environment-specific configuration settings.
+
+    c. Set the API URL in `.env.development` to point to your local backend server. For example:
+
+        REACT_APP_API_URL=http://localhost:8080/api
+
+    d. Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
+
+    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
+
+2.  **_Scenario B: Fetching Data from a Cloud-Based Backend_**
+
+    If you want to run the frontend and have it fetch data from a backend hosted in the cloud, follow these steps:
+
+    a. Ensure that your cloud-based backend is accessible and has a publicly available API endpoint.
+
+    b. In your project directory, locate the `.env.production` file. This file contains environment-specific configuration settings for production.
+
+    c. Set the API URL in `.env.production` to point to your cloud-based backend's API endpoint. For example:
+
+        REACT_APP_API_URL=https://your-cloud-backend.com/api
+
+    d. Start the React frontend for production deployment (e.g., using npm build and a suitable web server). The frontend will now make API requests to your cloud-based backend.
+
+    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
+
+`Receive and Display Data:` The frontend receives JSON data from the backend as responses to its API requests. It then processes this data and displays it in a user-friendly format, such as a table.
+
+
 ### Using the Maven plugin
 
 The `jmh-maven-plugin` module contains a Maven plugin that can be used to execute JMH benchmark and
@@ -68,10 +109,6 @@ to execute JMH benchmarks and upload results. You can have a look at the `<build
 the `pom.xml` of the module to see how the integration is working. Since the plugin is bound to the
 `verify` phase you can easily trigger a full execution by calling `./mvnw verify` on the root level
 of the repo (see build instruction) once the JMH Store server is running.
-
-## Kanban board
-
-The Kanban board for the project can be found here: https://github.com/orgs/OpenElements/projects/1
 
 ## Azure deployment for main branch
 
