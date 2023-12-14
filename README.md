@@ -5,12 +5,12 @@ results for continuous integration approaches.
 
 ## Overview
 
-The project contains the `jmh-store` module that acts as a server to store JMH results.
+The project contains the `server` module that acts as a server to store JMH results.
 
-The project contains the `jmh-frontend` module that acts as a web frontend for the server.
+The project contains the `frontend` module that acts as a web frontend for the server.
 
 JMH results can be created and uploaded automatically by using the Maven Plugin in the
-`jmh-maven-plugin` module or by calling the Uploader directly (see `jmh-runner` module).
+`jmh-maven-plugin` module or by calling the Uploader directly (see `jmh-client` module).
 
 ## Building the project
 
@@ -29,8 +29,8 @@ different modules / parts of the project.
 
 ### Starting the backend server
 
-The `jmh-store` module contains the Spring Boot based server that can simply be started by the main
-class `com.openelements.jmh.store.app.Application`. The server provides a minimalistic frontend to show the JMH results 
+The `server` module contains the Spring Boot based server that can simply be started by the main
+class `com.openelements.benchscape.server.app.Application`. The server provides a minimalistic frontend to show the JMH results 
 as timeseries. Once the server is started the frontend can be reached at [http://localhost:8080](http://localhost:8080). 
 Currently, the server automatically creates some dummy data for 3 benchmarks at start time.Next to that the server
 provides a swagger-ui at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) and
@@ -39,11 +39,11 @@ an endpoint for the [JSON plugin for Grafana](https://grafana.com/grafana/plugin
 ### Starting the frontend server
 
 Open a new terminal or command prompt (keep the backend server running in the previous terminal).
-Navigate to the root directory of your React frontend project (jmh-frontend). You can use the cd command to change your
+Navigate to the root directory of your React frontend project (`frontend`). You can use the cd command to change your
 working directory:
 
 ```
-cd BenchScape/frontend
+cd frontend
 ```
 
 The required Node.js packages are already installed by the `./mvnw verify` run.
