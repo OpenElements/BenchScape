@@ -13,6 +13,8 @@ public record Environment(@Nullable UUID id, @NonNull String name,
                           @Nullable Integer systemProcessors, @Nullable Integer systemProcessorsMin,
                           @Nullable Integer systemProcessorsMax, @Nullable Long systemMemory,
                           @Nullable Long systemMemoryMin, @Nullable Long systemMemoryMax,
+                          @Nullable String systemMemoryReadable,
+                          @Nullable String systemMemoryMinReadable, @Nullable String systemMemoryMaxReadable,
                           @Nullable String osName, @Nullable String osVersion,
                           @Nullable String jvmVersion, @Nullable String jvmName,
                           @Nullable String jmhVersion) implements DataBase {

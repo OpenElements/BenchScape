@@ -11,6 +11,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +50,15 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
                 entity.getSystemProcessors(), entity.getSystemProcessorsMin(),
                 entity.getSystemProcessorsMax(), entity.getSystemMemory(),
                 entity.getSystemMemoryMin(), entity.getSystemMemoryMax(),
+                Optional.ofNullable(entity.getSystemMemory())
+                        .map(m -> FileUtils.byteCountToDisplaySize(m))
+                        .orElse(null),
+                Optional.ofNullable(entity.getSystemMemoryMin())
+                        .map(m -> FileUtils.byteCountToDisplaySize(m))
+                        .orElse(null),
+                Optional.ofNullable(entity.getSystemMemoryMax())
+                        .map(m -> FileUtils.byteCountToDisplaySize(m))
+                        .orElse(null),
                 entity.getOsName(), entity.getOsVersion(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion());
