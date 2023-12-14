@@ -2,6 +2,7 @@ package com.openelements.benchscape.server.store.services;
 
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
+import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
 import com.openelements.server.base.tenant.TenantService;
@@ -59,7 +60,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
                 Optional.ofNullable(entity.getSystemMemoryMax())
                         .map(m -> FileUtils.byteCountToDisplaySize(m))
                         .orElse(null),
-                entity.getOsName(), entity.getOsVersion(),
+                entity.getOsName(), entity.getOsVersion(), entity.getOsFamily(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion());
     }

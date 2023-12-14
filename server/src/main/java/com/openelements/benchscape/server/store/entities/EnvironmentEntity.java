@@ -1,9 +1,11 @@
 package com.openelements.benchscape.server.store.entities;
 
-import com.openelements.server.base.data.AbstractEntity;
+import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import java.util.Objects;
 
 @Entity(name = "Environment")
@@ -56,6 +58,17 @@ public class EnvironmentEntity extends AbstractEntityWithTenant {
 
     @Column
     private String jmhVersion;
+
+    @Column
+    private OperationSystem osFamily;
+
+    @PreUpdate
+    @PrePersist
+    public void updateOsFamily() {
+        if (osFamily == null && osName != null) {
+            setOsFamily(OperationSystem.fromName(osName));
+        }
+    }
 
     public String getGitOriginUrl() {
         return gitOriginUrl;
@@ -183,6 +196,14 @@ public class EnvironmentEntity extends AbstractEntityWithTenant {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public OperationSystem getOsFamily() {
+        return osFamily;
+    }
+
+    public void setOsFamily(OperationSystem osFamily) {
+        this.osFamily = osFamily;
     }
 
     @Override
