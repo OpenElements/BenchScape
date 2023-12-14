@@ -3,6 +3,7 @@ package com.openelements.benchscape.server.store.endpoints;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
 import com.openelements.benchscape.server.store.data.Environment;
+import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,6 +33,16 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    @GetMapping("/osFamily")
+    public List<OperationSystem> getAllOperationSystemFamilies() {
+        return environmentService.getAll().stream()
+                .map(Environment::osFamily)
+                .filter(osFamily -> osFamily != null)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
     @GetMapping("/osVersion")
     public List<String> getAllOperationSystemsVersions() {
         return environmentService.getAll().stream()
@@ -43,9 +54,20 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     @GetMapping("/osVersion/forOs")
-    public List<String> getAllOperationSystemsVersions(@RequestParam final String osName) {
+    public List<String> getAllOperationSystemsVersionsByOsName(@RequestParam final String osName) {
         return environmentService.getAll().stream()
                 .filter(environment -> environment.osName().equals(osName))
+                .map(Environment::osVersion)
+                .filter(osVersion -> osVersion != null && !osVersion.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    @GetMapping("/osVersion/forOsFamily")
+    public List<String> getAllOperationSystemsVersionsByOsFamily(@RequestParam final OperationSystem osFamily) {
+        return environmentService.getAll().stream()
+                .filter(environment -> environment.osFamily().equals(osFamily))
                 .map(Environment::osVersion)
                 .filter(osVersion -> osVersion != null && !osVersion.isBlank())
                 .distinct()

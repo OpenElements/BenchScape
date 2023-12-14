@@ -52,6 +52,12 @@ public class BenchmarkEnvironmentEndpoint {
         return environmentService.find(id);
     }
 
+    @GetMapping("/findBy") //FUTURE: We need a good and consistent naming for the endpoints
+    public List<Environment> findBy(@RequestParam final String benchmarkId) {
+        return List.of();
+    }
+
+
     @GetMapping(COUNT)
     public long getCount() {
         return environmentService.getCount();
