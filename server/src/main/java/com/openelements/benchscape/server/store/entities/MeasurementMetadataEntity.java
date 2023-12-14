@@ -1,11 +1,15 @@
 package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyColumn;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,6 +27,20 @@ public class MeasurementMetadataEntity extends AbstractEntityWithTenant {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> gitTags;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "system_properties_mapping",
+            joinColumns = {@JoinColumn(name = "measurement_metadata_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "property_key")
+    @Column(name = "property_value")
+    private Map<String, String> systemProperties = Map.of();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "environment_properties_mapping",
+            joinColumns = {@JoinColumn(name = "measurement_metadata_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "property_key")
+    @Column(name = "property_value")
+    private Map<String, String> environmentProperties = Map.of();
 
     @Column
     private Boolean gitDirty;
@@ -252,6 +270,22 @@ public class MeasurementMetadataEntity extends AbstractEntityWithTenant {
 
     public void setJmhVersion(String jmhVersion) {
         this.jmhVersion = jmhVersion;
+    }
+
+    public Map<String, String> getSystemProperties() {
+        return systemProperties;
+    }
+
+    public void setSystemProperties(Map<String, String> systemProperties) {
+        this.systemProperties = systemProperties;
+    }
+
+    public Map<String, String> getEnvironmentProperties() {
+        return environmentProperties;
+    }
+
+    public void setEnvironmentProperties(Map<String, String> environmentProperties) {
+        this.environmentProperties = environmentProperties;
     }
 
     @Override

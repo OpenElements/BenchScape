@@ -9,6 +9,7 @@ import com.openelements.benchscape.server.store.repositories.MeasurementReposito
 import com.openelements.server.base.tenant.TenantService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,10 @@ public class BenchmarkExecutionService {
         metadataEntity.setSystemArch(benchmarkExecution.infrastructure().arch());
         metadataEntity.setSystemMemory(benchmarkExecution.infrastructure().memory());
         metadataEntity.setSystemProcessors(benchmarkExecution.infrastructure().availableProcessors());
+        metadataEntity.setSystemProperties(
+                Collections.unmodifiableMap(benchmarkExecution.infrastructure().systemProperties()));
+        metadataEntity.setEnvironmentProperties(Collections.unmodifiableMap(benchmarkExecution.infrastructure()
+                .environmentProperties()));
         metadataEntity.setTenantId(tenantService.getCurrentTenant());
         measurementEntity.setMetadata(metadataEntity);
         measurementRepository.save(measurementEntity);
