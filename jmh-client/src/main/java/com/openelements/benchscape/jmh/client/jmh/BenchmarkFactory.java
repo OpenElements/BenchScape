@@ -14,6 +14,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -97,8 +98,14 @@ public class BenchmarkFactory {
         final int availableProcessors = osBean.getAvailableProcessors();
         final String osVersion = osBean.getVersion();
         final String osName = osBean.getName();
+        final Map<String, String> systemProperties = new HashMap<>();
+        System.getProperties().forEach((key, value) -> {
+            if (key != null && value != null) {
+                systemProperties.put(key.toString(), value.toString());
+            }
+        });
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                Map.of(), Map.of(), jmhVersion);
+                Collections.unmodifiableMap(systemProperties), Collections.unmodifiableMap(System.getenv()), jmhVersion);
     }
 
     /**

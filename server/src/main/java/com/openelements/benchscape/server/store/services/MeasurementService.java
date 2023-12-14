@@ -151,7 +151,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
                 entity.getSystemProcessors(), entity.getSystemMemory(),
                 entity.getOsName(), entity.getOsVersion(),
                 entity.getJvmVersion(), entity.getJvmName(),
-                entity.getJmhVersion());
+                entity.getJmhVersion(), entity.getSystemProperties(), entity.getEnvironmentProperties());
     }
 
     public DateTimePeriode getPeriode(String benchmarkId) {
