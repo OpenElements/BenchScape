@@ -215,6 +215,55 @@ public class DebugEndpoint {
             entity6.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity6);
 
+            EnvironmentEntity entityOnlyJavaVersion = new EnvironmentEntity();
+            entityOnlyJavaVersion.setName("Only Java Version");
+            entityOnlyJavaVersion.setDescription("No Java name but a version");
+            entityOnlyJavaVersion.setJvmVersion("21.0.2");
+            entityOnlyJavaVersion.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyJavaVersion);
+
+            EnvironmentEntity entityOnlyJavaName = new EnvironmentEntity();
+            entityOnlyJavaName.setName("Only Java Name");
+            entityOnlyJavaName.setDescription("Only Java name and no version");
+            entityOnlyJavaName.setJvmName("Bellsoft Liberica");
+            entityOnlyJavaName.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyJavaName);
+
+            EnvironmentEntity entityOnlyOsVersion = new EnvironmentEntity();
+            entityOnlyOsVersion.setName("Only OS Version");
+            entityOnlyOsVersion.setDescription("No OS name but a version");
+            entityOnlyOsVersion.setOsVersion("3.4.5");
+            entityOnlyOsVersion.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyOsVersion);
+
+            EnvironmentEntity entityOnlyOSName = new EnvironmentEntity();
+            entityOnlyOSName.setName("Only OS Name");
+            entityOnlyOSName.setDescription("Only OS name and no version");
+            entityOnlyOSName.setOsName("MacOS");
+            entityOnlyOSName.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyOSName);
+
+            EnvironmentEntity entityOnlyArch = new EnvironmentEntity();
+            entityOnlyArch.setName("Only Arch");
+            entityOnlyArch.setDescription("Only Arch value");
+            entityOnlyArch.setSystemArch("intel64");
+            entityOnlyArch.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyArch);
+
+            EnvironmentEntity entityOnlyCores = new EnvironmentEntity();
+            entityOnlyCores.setName("Only Cores");
+            entityOnlyCores.setDescription("Only Cores value");
+            entityOnlyCores.setSystemProcessors(32);
+            entityOnlyCores.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyCores);
+
+            EnvironmentEntity entityOnlyMemory = new EnvironmentEntity();
+            entityOnlyMemory.setName("Only Memory");
+            entityOnlyMemory.setDescription("Only Memory value");
+            entityOnlyMemory.setSystemMemory(68_719_476_736L);
+            entityOnlyMemory.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityOnlyMemory);
+
             EnvironmentEntity entityFull = new EnvironmentEntity();
             entityFull.setName("A concrete system");
             entityFull.setDescription("A system with all definitions");
