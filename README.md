@@ -43,10 +43,11 @@ Navigate to the root directory of your React frontend project (jmh-frontend). Yo
 working directory:
 
 ```
-cd BenchScape/jmh-frontend/src/main/frontend
+cd BenchScape/frontend
 ```
 
-Install the required Node.js packages by running the following command:
+The required Node.js packages are already installed by the `./mvnw verify` run.
+You can update the frontend dependencies anytime with the following command instead of doing the full maven call:
 
 ```
 npm install
