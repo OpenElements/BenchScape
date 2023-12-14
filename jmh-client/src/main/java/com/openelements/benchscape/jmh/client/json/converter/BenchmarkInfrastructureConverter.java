@@ -1,5 +1,6 @@
 package com.openelements.benchscape.jmh.client.json.converter;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -10,6 +11,8 @@ import com.google.gson.JsonSerializer;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -35,8 +38,12 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         final String jvmVersion = json.getAsJsonObject().get("jvmVersion").getAsString();
         final String jvmName = json.getAsJsonObject().get("jvmName").getAsString();
         final String jmhVersion = json.getAsJsonObject().get("jmhVersion").getAsString();
+        Map<String, String> systemProperties = convertProperties(
+                json.getAsJsonObject().get("systemProperties").getAsJsonArray());
+        Map<String, String> envProperties = convertProperties(
+                json.getAsJsonObject().get("envProperties").getAsJsonArray());
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                Map.of(), Map.of(), jmhVersion);
+                systemProperties, envProperties, jmhVersion);
     }
 
     @Override
@@ -53,6 +60,32 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         json.addProperty("jvmVersion", src.jvmVersion());
         json.addProperty("jvmName", src.jvmName());
         json.addProperty("jmhVersion", src.jmhVersion());
+        json.addProperty("systemProperties", convertProperties(src.systemProperties()).toString());
+        json.addProperty("envProperties", convertProperties(src.environmentProperties()).toString());
         return json;
+    }
+
+    private static Map<String, String> convertProperties(final JsonArray array) {
+        Objects.requireNonNull(array, "array must not be null");
+        Map<String, String> result = new HashMap<>();
+        array.forEach(e -> {
+            final JsonObject obj = e.getAsJsonObject();
+            final String key = obj.get("key").getAsString();
+            final String value = obj.get("value").getAsString();
+            result.put(key, value);
+        });
+        return Collections.unmodifiableMap(result);
+    }
+
+    private static JsonArray convertProperties(final Map<String, String> map) {
+        Objects.requireNonNull(map, "map must not be null");
+        JsonArray result = new JsonArray();
+        map.forEach((k, v) -> {
+            final JsonObject obj = new JsonObject();
+            obj.addProperty("key", k);
+            obj.addProperty("value", v);
+            result.add(obj);
+        });
+        return result;
     }
 }
