@@ -93,32 +93,39 @@ function EnvironmentsPage() {
                           {environment.osName === "Linux" && (
                             <FontAwesomeIcon icon={faLinux} className="mr-2" />
                           )}
-                          {`${environment.osName ?? "--"} ${
-                            environment.osVersion ?? "--"
+                          {`${environment.osName ?? "-"} ${
+                            environment.osVersion ?? " "
                           }`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {`${environment.systemArch ?? "--"}`}
-                          <FontAwesomeIcon
-                            icon={faMicrochip}
-                            className="ml-2"
-                            style={{}}
-                          />
-                          {`${environment.systemProcessors ?? "--"}`}
-                          <FontAwesomeIcon
-                            icon={faMemory}
-                            className="ml-2"
-                            style={{}}
-                          />
-                          {`${environment.systemMemory ?? "--"}`}
+                          {environment.systemArch &&
+                          environment.systemProcessors ? (
+                            <>
+                              {`${environment.systemArch}`}
+                              <FontAwesomeIcon
+                                icon={faMicrochip}
+                                className="ml-2 & mr-2"
+                                style={{}}
+                              />
+                              {`${environment.systemProcessors}`}
+                              <FontAwesomeIcon
+                                icon={faMemory}
+                                className="ml-2 & mr-2"
+                                style={{}}
+                              />
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                          {`${environment.systemMemory ?? " "}`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {`${environment.jvmName ?? "--"} ${
-                            environment.jvmVersion ?? "--"
+                          {`${environment.jvmName ?? "-"} ${
+                            environment.jvmVersion ?? " "
                           }`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {environment.jmhVersion ?? "--"}
+                          {environment.jmhVersion ?? "-"}
                         </td>
                       </tr>
                     ))}
