@@ -14,7 +14,7 @@
   <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
     <!-- (1) -->
     <http>
-      <url>https://open-elements-loki.azurewebsites.net/loki/api/v1/push</url>
+      <url>https://loki.one.open-elements.com/loki/api/v1/push</url>
     </http>
     <format>
       <!-- (2) -->
