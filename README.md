@@ -67,37 +67,23 @@ The Frontend development server should start and be accessible at http://localho
 
 `Fetch Data:` When the frontend component loads or when a user interacts with the application, it makes HTTP requests (e.g., GET, POST) to the Spring Boot backend's API endpoints.
 
-1.  **_Scenario A: Fetching Data from a Local Backend_**
+### Scenario A: Fetching Data from a Local Backend
+To run the frontend and have it fetch data from a backend hosted on your local machine, follow these steps:
 
-    To run the frontend and have it fetch data from a backend hosted on your local machine, follow these steps:
+- Ensure that you have the backend server running locally on your machine, typically on localhost or a specific port (e.g., http://localhost:8080).
+- In your frontend project directory `cd jmh-frontend/src/main/frontend`, locate the `.env.development` file. This file contains environment-specific configuration settings.
+- Set the API URL in `.env.development` to point to your local backend server. For example: `REACT_APP_API_URL=http://localhost:8080/api`
+- Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
+- We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used. The set different environments we use env-cmd (https://github.com/toddbluhm/env-cmd) and custom npm scripts (see `package.json`)
 
-    a. Ensure that you have the backend server running locally on your machine, typically on localhost or a specific port (e.g., http://localhost:8080).
+### Scenario B: Fetching Data from a Cloud-Based Backend
+If you want to run the frontend and have it fetch data from a backend hosted in the cloud, follow these steps:
 
-    b. In your frontend project directory `cd jmh-frontend/src/main/frontend`, locate the `.env.development` file. This file contains environment-specific configuration settings.
-
-    c. Set the API URL in `.env.development` to point to your local backend server. For example:
-
-        REACT_APP_API_URL=http://localhost:8080/api
-
-    d. Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
-
-    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
-
-2.  **_Scenario B: Fetching Data from a Cloud-Based Backend_**
-
-    If you want to run the frontend and have it fetch data from a backend hosted in the cloud, follow these steps:
-
-    a. Ensure that your cloud-based backend is accessible and has a publicly available API endpoint.
-
-    b. In your project directory, locate the `.env.production` file. This file contains environment-specific configuration settings for production.
-
-    c. Set the API URL in `.env.production` to point to your cloud-based backend's API endpoint. For example:
-
-        REACT_APP_API_URL=https://your-cloud-backend.com/api
-
-    d. Start the React frontend for production deployment (e.g., using npm build and a suitable web server). The frontend will now make API requests to your cloud-based backend.
-
-    e. We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used
+- Ensure that your cloud-based backend is accessible and has a publicly available API endpoint.
+- In your project directory, locate the `.env.production` file. This file contains environment-specific configuration settings for production.
+- Set the API URL in `.env.production` to point to your cloud-based backend's API endpoint. For example: `REACT_APP_API_URL=https://your-cloud-backend.com/api`
+- Start the React frontend for production deployment (e.g., using npm build and a suitable web server). The frontend will now make API requests to your cloud-based backend.
+- We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used. The set different environments we use env-cmd (https://github.com/toddbluhm/env-cmd) and custom
 
 `Receive and Display Data:` The frontend receives JSON data from the backend as responses to its API requests. It then processes this data and displays it in a user-friendly format, such as a table.
 
