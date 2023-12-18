@@ -87,6 +87,9 @@ public class JmhMojo extends AbstractMojo {
     @Parameter
     private String apiKey;
 
+    @Parameter(defaultValue = "false")
+    private boolean skip;
+
     @Component
     private ArtifactHandlerManager artifactHandlerManager;
 
@@ -98,6 +101,10 @@ public class JmhMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if (skip) {
+            getLog().debug("Skipping BenchScape JMH plugin execution.");
+            return;
+        }
         try {
             Objects.requireNonNull(project, "project must not be null");
             Objects.requireNonNull(session, "session must not be null");
