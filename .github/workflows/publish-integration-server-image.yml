@@ -1,8 +1,8 @@
-name: Publish integration frontend image
+name: Publish integration server image
 
 env:
-  IMAGE_NAME: benchscape-integration-frontend
-  CONTEXT: ./frontend/
+  IMAGE_NAME: benchscape-integration-server
+  CONTEXT: ./server/
 
 on:
   workflow_dispatch:
@@ -27,8 +27,8 @@ jobs:
         with:
           images: name/app
           labels: |
-            org.opencontainers.image.title=BenchScape frontend
-            org.opencontainers.image.description=Frontend image for BenchScape
+            org.opencontainers.image.title=BenchScape server
+            org.opencontainers.image.description=Server image for BenchScape
             org.opencontainers.image.source=https://github.com/OpenElements/BenchScape
             org.opencontainers.image.licenses=APACHE 2
             org.opencontainers.image.vendor=Open Elements
@@ -64,4 +64,5 @@ jobs:
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: "JAVA_OPTS=-Dspring.profiles.active=integration"
           context: ${{ env.CONTEXT }}

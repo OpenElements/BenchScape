@@ -110,7 +110,7 @@
               <goal>repackage</goal>
             </goals>
             <configuration>
-              <finalName>app</finalName>
+              <finalName>benchscape-server</finalName>
             </configuration>
           </execution>
           <execution>
