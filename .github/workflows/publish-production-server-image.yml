@@ -1,4 +1,4 @@
-name: Publish integration server image
+name: Publish production server image
 
 env:
   IMAGE_NAME: benchscape-production-server
