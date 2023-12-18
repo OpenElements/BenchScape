@@ -45,5 +45,7 @@ jobs:
           tags: |
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          build-args: "JAVA_OPTS=-Dspring.profiles.active=integration"
+            build-args: |
+                        "JAVA_OPTS=-Dspring.profiles.active=integration"
+                        "STAGE=integration"
           context: ${{ env.CONTEXT }}
