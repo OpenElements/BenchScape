@@ -56,3 +56,6 @@ jobs:
           build-args: |
             "STAGE=integration"
           context: ${{ env.CONTEXT }}
+
+      - name: Call Portainer webhook for update
+        run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/a7967e95-1e46-4ce6-8e4e-708a4824930c"
