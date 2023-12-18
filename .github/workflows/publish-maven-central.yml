@@ -1,8 +1,9 @@
-name: Deploy Snapshot to Maven Central
+name: Publish Artifacts to Maven Central
 
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   workflow_dispatch:
 
 jobs:
