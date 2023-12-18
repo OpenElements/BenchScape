@@ -17,6 +17,7 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
+    "env-cmd": "^10.1.0",
     "i18next": "^23.7.8",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-http-backend": "^2.4.2",
@@ -33,6 +34,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:integration": "env-cmd -f ./.env.integration npm run-script build",
+    "build:production": "env-cmd -f ./.env.production npm run-script build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -10,6 +10,10 @@
   </parent>
   <artifactId>frontend</artifactId>
 
+  <properties>
+    <npm.build.script>run build</npm.build.script>
+  </properties>
+
   <build>
     <finalName>jmh-store-server</finalName>
     <plugins>
@@ -47,7 +51,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>run build</arguments>
+              <arguments>${npm.build.script}</arguments>
             </configuration>
           </execution>
         </executions>
@@ -74,5 +78,20 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>npm-production-build</id>
+      <properties>
+        <npm.build.script>run build:production</npm.build.script>
+      </properties>
+    </profile>
+    <profile>
+      <id>npm-integration-build</id>
+      <properties>
+        <npm.build.script>run build:integration</npm.build.script>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>
