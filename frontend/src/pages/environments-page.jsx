@@ -19,6 +19,10 @@ function EnvironmentsPage() {
   const { data: coresOptions } = useEnvironmentMetadata("cores");
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
   const { data: jvhVersionOptions } = useEnvironmentMetadata("jmhVersion");
+  const { data: systemMemoryReadableOptions } = useEnvironmentMetadata(
+    "systemMemoryReadable"
+  );
+  const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
@@ -31,6 +35,11 @@ function EnvironmentsPage() {
           <Select label="JVM Name" options={jvmNameOptions} />
           <Select label="JVM Version" options={jvmVersionOptions} />
           <Select label="JMH Version" options={jvhVersionOptions} />
+          <Select
+            label="Memory Readable"
+            options={systemMemoryReadableOptions}
+          />
+          <Select label="OS Family" options={osFamilyOptions} />
         </div>
       </div>
 
