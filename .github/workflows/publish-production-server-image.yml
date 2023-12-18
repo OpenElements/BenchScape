@@ -38,14 +38,6 @@ jobs:
       - name: Build with Maven
         run: ./mvnw verify -P npm-integration-build
 
-      - name: Delete old container images from registry
-        uses: actions/delete-package-versions@v4
-        with:
-          package-name: ${{ env.IMAGE_NAME }}
-          package-type: 'container'
-          min-versions-to-keep: 4
-          ignore-versions: '^(0|[1-9]\\d*)\\.0\\.0$'
-
       - name: Build and push container image to registry
         uses: docker/build-push-action@v5.0.0
         with:
@@ -53,7 +45,7 @@ jobs:
           tags: |
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            build-args: |
-                        "JAVA_OPTS=-Dspring.profiles.active=production"
-                        "STAGE=production"
+          build-args: |
+            "JAVA_OPTS=-Dspring.profiles.active=production"
+            "STAGE=production"
           context: ${{ env.CONTEXT }}
