@@ -1,8 +1,7 @@
-# TODO: We could upload the container directly to Azure: https://github.com/docker/login-action#azure-container-registry-acr
 name: Publish production frontend image
 
 env:
-  IMAGE_NAME: benchscape-production-fronend
+  IMAGE_NAME: benchscape-production-frontend
   CONTEXT: ./frontend/
 
 on:
