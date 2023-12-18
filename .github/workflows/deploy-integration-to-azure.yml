@@ -9,7 +9,7 @@ env:
   JAVA_VERSION: "17"
   DISTRIBUTION: temurin
   FRONTEND_LOCATION: "frontend/build"
-  SERVER_LOCATION: "${{ github.workspace }}/server/target/app.jar"
+  SERVER_LOCATION: "${{ github.workspace }}/server/target/benchscape-server.jar"
 
 on:
   workflow_dispatch:
