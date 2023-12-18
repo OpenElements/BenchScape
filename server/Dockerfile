@@ -7,6 +7,6 @@ LABEL org.opencontainers.image.source="https://github.com/OpenElements/BenchScap
 LABEL org.opencontainers.image.authors="Open Elements"
 LABEL stage=${STAGE}
 VOLUME /tmp
-ARG JAR_FILE=target/benchscape-server.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app.jar"]
+COPY target/benchscape-server.jar app.jar
+ENV SPRING_PROFILES_ACTIVE=${STAGE}
+ENTRYPOINT ["sh", "-c", "java -jar /app.jar"]

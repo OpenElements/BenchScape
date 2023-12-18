@@ -54,6 +54,5 @@ jobs:
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest
             ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
-            "JAVA_OPTS=-Dspring.profiles.active=production"
             "STAGE=production"
           context: ${{ env.CONTEXT }}
