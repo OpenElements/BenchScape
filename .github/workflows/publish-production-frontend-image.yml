@@ -38,6 +38,14 @@ jobs:
       - name: Build with Maven
         run: ./mvnw verify -P npm-production-build
 
+      - name: Delete old container images from registry
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: ${{ env.IMAGE_NAME }}
+          package-type: 'container'
+          min-versions-to-keep: 4
+          ignore-versions: '^(0|[1-9]\\d*)\\.0\\.0$'
+
       - name: Build and push container image to registry
         uses: docker/build-push-action@v5.0.0
         with:
