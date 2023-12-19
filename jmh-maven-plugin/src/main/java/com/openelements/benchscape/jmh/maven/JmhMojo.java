@@ -194,17 +194,25 @@ public class JmhMojo extends AbstractMojo {
         if (writeToFile) {
             command.add("--write");
         }
-        command.add("--path");
-        command.add(file);
         if (upload) {
             command.add("--upload");
         }
-        command.add("--url");
-        command.add(url);
-        command.add("--apiPrincipal");
-        command.add(apiPrincipal);
-        command.add("--apiKey");
-        command.add(apiKey);
+        if (file != null) {
+            command.add("--path");
+            command.add(file);
+        }
+        if (url != null) {
+            command.add("--url");
+            command.add(url);
+        }
+        if (apiPrincipal != null) {
+            command.add("--apiPrincipal");
+            command.add(apiPrincipal);
+        }
+        if (apiKey != null) {
+            command.add("--apiKey");
+            command.add(apiKey);
+        }
         getLog().debug("Running forked execution using: " + command);
 
         final ProcessBuilder processBuilder = new ProcessBuilder(command);
