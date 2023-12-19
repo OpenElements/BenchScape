@@ -1,0 +1,45 @@
+name: Publish integration
+
+env:
+  IMAGE_NAME: benchscape-integration-frontend
+  CONTEXT: ./frontend/
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Log in to GitHub container registry
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: ./mvnw verify -P npm-integration-build
+
+      - name: Build and push container image to registry
+        run: |
+          cd frontend
+          docker build . --tag openelements/${{ IMAGE_NAME }}
+          docker push openelements/${{ IMAGE_NAME }}
