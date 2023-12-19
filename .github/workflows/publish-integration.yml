@@ -1,8 +1,8 @@
 name: Publish integration
 
 env:
-  IMAGE_NAME: benchscape-integration-frontend
-  CONTEXT: ./frontend/
+  FRONTEND_IMAGE_NAME: benchscape-integration-frontend
+  BACKEND_IMAGE_NAME: benchscape-integration-server
 
 on:
   workflow_dispatch:
@@ -38,8 +38,22 @@ jobs:
       - name: Build with Maven
         run: ./mvnw verify -P npm-integration-build
 
-      - name: Build and push container image to registry
+      - name: Build and push container image for frontend to registry
         run: |
           cd frontend
-          docker build . --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          docker push ghcr.io/openelements/${{ env.IMAGE_NAME }}
+          docker build . --tag ghcr.io/openelements/${{ env.FRONTEND_IMAGE_NAME }}:latest --tag ghcr.io/openelements/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ghcr.io/openelements/${{ env.FRONTEND_IMAGE_NAME }}:latest
+          docker push ghcr.io/openelements/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Build and push container image for server to registry
+        run: |
+          cd server
+          docker build . --build-arg STAGE=integration --tag ghcr.io/openelements/${{ env.BACKEND_IMAGE_NAME }}:latest --tag ghcr.io/openelements/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+          docker push ghcr.io/openelements/${{ env.BACKEND_IMAGE_NAME }}:latest
+          docker push ghcr.io/openelements/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Call Portainer webhook for frontend update
+        run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/a7967e95-1e46-4ce6-8e4e-708a4824930c"
+
+      - name: Call Portainer webhook for server update
+        run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/70002123-ac78-4d61-aabe-ea070d523882"
