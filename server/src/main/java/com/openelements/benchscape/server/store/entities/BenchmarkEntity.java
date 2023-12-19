@@ -1,6 +1,5 @@
 package com.openelements.benchscape.server.store.entities;
 
-import com.openelements.server.base.data.AbstractEntity;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -13,7 +12,7 @@ import java.util.Map;
 @Entity(name = "Benchmark")
 public class BenchmarkEntity extends AbstractEntityWithTenant {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
