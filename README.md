@@ -105,20 +105,20 @@ Any change on the main branch will trigger an update to Azure.
 
 - The server instance can be found at https://backend.benchscape.cloud
 - The frontend of the app can be found at https://app.benchscape.cloud
-- Swagger-UI for the instance can be found at https://benchscape.azurewebsites.net/swagger-ui/index.html
+- Swagger-UI for the instance can be found at https://backend.benchscape.cloud/swagger-ui/index.html
 
 The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-main-to-azure.yml).
 
 ## Azure deployment for PRs
 
-The branch of a PR will not automatically be deployed to Azure to save costs.
-Instead, a GitHub Action can be triggered manually to deploy the server to Azure.
+The branch of a PR will not automatically be deployed.
+Instead, a GitHub Action can be triggered manually to deploy a branch to the integration environment.
 
 - The server instance can be found at http://backend.integration.benchscape.cloud
 - The frontend of the app can be found at https://app.integration.benchscape.cloud
-- Swagger-UI for the instance can be found at https://benchscape-integration.azurewebsites.net/swagger-ui/index.html
+- Swagger-UI for the instance can be found at http://backend.integration.benchscape.cloud/swagger-ui/index.html
 
-The workflow is defined by the `deploy-integration-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-integration-to-azure.yml).
+The workflow is defined by the `publish-integration.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/publish-integration.yml).
 
 ## Services used for operation
 
