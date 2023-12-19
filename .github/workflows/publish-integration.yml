@@ -41,5 +41,5 @@ jobs:
       - name: Build and push container image to registry
         run: |
           cd frontend
-          docker build . --tag openelements/${{ env.IMAGE_NAME }}
-          docker push openelements/${{ env.IMAGE_NAME }}
+          docker build . --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}
+          docker push ghcr.io/openelements/${{ env.IMAGE_NAME }}
