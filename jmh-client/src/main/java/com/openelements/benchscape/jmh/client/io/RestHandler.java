@@ -106,9 +106,9 @@ public class RestHandler {
     @NonNull
     private URI getUrl() throws URISyntaxException {
         if (baseUrl.endsWith("/")) {
-            return new URI(baseUrl + "api/benchmark");
+            return new URI(baseUrl + "api/v2/execution");
         } else {
-            return new URI(baseUrl + "/api/benchmark");
+            return new URI(baseUrl + "/api/v2/execution");
         }
     }
 
