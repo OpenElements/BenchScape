@@ -6,6 +6,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
@@ -41,7 +42,17 @@ public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double 
         if (this.unit.equals(unit)) {
             return this;
         }
-        return new Measurement(id, timestamp, unit.convert(value, this.unit), unit.convert(error, this.unit),
-                unit.convert(min, this.unit), unit.convert(max, this.unit), unit);
+        final double convertedValue = unit.convert(value, this.unit);
+        final Double convertedError = Optional.ofNullable(error)
+                .map(e -> unit.convert(e, this.unit))
+                .orElse(null);
+        final Double convertedMin = Optional.ofNullable(min)
+                .map(e -> unit.convert(e, this.unit))
+                .orElse(null);
+        final Double convertedMax = Optional.ofNullable(max)
+                .map(e -> unit.convert(e, this.unit))
+                .orElse(null);
+        return new Measurement(id, timestamp, convertedValue, convertedError,
+                convertedMin, convertedMax, unit);
     }
 }
