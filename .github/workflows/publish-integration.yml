@@ -35,8 +35,8 @@ jobs:
           distribution: "temurin"
           cache: 'maven'
 
-        #- name: Build with Maven
-        #run: ./mvnw verify -P npm-integration-build
+      - name: Build with Maven
+        run: ./mvnw verify -P npm-integration-build
 
       - name: Build and push container image to registry
         run: |
