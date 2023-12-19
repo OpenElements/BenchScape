@@ -59,8 +59,8 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         json.addProperty("jvmVersion", src.jvmVersion());
         json.addProperty("jvmName", src.jvmName());
         json.addProperty("jmhVersion", src.jmhVersion());
-        json.addProperty("systemProperties", convertProperties(src.systemProperties()).toString());
-        json.addProperty("environmentProperties", convertProperties(src.environmentProperties()).toString());
+        json.add("systemProperties", convertProperties(src.systemProperties()));
+        json.add("environmentProperties", convertProperties(src.environmentProperties()));
         return json;
     }
 
