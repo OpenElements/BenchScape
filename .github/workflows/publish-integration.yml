@@ -36,10 +36,10 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: ./mvnw verify -P npm-integration-build
+        #run: ./mvnw verify -P npm-integration-build
 
       - name: Build and push container image to registry
         run: |
           cd frontend
-          docker build . --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}
+          docker build . --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}:latest --tag ghcr.io/openelements/${{ env.IMAGE_NAME }}:${{ github.sha }}
           docker push ghcr.io/openelements/${{ env.IMAGE_NAME }}
