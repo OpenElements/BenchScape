@@ -3,8 +3,8 @@ package com.openelements.benchscape.jmh.client.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkConfigurationConverter;
-import com.openelements.benchscape.jmh.client.json.converter.BenchmarkConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkExecutionConverter;
+import com.openelements.benchscape.jmh.client.json.converter.BenchmarkExecutionMetadataConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkGitStateConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkInfrastructureConverter;
 import com.openelements.benchscape.jmh.client.json.converter.BenchmarkMeasurementConfigurationConverter;
@@ -44,8 +44,8 @@ public class BenchmarkJsonFactory {
                 .setPrettyPrinting()
                 .registerTypeAdapter(Instant.class, new InstantConverter())
                 .registerTypeAdapter(BenchmarkConfiguration.class, new BenchmarkConfigurationConverter())
-                .registerTypeAdapter(BenchmarkExecution.class, new BenchmarkConverter())
-                .registerTypeAdapter(BenchmarkExecutionMetadata.class, new BenchmarkExecutionConverter())
+                .registerTypeAdapter(BenchmarkExecution.class, new BenchmarkExecutionConverter())
+                .registerTypeAdapter(BenchmarkExecutionMetadata.class, new BenchmarkExecutionMetadataConverter())
                 .registerTypeAdapter(BenchmarkGitState.class, new BenchmarkGitStateConverter())
                 .registerTypeAdapter(BenchmarkInfrastructure.class, new BenchmarkInfrastructureConverter())
                 .registerTypeAdapter(BenchmarkMeasurementConfiguration.class,

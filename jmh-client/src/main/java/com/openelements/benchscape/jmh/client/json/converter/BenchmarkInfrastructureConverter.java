@@ -1,5 +1,7 @@
 package com.openelements.benchscape.jmh.client.json.converter;
 
+import static com.openelements.benchscape.jmh.client.json.converter.BenchmarkExecutionConverter.STRING_MAP_TYPE;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -10,8 +12,6 @@ import com.google.gson.JsonSerializer;
 import com.openelements.benchscape.jmh.model.BenchmarkInfrastructure;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,12 +37,12 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         final String jvmVersion = json.getAsJsonObject().get("jvmVersion").getAsString();
         final String jvmName = json.getAsJsonObject().get("jvmName").getAsString();
         final String jmhVersion = json.getAsJsonObject().get("jmhVersion").getAsString();
-        Map<String, String> systemProperties = convertProperties(
-                json.getAsJsonObject().get("systemProperties").getAsJsonObject());
-        Map<String, String> envProperties = convertProperties(
-                json.getAsJsonObject().get("environmentProperties").getAsJsonObject());
+        final Map<String, String> systemProperties = context.deserialize(json.getAsJsonObject().get("systemProperties"),
+                STRING_MAP_TYPE);
+        final Map<String, String> environmentProperties = context.deserialize(
+                json.getAsJsonObject().get("environmentProperties"), STRING_MAP_TYPE);
         return new BenchmarkInfrastructure(arch, availableProcessors, memory, osName, osVersion, jvmVersion, jvmName,
-                systemProperties, envProperties, jmhVersion);
+                systemProperties, environmentProperties, jmhVersion);
     }
 
     @Override
@@ -59,24 +59,8 @@ public final class BenchmarkInfrastructureConverter implements JsonSerializer<Be
         json.addProperty("jvmVersion", src.jvmVersion());
         json.addProperty("jvmName", src.jvmName());
         json.addProperty("jmhVersion", src.jmhVersion());
-        json.add("systemProperties", convertProperties(src.systemProperties()));
-        json.add("environmentProperties", convertProperties(src.environmentProperties()));
+        json.add("systemProperties", context.serialize(src.systemProperties(), STRING_MAP_TYPE));
+        json.add("environmentProperties", context.serialize(src.environmentProperties(), STRING_MAP_TYPE));
         return json;
-    }
-
-    private static Map<String, String> convertProperties(final JsonObject jsonMap) {
-        Objects.requireNonNull(jsonMap, "jsonMap must not be null");
-        Map<String, String> result = new HashMap<>();
-        jsonMap.entrySet().forEach(e -> {
-            result.put(e.getKey(), e.getValue().getAsString());
-        });
-        return Collections.unmodifiableMap(result);
-    }
-
-    private static JsonObject convertProperties(final Map<String, String> map) {
-        Objects.requireNonNull(map, "map must not be null");
-        JsonObject result = new JsonObject();
-        map.forEach((k, v) -> result.addProperty(k, v));
-        return result;
     }
 }

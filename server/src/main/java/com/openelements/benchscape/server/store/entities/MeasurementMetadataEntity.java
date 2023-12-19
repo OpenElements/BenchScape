@@ -32,14 +32,14 @@ public class MeasurementMetadataEntity extends AbstractEntityWithTenant {
     @CollectionTable(name = "system_properties_mapping",
             joinColumns = {@JoinColumn(name = "measurement_metadata_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "property_key")
-    @Column(name = "property_value")
+    @Column(name = "property_value", length = 10_000)
     private Map<String, String> systemProperties = Map.of();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "environment_properties_mapping",
             joinColumns = {@JoinColumn(name = "measurement_metadata_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "property_key")
-    @Column(name = "property_value")
+    @Column(name = "property_value", length = 10_000)
     private Map<String, String> environmentProperties = Map.of();
 
     @Column
