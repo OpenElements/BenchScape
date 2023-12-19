@@ -98,7 +98,7 @@ the `pom.xml` of the module to see how the integration is working. Since the plu
 `verify` phase you can easily trigger a full execution by calling `./mvnw verify` on the root level
 of the repo (see build instruction) once the JMH Store server is running.
 
-## Azure deployment for main branch
+## Deployment for main branch
 
 The `main` branch is automatically deployed to Microsoft Azure.
 Any change on the main branch will trigger an update to Azure.
@@ -109,7 +109,7 @@ Any change on the main branch will trigger an update to Azure.
 
 The workflow is defined by the `deploy-main-to-azure.yml` [GitHub Action](https://github.com/OpenElements/BenchScape/actions/workflows/deploy-main-to-azure.yml).
 
-## Azure deployment for PRs
+## Deployment for PRs
 
 The branch of a PR will not automatically be deployed.
 Instead, a GitHub Action can be triggered manually to deploy a branch to the integration environment.
