@@ -163,13 +163,13 @@ public class InterpolationUtils {
             yValue[i] = BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(measurement.value(), measurement.unit());
             yMin[i] = Optional.ofNullable(sortedList.get(i).min())
                     .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
-                    .orElse(Double.NaN);
+                    .orElse(0d); //FUTURE: Should be null or Double.NaN
             yMax[i] = Optional.ofNullable(sortedList.get(i).max())
                     .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
-                    .orElse(Double.NaN);
+                    .orElse(0d);//FUTURE: Should be null or Double.NaN
             yError[i] = Optional.ofNullable(sortedList.get(i).error())
                     .map(m -> BenchmarkUnit.OPERATIONS_PER_MILLISECOND.convert(m, measurement.unit()))
-                    .orElse(Double.NaN);
+                    .orElse(0d);//FUTURE: Should be null or Double.NaN
         }
         return new MeasurementInterpolationData(xTime, yValue, yMin, yMax, yError);
     }
