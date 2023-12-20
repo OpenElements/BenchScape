@@ -53,7 +53,7 @@ jobs:
           docker push ghcr.io/openelements/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
 
       - name: Call Portainer webhook for frontend update
-        run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/a7967e95-1e46-4ce6-8e4e-708a4824930c"
+        run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/01938de0-9ccf-4c44-8310-9d3f53ba65fe"
 
       - name: Call Portainer webhook for server update
         run: curl -X POST "https://portainer.one.open-elements.com/api/webhooks/70002123-ac78-4d61-aabe-ea070d523882"
