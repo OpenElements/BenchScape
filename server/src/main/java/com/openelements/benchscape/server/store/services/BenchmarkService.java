@@ -8,7 +8,6 @@ import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +22,6 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
     public BenchmarkService(final @NonNull BenchmarkRepository benchmarkRepository, TenantService tenantService) {
         this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
         this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
-    }
-
-    public Optional<Benchmark> findByName(String name) {
-        return benchmarkRepository.findByName(name)
-                .map(e -> new Benchmark(e.getId(), e.getName(), Collections.unmodifiableMap(e.getParams())));
     }
 
     @Override
