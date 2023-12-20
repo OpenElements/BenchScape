@@ -12,7 +12,7 @@ import java.util.Map;
 @Entity(name = "Benchmark")
 public class BenchmarkEntity extends AbstractEntityWithTenant {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)

@@ -38,9 +38,11 @@ public class BenchmarkExecutionService {
 
     public void store(final @NonNull BenchmarkExecution benchmarkExecution) {
         Objects.requireNonNull(benchmarkExecution, "benchmarkExecution must not be null");
-        final UUID benchmarkEntityId = benchmarkRepository.findByName(benchmarkExecution.benchmarkName())
+        final UUID benchmarkEntityId = benchmarkRepository.findByNameAndTenantId(benchmarkExecution.benchmarkName(),
+                        tenantService.getCurrentTenant()).stream()
                 .filter(b -> b.getParams().equals(benchmarkExecution.parameters()))
                 .map(e -> e.getId())
+                .findAny()
                 .orElseGet(() -> {
                     BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
                     benchmarkEntity.setName(benchmarkExecution.benchmarkName());
