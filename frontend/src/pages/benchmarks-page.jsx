@@ -1,8 +1,36 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBenchMarks } from "../hooks";
 
 const BenchmarksPage = () => {
   const { data, isLoading } = useBenchMarks();
+
+  // Number of items per page
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // State for current page
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate the index range for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBenchmarks = data?.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Function to handle items per page change
+  const handleItemsPerPageChange = (event) => {
+    const newItemsPerPage = parseInt(event.target.value, 10);
+    setCurrentPage(1);
+    setItemsPerPage(newItemsPerPage);
+  };
+
   return (
     <div className="App">
       {isLoading ? (
@@ -49,7 +77,7 @@ const BenchmarksPage = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {data.map((benchmark) => (
+                      {currentBenchmarks?.map((benchmark) => (
                         <tr
                           key={benchmark.id}
                           className="group hover:bg-azure transition-colors ease-in-out duration-150"
@@ -89,6 +117,59 @@ const BenchmarksPage = () => {
           </div>
         </div>
       )}
+
+      {/* Pagination */}
+      <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div className="flex-1 flex justify-between">
+          {/* Previous Page Button */}
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            Previous
+          </button>
+          {/* Page numbers and page count */}
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-500">Page</span>
+            <select
+              value={currentPage}
+              onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
+              className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+            >
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (pageNumber) => (
+                  <option key={pageNumber} value={pageNumber}>
+                    {pageNumber}
+                  </option>
+                )
+              )}
+            </select>
+            <span className="text-gray-500">of {totalPages}</span>
+          </div>
+          {/* Next Page Button */}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={indexOfLastItem >= data?.length}
+            className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            Next
+          </button>
+        </div>
+        {/* Items per page dropdown */}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-500">Items per page:</span>
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            <option value={10}>10</option>
+            <option value={12}>12</option>
+            <option value={13}>13</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
 };
