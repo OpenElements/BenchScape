@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Select from "../components/tags/select";
 import { useEnvironmentMetadata, useEnvironments } from "../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,6 +23,36 @@ function EnvironmentsPage() {
     "systemMemoryReadable"
   );
   const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
+
+  // Number of items per page
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+
+  // State for current page
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate the index range for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentEnvironments = environments?.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(environments?.length / itemsPerPage);
+
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Function to handle items per page change
+  const handleItemsPerPageChange = (event) => {
+    const newItemsPerPage = parseInt(event.target.value, 10);
+    setCurrentPage(1);
+    setItemsPerPage(newItemsPerPage);
+  };
+
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
@@ -84,7 +114,7 @@ function EnvironmentsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {environments?.map((environment) => (
+                    {currentEnvironments?.map((environment) => (
                       <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
                           {environment.name ?? "--"}
@@ -143,6 +173,60 @@ function EnvironmentsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div className="flex-1 flex justify-between">
+          {/* Previous Page Button */}
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            Previous
+          </button>
+          {/* Page numbers and page count */}
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-500">Page</span>
+            <select
+              value={currentPage}
+              onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
+              className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+            >
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (pageNumber) => (
+                  <option key={pageNumber} value={pageNumber}>
+                    {pageNumber}
+                  </option>
+                )
+              )}
+            </select>
+            <span className="text-gray-500">of {totalPages}</span>
+          </div>
+          {/* Next Page Button */}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={indexOfLastItem >= environments?.length}
+            className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            Next
+          </button>
+        </div>
+        {/* Items per page dropdown */}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-500">Items per page:</span>
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
+          >
+            <option value={8}>8</option>
+            <option value={9}>9</option>
+            <option value={10}>10</option>
+            <option value={11}>11</option>
+          </select>
         </div>
       </div>
     </div>
