@@ -4,7 +4,7 @@ import { tailwindConfig } from "./utils/Utils";
 import Select from "../components/tags/select";
 import Datepicker from "../components/datepicker/DatePicker";
 
-function DashboardCard({ data = [], timeStamps }) {
+function GraphCard({ data = [], timeStamps }) {
   const smooth = data.find((d) => d.label === "SMOOTH DATA");
   const real = data.find((d) => d.label === "REAL DATA");
   const smoothMin = data.find((d) => d.label === "SMOOTH DATA MIN");
@@ -132,4 +132,4 @@ function DashboardCard({ data = [], timeStamps }) {
   );
 }
 
-export default DashboardCard;
+export default GraphCard;
