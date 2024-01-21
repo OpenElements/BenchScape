@@ -192,7 +192,21 @@ function LineChart({ data, width, height }) {
       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.light;
     }
     chart.update("none");
-  }, [currentTheme]);
+  }, [
+    chart,
+    currentTheme,
+    darkMode,
+    gridColor.dark,
+    gridColor.light,
+    textColor.dark,
+    textColor.light,
+    tooltipBgColor.dark,
+    tooltipBgColor.light,
+    tooltipBodyColor.dark,
+    tooltipBodyColor.light,
+    tooltipBorderColor.dark,
+    tooltipBorderColor.light,
+  ]);
 
   return (
     <React.Fragment>

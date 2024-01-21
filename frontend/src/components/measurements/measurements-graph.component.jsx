@@ -36,14 +36,14 @@ const MeasurementsGraphComponent = ({ type }) => {
 
   console.log(graphData.datasets, "DATATS");
 
-  let plugins = [];
+  // let plugins = [];
 
-  var options = {
-    maintainAspectRatio: false,
-    scales: {
-      x: { type: "time" },
-    },
-  };
+  // var options = {
+  //   maintainAspectRatio: false,
+  //   scales: {
+  //     x: { type: "time" },
+  //   },
+  // };
 
   return (
     <div>
