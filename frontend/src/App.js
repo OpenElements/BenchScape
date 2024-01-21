@@ -11,6 +11,7 @@ import BenchmarkPage from "./pages/benchmarks-page";
 import EnvironmentsPage from "./pages/environments-page";
 import EnvSettings from "./pages/env-settings";
 import { useState } from "react";
+import "./css/style.css";
 
 function App() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
