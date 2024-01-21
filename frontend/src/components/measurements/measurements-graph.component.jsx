@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useMeasurements, useMeasurementsSmooth } from "../../hooks";
-import DashboardCard from "../../charts/DashboardCard";
+import GraphCard from "../../charts/GraphCard";
 
 const MeasurementsGraphComponent = ({ type }) => {
   const { id } = useParams();
@@ -47,10 +47,7 @@ const MeasurementsGraphComponent = ({ type }) => {
 
   return (
     <div>
-      <DashboardCard
-        data={graphData.datasets}
-        timeStamps={graphData.timeStamps}
-      />
+      <GraphCard data={graphData.datasets} timeStamps={graphData.timeStamps} />
     </div>
   );
 };
