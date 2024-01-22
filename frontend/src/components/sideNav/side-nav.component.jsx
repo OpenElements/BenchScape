@@ -30,7 +30,7 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
     },
     {
       name: t("Environments"),
-      href: "/environment",
+      href: "/environments",
       icon: Wrench,
       count: environments ? environments : 0,
     },

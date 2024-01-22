@@ -8,6 +8,7 @@ import {
   faLinux,
 } from "@fortawesome/free-brands-svg-icons";
 import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function EnvironmentsPage() {
   const { data: environments } = useEnvironments();
@@ -117,7 +118,9 @@ function EnvironmentsPage() {
                     {currentEnvironments?.map((environment) => (
                       <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                          {environment.name ?? "--"}
+                          <Link to={`/environments/${environment.id}`}>
+                            {environment.name ?? "--"}
+                          </Link>
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.osName === "Mac OS X" && (

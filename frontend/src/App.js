@@ -12,6 +12,7 @@ import EnvironmentsPage from "./pages/environments-page";
 import EnvSettings from "./pages/env-settings";
 import { useState } from "react";
 import "./css/style.css";
+import InfrastructureDetails from "./pages/Infrastructure-details";
 
 function App() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -19,15 +20,15 @@ function App() {
     <div>
       <SideNav sidebarOpen={sideBarOpen} setSidebarOpen={setSideBarOpen} />
       <div className="xl:pl-64 bg-primary-gray">
-        <main className="w-full xl:p-4 h-screen">
-          <div className="bg-white xl:rounded-sm overflow-hidden xl:shadow-sm h-full">
+        <main className="w-full xl:p-4">
+          <div className="bg-white xl:rounded-sm xl:shadow-sm h-full">
             <TopNav setSidebarOpen={setSideBarOpen} />
             <div className="">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/benchmarks" element={<BenchmarkPage />} />
-                <Route path="/environment" element={<EnvironmentsPage />} />
+                <Route path="/environments" element={<EnvironmentsPage />} />
                 <Route path="/env-settings" element={<EnvSettings />} />
                 <Route
                   path="/table/:id"
@@ -36,6 +37,10 @@ function App() {
                 <Route
                   path="/graph/:id"
                   element={<MeasurementsGraphComponent type="graph" />}
+                />
+                <Route
+                  path="/environments/:id"
+                  element={<InfrastructureDetails />}
                 />
               </Routes>
             </div>
