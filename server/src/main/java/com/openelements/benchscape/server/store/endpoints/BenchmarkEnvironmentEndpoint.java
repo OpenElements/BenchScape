@@ -6,6 +6,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
 import com.openelements.benchscape.server.store.data.Environment;
+import com.openelements.benchscape.server.store.data.EnvironmentQuery;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,9 +53,26 @@ public class BenchmarkEnvironmentEndpoint {
         return environmentService.find(id);
     }
 
-    @GetMapping("/findBy") //FUTURE: We need a good and consistent naming for the endpoints
-    public List<Environment> findBy(@RequestParam final String benchmarkId) {
-        return List.of();
+    @GetMapping("/findByQuery")
+    public List<Environment> findByQuery(@RequestParam(required = false) String name,
+            @RequestParam(required = false) String gitOriginUrl,
+            @RequestParam(required = false) String gitBranch,
+            @RequestParam(required = false) String systemArch,
+            @RequestParam(required = false) Integer systemProcessors,
+            @RequestParam(required = false) Integer systemProcessorsMin,
+            @RequestParam(required = false) Integer systemProcessorsMax,
+            @RequestParam(required = false) Long systemMemory,
+            @RequestParam(required = false) Long systemMemoryMin,
+            @RequestParam(required = false) Long systemMemoryMax,
+            @RequestParam(required = false) String osName,
+            @RequestParam(required = false) String osVersion,
+            @RequestParam(required = false) String jvmVersion,
+            @RequestParam(required = false) String jvmName,
+            @RequestParam(required = false) String jmhVersion) {
+        final EnvironmentQuery environmentQuery = new EnvironmentQuery(name, gitOriginUrl, gitBranch, systemArch,
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin,
+                systemMemoryMax, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+        return environmentService.findByQuery(environmentQuery);
     }
 
 

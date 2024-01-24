@@ -46,6 +46,15 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     }
 
     @NonNull
+    public List<Measurement> findAllForBenchmark(final @NonNull String benchmarkId) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        return measurementRepository.findByBenchmarkId(UUID.fromString(benchmarkId))
+                .stream()
+                .map(m -> mapToData(m))
+                .toList();
+    }
+
+    @NonNull
     public List<Measurement> find(final @NonNull MeasurementQuery query) {
         Objects.requireNonNull(query, "query must not be null");
         return measurementRepository.find(UUID.fromString(query.benchmarkId()), query.start(), query.end())

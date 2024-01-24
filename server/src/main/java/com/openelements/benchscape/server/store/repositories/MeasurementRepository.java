@@ -15,6 +15,10 @@ public interface MeasurementRepository extends EntityWithTenantRepository<Measur
 
 
     @NonNull
+    @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp ASC")
+    List<MeasurementEntity> findByBenchmarkId(final UUID benchmarkId);
+
+    @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 AND m.timestamp >= ?2 AND m.timestamp <= ?3 ORDER BY m.timestamp ASC")
     List<MeasurementEntity> find(final UUID benchmarkId, final Instant start, final Instant end);
 

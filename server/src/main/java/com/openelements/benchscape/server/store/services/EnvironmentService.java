@@ -1,14 +1,15 @@
 package com.openelements.benchscape.server.store.services;
 
 import com.openelements.benchscape.server.store.data.Environment;
+import com.openelements.benchscape.server.store.data.EnvironmentQuery;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
-import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
 import com.openelements.server.base.tenant.TenantService;
 import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -187,5 +188,12 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
             final String pattern = environmentPattern.toLowerCase().replace("*", ".*");
             return metadataValue.toLowerCase().matches(pattern);
         }
+    }
+
+    public List<Environment> findByQuery(@NonNull final EnvironmentQuery environmentQuery) {
+        Objects.requireNonNull(environmentQuery, "environmentQuery must not be null");
+        return repository.findAllByQuery(environmentQuery).stream()
+                .map(this::mapToData)
+                .toList();
     }
 }

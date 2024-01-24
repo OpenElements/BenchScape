@@ -39,7 +39,8 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
     @Override
     protected Benchmark mapToData(@NonNull BenchmarkEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
-        return new Benchmark(entity.getId(), entity.getName(), Collections.unmodifiableMap(entity.getParams()));
+        return new Benchmark(entity.getId(), entity.getName(), Collections.unmodifiableMap(entity.getParams()),
+                Collections.unmodifiableList(entity.getTags()));
     }
 
     @NonNull
@@ -48,6 +49,7 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
         entity.setId(benchmark.id());
         entity.setName(benchmark.name());
         entity.setParams(Collections.unmodifiableMap(benchmark.params()));
+        entity.setTags(Collections.unmodifiableList(benchmark.tags()));
         return entity;
     }
 
