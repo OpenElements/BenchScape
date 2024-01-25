@@ -83,10 +83,14 @@ const BenchmarksPage = () => {
                           className="group hover:bg-azure transition-colors ease-in-out duration-150"
                         >
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                            {benchmark.id}
+                            <Link to={`/benchmarks/${benchmark.id}`}>
+                              {benchmark.id}
+                            </Link>
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                            {benchmark.name}
+                            <Link to={`/benchmarks/${benchmark.id}`}>
+                              {benchmark.name ?? "--"}
+                            </Link>
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                             15
