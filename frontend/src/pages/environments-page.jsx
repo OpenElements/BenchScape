@@ -159,7 +159,7 @@ function EnvironmentsPage() {
                           ) : (
                             "-"
                           )}
-                          {`${environment.systemMemory ?? " "}`}
+                          {`${environment.systemMemoryReadable ?? " "}`}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {`${environment.jvmName ?? "-"} ${
