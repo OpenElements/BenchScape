@@ -1,8 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEnvironmentById } from "../hooks";
 
 const InfrastructureDetails = () => {
-  //   const { id } = useParams();
+  const { id } = useParams();
+  const { data } = useEnvironmentById(id);
+
+  console.log(data);
   const navigate = useNavigate();
   return (
     <div className="p-8 flex flex-col gap-6">
@@ -37,23 +41,31 @@ const InfrastructureDetails = () => {
         <div className="flex flex-col gap-8 mt-4">
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-800">Operating System</div>
-            <div className="text-sm text-gray-800">Value</div>
+            <div className="text-sm text-gray-800">{data?.osName ?? "_"}</div>
           </div>
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-800">CPU cores</div>
-            <div className="text-sm text-gray-800">Value</div>
+            <div className="text-sm text-gray-800">
+              {data?.systemProcessors ?? "_"}
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-800">Memory</div>
-            <div className="text-sm text-gray-800">Value</div>
+            <div className="text-sm text-gray-800">
+              {data?.systemMemory ?? "_"}
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-800">Java</div>
-            <div className="text-sm text-gray-800">Value</div>
+            <div className="text-sm text-gray-800">
+              {data?.jmhVersion ?? "_"}
+            </div>
           </div>
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-800">JMH</div>
-            <div className="text-sm text-gray-800">Value</div>
+            <div className="text-sm text-gray-800">
+              {data?.jmhVersion ?? "_"}
+            </div>
           </div>
         </div>
       </div>
