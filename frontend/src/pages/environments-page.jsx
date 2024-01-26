@@ -11,7 +11,20 @@ import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function EnvironmentsPage() {
-  const { data: environments } = useEnvironments();
+  const [filters, setFilters] = useState({
+    os: "",
+    osVersion: "",
+    architecture: "",
+    cores: "",
+    memory: "",
+    jvmName: "",
+    jvmVersion: "",
+    jmhVersion: "",
+    memoryReadable: "",
+    osFamily: "",
+  });
+
+  const { data: environments } = useEnvironments(filters);
   const { data: osOptions } = useEnvironmentMetadata("os");
   const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
   const { data: archOptions } = useEnvironmentMetadata("arch");
@@ -54,23 +67,93 @@ function EnvironmentsPage() {
     setItemsPerPage(newItemsPerPage);
   };
 
+  const handleSelectionChange = (name, { target }) => {
+    setFilters((prev) => ({ ...prev, [name]: target.value }));
+  };
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
         <div className="flex flex-wrap gap-x-4 gap-y-6">
-          <Select label="OS" options={osOptions} />
-          <Select label="OS Version" options={osVersionOptions} />
-          <Select label="Architecture" options={archOptions} />
-          <Select label="CPU Cores" options={coresOptions} />
-          <Select label="Memory" options={memoryOptions} />
-          <Select label="JVM Name" options={jvmNameOptions} />
-          <Select label="JVM Version" options={jvmVersionOptions} />
-          <Select label="JMH Version" options={jvhVersionOptions} />
+          <Select
+            label="OS"
+            options={osOptions}
+            value={filters.os}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("os", e)}
+          />
+          <Select
+            label="OS Version"
+            options={osVersionOptions}
+            value={filters["osVersion"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("osVersion", e)}
+          />
+          <Select
+            label="Architecture"
+            options={archOptions}
+            value={filters["architecture"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("architecture", e)}
+          />
+          <Select
+            label="CPU Cores"
+            options={coresOptions}
+            value={filters["cores"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("cores", e)}
+          />
+          <Select
+            label="Memory"
+            options={memoryOptions}
+            value={filters["memory"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("memory", e)}
+          />
+          <Select
+            label="JVM Name"
+            options={jvmNameOptions}
+            value={filters["jvmName"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("jvmName", e)}
+          />
+          <Select
+            label="JVM Version"
+            options={jvmVersionOptions}
+            value={filters["jvmVersion"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("jvmVersion", e)}
+          />
+          <Select
+            label="JMH Version"
+            options={jvhVersionOptions}
+            value={filters["jmhVersion"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("jmhVersion", e)}
+          />
           <Select
             label="Memory Readable"
             options={systemMemoryReadableOptions}
+            value={filters["memoryReadable"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("memoryReadable", e)}
           />
-          <Select label="OS Family" options={osFamilyOptions} />
+          <Select
+            label="OS Family"
+            options={osFamilyOptions}
+            value={filters["osFamily"]}
+            valueExtractor={(name) => name}
+            labelExtractor={(name) => name}
+            onChange={(e) => handleSelectionChange("osFamily", e)}
+          />
         </div>
       </div>
 
