@@ -7,8 +7,17 @@ export function useBenchMarks() {
   return useSwr(`${apiUrl}/api/v2/benchmark/all`, dataFetcher);
 }
 
-export function useEnvironments() {
-  return useSwr(`${apiUrl}/api/v2/environment/all`, dataFetcher);
+export function useEnvironments(queries) {
+  const withValues = Object.entries(queries)
+    .filter(([key, value]) => Boolean(value))
+    .map(([key, value]) => [key, value]);
+
+  const params = new URLSearchParams(withValues).toString();
+
+  return useSwr(
+    `${apiUrl}/api/v2/environment/findByQuery?${params}`,
+    dataFetcher
+  );
 }
 
 export function useEnvironmentById(id) {
