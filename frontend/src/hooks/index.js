@@ -11,6 +11,10 @@ export function useEnvironments() {
   return useSwr(`${apiUrl}/api/v2/environment/all`, dataFetcher);
 }
 
+export function useEnvironmentById(id) {
+  return useSwr(`${apiUrl}/api/v2/environment/find?id=${id}`, dataFetcher);
+}
+
 export function useMeasurements(id) {
   return useSwr(
     `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}`,
