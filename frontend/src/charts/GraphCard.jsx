@@ -1,7 +1,6 @@
 import React from "react";
 import LineChart from "./LineChart";
 import { tailwindConfig } from "./utils/Utils";
-import Select from "../components/tags/select";
 import Datepicker from "../components/datepicker/DatePicker";
 
 function GraphCard({ data = [], timeStamps }) {
@@ -88,7 +87,7 @@ function GraphCard({ data = [], timeStamps }) {
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
       <div className="flex gap-2 justify-around items-center mt-4">
-        <Select label="Architecture" options={["options"]} />
+        {/* <Select label="Architecture" options={["options"]} /> */}
         <div className="flex gap-4 ">
           <Datepicker label="Start Date" />
           <Datepicker label="End Date" />
@@ -125,7 +124,7 @@ function GraphCard({ data = [], timeStamps }) {
             </label>
           </div>
         </div>
-        <Select label="Architecture" options={["options"]} />
+        {/* <Select label="Architecture" options={["options"]} /> */}
       </div>
       <LineChart data={chartData} width={"auto"} height={"auto"} />
     </div>

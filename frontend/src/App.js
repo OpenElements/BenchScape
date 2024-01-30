@@ -5,7 +5,6 @@ import {
   MeasurementsTableComponent,
   TopNav,
 } from "./components";
-import HomePage from "./pages/home-page";
 import SettingsPage from "./pages/settings-page";
 import BenchmarkPage from "./pages/benchmarks-page";
 import EnvironmentsPage from "./pages/environments-page";
@@ -26,7 +25,7 @@ function App() {
             <TopNav setSidebarOpen={setSideBarOpen} />
             <div className="">
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<BenchmarkPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/benchmarks" element={<BenchmarkPage />} />
                 <Route path="/environments" element={<EnvironmentsPage />} />
