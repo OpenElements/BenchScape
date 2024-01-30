@@ -9,12 +9,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import Pagination from "../components/pagination/Pagination";
 
 function EnvironmentsPage() {
   const [filters, setFilters] = useState({
     os: "",
     osVersion: "",
-    architecture: "",
+    systemArch: "",
     cores: "",
     memory: "",
     jvmName: "",
@@ -55,18 +56,6 @@ function EnvironmentsPage() {
   // Calculate the total number of pages
   const totalPages = Math.ceil(environments?.length / itemsPerPage);
 
-  // Function to handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Function to handle items per page change
-  const handleItemsPerPageChange = (event) => {
-    const newItemsPerPage = parseInt(event.target.value, 10);
-    setCurrentPage(1);
-    setItemsPerPage(newItemsPerPage);
-  };
-
   const handleSelectionChange = (name, { target }) => {
     setFilters((prev) => ({ ...prev, [name]: target.value }));
   };
@@ -96,7 +85,7 @@ function EnvironmentsPage() {
             value={filters["architecture"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("architecture", e)}
+            onChange={(e) => handleSelectionChange("systemArch", e)}
           />
           <Select
             label="CPU Cores"
@@ -263,58 +252,17 @@ function EnvironmentsPage() {
       </div>
 
       {/* Pagination */}
-      <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-        <div className="flex-1 flex justify-between">
-          {/* Previous Page Button */}
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
-          >
-            Previous
-          </button>
-          {/* Page numbers and page count */}
-          <div className="flex items-center space-x-2">
-            <span className="text-gray-500">Page</span>
-            <select
-              value={currentPage}
-              onChange={(e) => handlePageChange(parseInt(e.target.value, 10))}
-              className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
-            >
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-                (pageNumber) => (
-                  <option key={pageNumber} value={pageNumber}>
-                    {pageNumber}
-                  </option>
-                )
-              )}
-            </select>
-            <span className="text-gray-500">of {totalPages}</span>
-          </div>
-          {/* Next Page Button */}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={indexOfLastItem >= environments?.length}
-            className="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
-          >
-            Next
-          </button>
-        </div>
-        {/* Items per page dropdown */}
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-500">Items per page:</span>
-          <select
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-            className="relative inline-flex items-center px-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
-          >
-            <option value={8}>8</option>
-            <option value={9}>9</option>
-            <option value={10}>10</option>
-            <option value={11}>11</option>
-          </select>
-        </div>
-      </div>
+      {environments?.length > 0 && (
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          setCurrentPage={setCurrentPage}
+          setItemsPerPage={setItemsPerPage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          indexOfLastItem={indexOfLastItem}
+          data={environments}
+        />
+      )}
     </div>
   );
 }
