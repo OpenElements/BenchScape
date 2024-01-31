@@ -12,6 +12,17 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Data object of a measurement query. The query is used to find measurements for a specific benchmark.
+ *
+ * @param benchmarkId    id of the benchmark
+ * @param unit           defines the unit in that the measurements should be returned (every measurement will be
+ *                       converted)
+ * @param start          start of the periode in that a measurement must be
+ * @param end            end of the periode in that a measurement must be
+ * @param environmentIds ids of environment. A measurement must fit to at least one environment of the list. If the list
+ *                       is empty no environment filter will be used.
+ */
 public record MeasurementQuery(@NonNull String benchmarkId,
                                @NonNull BenchmarkUnit unit,
                                @NonNull Instant start,

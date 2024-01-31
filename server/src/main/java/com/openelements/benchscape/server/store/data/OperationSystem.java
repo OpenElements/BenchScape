@@ -3,6 +3,9 @@ package com.openelements.benchscape.server.store.data;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Objects;
 
+/**
+ * Enum for operation systems.
+ */
 public enum OperationSystem {
     WINDOWS,
     LINUX,

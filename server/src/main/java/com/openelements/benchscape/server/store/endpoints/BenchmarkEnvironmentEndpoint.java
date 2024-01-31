@@ -8,6 +8,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.EnvironmentQuery;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Endpoint for all REST requests regarding environments.
+ */
 @CrossOrigin
 @RestController
 @RequestMapping(V2 + "/environment")
@@ -32,12 +36,21 @@ public class BenchmarkEnvironmentEndpoint {
 
     private final EnvironmentService environmentService;
 
-
+    /**
+     * Constructor.
+     *
+     * @param environmentService the service to access environments
+     */
     @Autowired
-    public BenchmarkEnvironmentEndpoint(EnvironmentService environmentService) {
+    public BenchmarkEnvironmentEndpoint(@NonNull final EnvironmentService environmentService) {
         this.environmentService = Objects.requireNonNull(environmentService, "environmentService must not be null");
     }
 
+    /**
+     * Get all available environments (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @return all available environments
+     */
     @Operation(summary = "Get all available environments")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "request handled without error",
@@ -48,11 +61,41 @@ public class BenchmarkEnvironmentEndpoint {
         return environmentService.getAll();
     }
 
+    /**
+     * Get the environment with the given id (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @param id the id of the environment to get
+     * @return the environment with the given id
+     */
     @GetMapping(FIND)
     public Environment find(@RequestParam final String id) {
         return environmentService.find(id);
     }
 
+    /**
+     * Find environments by the given query parameters (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @param name                the name of the environment (can contain wildcards)
+     * @param gitOriginUrl        the git origin url of the environment (can contain wildcards)
+     * @param gitBranch           the git branch of the environment (can contain wildcards)
+     * @param systemArch          the system architecture of the environment (can contain wildcards)
+     * @param systemProcessors    the number of system processors of the environment
+     * @param systemProcessorsMin the minimum number of system processors of the environment (if defined
+     *                            systemProcessors will be ignored)
+     * @param systemProcessorsMax the maximum number of system processors of the environment (if defined
+     *                            systemProcessors will be ignored)
+     * @param systemMemory        the system memory of the environment
+     * @param systemMemoryMin     the minimum system memory of the environment (if defined systemMemory will be
+     *                            ignored)
+     * @param systemMemoryMax     the maximum system memory of the environment (if defined systemMemory will be
+     *                            ignored)
+     * @param osName              the os name of the environment (can contain wildcards)
+     * @param osVersion           the os version of the environment (can contain wildcards)
+     * @param jvmVersion          the jvm version of the environment (can contain wildcards)
+     * @param jvmName             the jvm name of the environment (can contain wildcards)
+     * @param jmhVersion          the jmh version of the environment (can contain wildcards)
+     * @return all environments that match the given query parameters
+     */
     @GetMapping("/findByQuery")
     public List<Environment> findByQuery(@RequestParam(required = false) String name,
             @RequestParam(required = false) String gitOriginUrl,
@@ -76,16 +119,32 @@ public class BenchmarkEnvironmentEndpoint {
     }
 
 
+    /**
+     * Get the count of all available environments (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @return the count of all available environments
+     */
     @GetMapping(COUNT)
     public long getCount() {
         return environmentService.getCount();
     }
 
+    /**
+     * Save the given environment (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @param environment the environment to save
+     * @return the saved environment
+     */
     @PostMapping
     public Environment save(@RequestBody final Environment environment) {
         return environmentService.save(environment);
     }
 
+    /**
+     * Delete the environment with the given id (for the current tenant - see #{@link EnvironmentService}).
+     *
+     * @param id the id of the environment to delete
+     */
     @DeleteMapping
     public void delete(@RequestParam final String id) {
         environmentService.delete(id);

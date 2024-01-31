@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Data object of a benchmark.
+ *
+ * @param id     technical unique id of the benchmark
+ * @param name   name of the benchmark
+ * @param params parameters of the benchmark (a benchmark can have multiple executions with different parameters)
+ * @param tags   tags of the benchmark (Currently I have no idea why I integrated that...)
+ */
 public record Benchmark(@Nullable UUID id, @NonNull String name, @NonNull Map<String, String> params,
                         @NonNull List<String> tags) implements
         DataBase {
