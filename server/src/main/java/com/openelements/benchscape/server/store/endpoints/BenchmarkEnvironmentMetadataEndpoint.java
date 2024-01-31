@@ -92,7 +92,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     @GetMapping("/osVersion/forOs")
     public List<String> getAllOperationSystemsVersionsByOsName(@RequestParam final String osName) {
         return environmentService.getAll().stream()
-                .filter(environment -> environment.osName().equals(osName))
+                .filter(environment -> Objects.equals(environment.osName(), osName))
                 .map(Environment::osVersion)
                 .filter(osVersion -> osVersion != null && !osVersion.isBlank())
                 .distinct()
@@ -110,7 +110,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     @GetMapping("/osVersion/forOsFamily")
     public List<String> getAllOperationSystemsVersionsByOsFamily(@RequestParam final OperationSystem osFamily) {
         return environmentService.getAll().stream()
-                .filter(environment -> environment.osFamily().equals(osFamily))
+                .filter(environment -> Objects.equals(environment.osFamily(), osFamily))
                 .map(Environment::osVersion)
                 .filter(osVersion -> osVersion != null && !osVersion.isBlank())
                 .distinct()
@@ -208,7 +208,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     @GetMapping("/jvmVersion/forJvmName")
     public List<String> getAllJvmVersions(@RequestParam final String jvmName) {
         return environmentService.getAll().stream()
-                .filter(environment -> environment.jvmName().equals(jvmName))
+                .filter(environment -> Objects.equals(environment.jvmName(), jvmName))
                 .map(Environment::jvmVersion)
                 .filter(jvmVersion -> jvmVersion != null && !jvmVersion.isBlank())
                 .distinct()
@@ -243,6 +243,27 @@ public class BenchmarkEnvironmentMetadataEndpoint {
         return environmentService.getAll().stream()
                 .map(Environment::gitOriginUrl)
                 .filter(gitOriginUrl -> gitOriginUrl != null && !gitOriginUrl.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    @GetMapping("/gitBranches")
+    public List<String> getAllGitBranches() {
+        return environmentService.getAll().stream()
+                .map(Environment::gitBranch)
+                .filter(gitBranch -> gitBranch != null && !gitBranch.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    @GetMapping("/gitBranches/forGitOrigin")
+    public List<String> getAllGitBranches(@RequestParam final String gitOrigin) {
+        return environmentService.getAll().stream()
+                .filter(environment -> Objects.equals(environment.gitOriginUrl(), gitOrigin))
+                .map(Environment::gitBranch)
+                .filter(gitBranch -> gitBranch != null && !gitBranch.isBlank())
                 .distinct()
                 .sorted()
                 .toList();
