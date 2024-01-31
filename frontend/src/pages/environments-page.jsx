@@ -29,7 +29,6 @@ function EnvironmentsPage() {
   const { data: osOptions } = useEnvironmentMetadata("os");
   const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
   const { data: archOptions } = useEnvironmentMetadata("arch");
-  const { data: memoryOptions } = useEnvironmentMetadata("memory");
   const { data: jvmVersionOptions } = useEnvironmentMetadata("jvmVersion");
   const { data: coresOptions } = useEnvironmentMetadata("cores");
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
@@ -37,15 +36,10 @@ function EnvironmentsPage() {
   const { data: systemMemoryReadableOptions } = useEnvironmentMetadata(
     "systemMemoryReadable"
   );
-  const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
 
-  // Number of items per page
   const [itemsPerPage, setItemsPerPage] = useState(8);
-
-  // State for current page
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Calculate the index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentEnvironments = environments?.slice(
@@ -53,7 +47,6 @@ function EnvironmentsPage() {
     indexOfLastItem
   );
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(environments?.length / itemsPerPage);
 
   const handleSelectionChange = (name, { target }) => {
@@ -64,7 +57,7 @@ function EnvironmentsPage() {
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
         <div className="flex flex-wrap gap-x-4 gap-y-6">
           <Select
-            label="OS"
+            label="OS Family"
             options={osOptions}
             value={filters.os}
             valueExtractor={(name) => name}
@@ -97,7 +90,7 @@ function EnvironmentsPage() {
           />
           <Select
             label="Memory"
-            options={memoryOptions}
+            options={systemMemoryReadableOptions}
             value={filters["memory"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
@@ -126,22 +119,6 @@ function EnvironmentsPage() {
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
             onChange={(e) => handleSelectionChange("jmhVersion", e)}
-          />
-          <Select
-            label="Memory Readable"
-            options={systemMemoryReadableOptions}
-            value={filters["memoryReadable"]}
-            valueExtractor={(name) => name}
-            labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("memoryReadable", e)}
-          />
-          <Select
-            label="OS Family"
-            options={osFamilyOptions}
-            value={filters["osFamily"]}
-            valueExtractor={(name) => name}
-            labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("osFamily", e)}
           />
         </div>
       </div>

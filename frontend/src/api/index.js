@@ -24,3 +24,14 @@ export async function exportBenchmarksCsv() {
     URL.revokeObjectURL(href);
   });
 }
+
+export async function getBenchmarkById(benchmarkId) {
+  const url = `${apiUrl}/api/v2/measurement/find?benchmarkId=${benchmarkId}`;
+
+  try {
+    const data = await dataFetcher(url);
+    return data?.length;
+  } catch (error) {
+    console.error(error);
+  }
+}

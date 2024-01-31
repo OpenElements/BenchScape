@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useBenchMarks } from "../hooks";
+import { useBenchMarks, useMeasurements } from "../hooks";
 import Pagination from "../components/pagination/Pagination";
 
 const BenchmarksPage = () => {
@@ -35,12 +35,6 @@ const BenchmarksPage = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 px-4 text-left text-sm font-medium text-gray-500 uppercase"
-                        >
-                          ID
-                        </th>
-                        <th
-                          scope="col"
                           className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
                         >
                           Name
@@ -49,7 +43,7 @@ const BenchmarksPage = () => {
                           scope="col"
                           className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
                         >
-                          Unit
+                          Measurement
                         </th>
                         <th
                           scope="col"
@@ -71,18 +65,13 @@ const BenchmarksPage = () => {
                           key={benchmark.id}
                           className="group hover:bg-azure transition-colors ease-in-out duration-150"
                         >
-                          <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                            <Link to={`/benchmarks/${benchmark.id}`}>
-                              {benchmark.id}
-                            </Link>
-                          </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                             <Link to={`/benchmarks/${benchmark.id}`}>
                               {benchmark.name ?? "--"}
                             </Link>
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                            15
+                            <MeasurementLength benchmarkId={benchmark.id} />
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
                             <Link
@@ -128,3 +117,8 @@ const BenchmarksPage = () => {
 };
 
 export default BenchmarksPage;
+
+function MeasurementLength({ benchmarkId }) {
+  const { data } = useMeasurements(benchmarkId);
+  return <>{data?.length}</>;
+}
