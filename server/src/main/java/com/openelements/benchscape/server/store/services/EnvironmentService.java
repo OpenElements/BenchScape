@@ -69,7 +69,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     @NonNull
     @Override
     protected EnvironmentEntity updateEntity(@NonNull EnvironmentEntity entity,
-            @NonNull Environment environment) {
+                                             @NonNull Environment environment) {
         entity.setId(environment.id());
         entity.setName(environment.name());
         entity.setDescription(environment.description());
@@ -97,13 +97,13 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     }
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
-            @NonNull final String environmentId) {
+                                         @NonNull final String environmentId) {
         Objects.requireNonNull(environmentId, "environmentId must not be null");
         return isMatchingEnvironment(metadata, UUID.fromString(environmentId));
     }
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
-            @NonNull final UUID environmentId) {
+                                         @NonNull final UUID environmentId) {
         Objects.requireNonNull(environmentId, "environmentId must not be null");
         final EnvironmentEntity environmentEntity = repository.findByIdAndTenantId(environmentId, getCurrentTenantId())
                 .orElseThrow(() -> new IllegalArgumentException("No environment found for ID: " + environmentId));
@@ -112,7 +112,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     }
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
-            @NonNull final Environment environment) {
+                                         @NonNull final Environment environment) {
         Objects.requireNonNull(metadata, "metadata must not be null");
         Objects.requireNonNull(environment, "environment must not be null");
 
@@ -161,13 +161,86 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
             return false;
         }
 
-        //TODO: all other checks
+        final Boolean systemProcessorsMaxCheck = Optional.ofNullable(environment.systemProcessorsMax())
+                .map(systemProcessorsMax -> metadata.systemProcessors() != null &&
+                        systemProcessorsMax >= metadata.systemProcessors())
+                .orElse(true);
+        if (!systemProcessorsMaxCheck) {
+            return false;
+        }
+
+        final Boolean systemMemoryCheck = Optional.ofNullable(environment.systemMemory())
+                .map(systemMemory -> metadata.systemMemory() != null &&
+                        systemMemory.equals(metadata.systemMemory()))
+                .orElse(true);
+        if (!systemMemoryCheck) {
+            return false;
+        }
+
+        final Boolean systemMemoryMinCheck = Optional.ofNullable(environment.systemMemoryMin())
+                .map(systemMemoryMin -> metadata.systemMemory() != null &&
+                        systemMemoryMin <= metadata.systemMemory())
+                .orElse(true);
+        if (!systemMemoryMinCheck) {
+            return false;
+        }
+
+        final Boolean systemMemoryMaxCheck = Optional.ofNullable(environment.systemMemoryMax())
+                .map(systemMemoryMax -> metadata.systemMemory() != null &&
+                        systemMemoryMax >= metadata.systemMemory())
+                .orElse(true);
+        if (!systemMemoryMaxCheck) {
+            return false;
+        }
+
+        final Boolean osNameCheck = Optional.ofNullable(environment.osName())
+                .map(osName -> stringMetadataValueMatches(osName, metadata.osName(), false))
+                .orElse(true);
+        if (!osNameCheck) {
+            return false;
+        }
+
+        final Boolean osVersionCheck = Optional.ofNullable(environment.osVersion())
+                .map(osVersion -> stringMetadataValueMatches(osVersion, metadata.osVersion(), false))
+                .orElse(true);
+        if (!osVersionCheck) {
+            return false;
+        }
+
+//        final Boolean osFamilyCheck = Optional.ofNullable(environment.osFamily())
+//                .map(osFamily -> stringMetadataValueMatches(osFamily, metadata.OsFamily(), false))
+//                .orElse(true);
+//        if (!osFamilyCheck) {
+//            return false;
+//        }
+
+        final Boolean jvmVersionCheck = Optional.ofNullable(environment.jvmVersion())
+                .map(jvmVersion -> stringMetadataValueMatches(jvmVersion, metadata.jvmVersion(), false))
+                .orElse(true);
+        if (!jvmVersionCheck) {
+            return false;
+        }
+
+        final Boolean jvmNameCheck = Optional.ofNullable(environment.jvmName())
+                .map(jvmName -> stringMetadataValueMatches(jvmName, metadata.jvmName(), false))
+                .orElse(true);
+        if (!jvmNameCheck) {
+            return false;
+        }
+
+        final Boolean jmhVersionCheck = Optional.ofNullable(environment.jmhVersion())
+                .map(jmhVersion -> stringMetadataValueMatches(jmhVersion, metadata.jmhVersion(), false))
+                .orElse(true);
+        if (!jmhVersionCheck) {
+            return false;
+        }
+
 
         return true;
     }
 
     private boolean stringMetadataValueMatches(@NonNull final String environmentPattern,
-            @Nullable final String metadataValue, final boolean caseSensitive) {
+                                               @Nullable final String metadataValue, final boolean caseSensitive) {
         Objects.requireNonNull(environmentPattern, "environmentPattern must not be null");
         if (environmentPattern.isBlank()) {
             return true;
