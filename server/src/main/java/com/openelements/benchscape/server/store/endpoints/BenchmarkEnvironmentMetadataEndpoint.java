@@ -156,4 +156,14 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    @GetMapping("/systemMemoryReadable")
+    public List<String> getAllSystemMemoryReadable() {
+        return environmentService.getAll().stream()
+                .map(Environment::systemMemoryReadable)
+                .filter(systemMemoryReadable -> systemMemoryReadable != null && !systemMemoryReadable.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
 }
