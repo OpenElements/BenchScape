@@ -111,6 +111,15 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         return isMatchingEnvironment(metadata, environment);
     }
 
+    public boolean isAnyMatchingEnvironment(@NonNull final Environment e,
+            @NonNull final List<MeasurementMetadata> metadata) {
+        Objects.requireNonNull(metadata, "metadata must not be null");
+        return metadata.stream()
+                .filter(m -> isMatchingEnvironment(m, e))
+                .findAny()
+                .isPresent();
+    }
+
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
             @NonNull final Environment environment) {
         Objects.requireNonNull(metadata, "metadata must not be null");

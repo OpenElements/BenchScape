@@ -9,6 +9,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Data object of a measurement. A measurement is splitted in two parts: metadata and data. The metadata can be found at
+ * {@link MeasurementMetadata}.
+ *
+ * @param id        technical unique id of the measurement
+ * @param timestamp timestamp of the measurement
+ * @param value     value of the measurement
+ * @param error     error value of the measurement
+ * @param min       min value of the measurement
+ * @param max       max value of the measurement
+ * @param unit      unit of the measurement
+ */
 public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
                           @Nullable Double min, @Nullable Double max,
                           @NonNull BenchmarkUnit unit) implements DataBase {

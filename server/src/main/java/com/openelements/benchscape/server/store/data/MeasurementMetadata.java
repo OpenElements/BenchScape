@@ -9,6 +9,36 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Data object of a measurement metadata. A measurement is splitted in two parts: metadata and data. The data can be
+ * found at {@link Measurement}.
+ *
+ * @param id                       technical unique id of the measurement
+ * @param gitOriginUrl             git origin url
+ * @param gitBranch                git branch
+ * @param gitCommitId              git commit id
+ * @param gitTags                  git tags
+ * @param gitDirty                 git dirty
+ * @param jmhThreadCount           jmh thread count
+ * @param jmhForks                 jmh forks
+ * @param jmhTimeout               jmh timeout
+ * @param jmhWarmupIterations      jmh warmup iterations
+ * @param jmhWarmupTime            jmh warmup time
+ * @param jmhWarmupBatchSize       jmh warmup batch size
+ * @param jmhMeasurementIterations jmh measurement iterations
+ * @param jmhMeasurementTime       jmh measurement time
+ * @param jmhMeasurementBatchSize  jmh measurement batch size
+ * @param systemArch               system architecture on that the measurement was executed
+ * @param systemProcessors         system processors on that the measurement was executed
+ * @param systemMemory             system memory on that the measurement was executed
+ * @param osName                   os name on that the measurement was executed
+ * @param osVersion                os version on that the measurement was executed
+ * @param jvmVersion               jvm version on that the measurement was executed
+ * @param jvmName                  jvm name on that the measurement was executed
+ * @param jmhVersion               jmh version with that the measurement was executed
+ * @param systemProperties         system properties with that the measurement was executed
+ * @param environmentProperties    environment properties with that the measurement was executed
+ */
 public record MeasurementMetadata(@Nullable UUID id, @Nullable String gitOriginUrl,
                                   @Nullable String gitBranch, @Nullable String gitCommitId,
                                   @NonNull Set<String> gitTags, @Nullable Boolean gitDirty,
