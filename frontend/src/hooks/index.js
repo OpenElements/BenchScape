@@ -53,4 +53,8 @@ export function useCount(name) {
   return useSwr(`${apiUrl}/api/v2/${name}/count`, dataFetcher);
 }
 
+export function useOS() {
+  return useSwr(`${apiUrl}/api/v2/environment/metadata/os`, dataFetcher);
+}
+
 // SWR documentation: https://swr.vercel.app/docs/getting-started

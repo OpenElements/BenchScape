@@ -31,7 +31,7 @@ i18n
   .init({
     resources: { en: enJSON, de: deJSON },
     fallbackLng: "en",
-    debug: true,
+    debug: false,
 
     whitelist: availableLanguages,
     detection: option,
