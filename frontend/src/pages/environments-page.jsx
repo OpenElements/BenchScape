@@ -172,22 +172,30 @@ function EnvironmentsPage() {
                           </Link>
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {environment.osName === "Mac OS X" && (
+                          {(environment.osName === "Mac OS X" && (
                             <FontAwesomeIcon icon={faApple} className="mr-2" />
-                          )}
-                          {environment.osName === "Windows" && (
-                            <FontAwesomeIcon
-                              icon={faWindows}
-                              className="mr-2"
-                            />
-                          )}
-                          {environment.osName === "Linux" && (
-                            <FontAwesomeIcon icon={faLinux} className="mr-2" />
-                          )}
-                          {`${environment.osName ?? "-"} ${
-                            environment.osVersion ?? " "
+                          )) ||
+                            (environment.osName === "Windows" && (
+                              <FontAwesomeIcon
+                                icon={faWindows}
+                                className="mr-2"
+                              />
+                            )) ||
+                            (environment.osName === "Linux" && (
+                              <FontAwesomeIcon
+                                icon={faLinux}
+                                className="mr-2"
+                              />
+                            ))}
+                          {`${
+                            environment.osName || environment.osVersion
+                              ? (environment.osName || "") +
+                                " " +
+                                (environment.osVersion || "")
+                              : "-"
                           }`}
                         </td>
+
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.systemArch &&
                           environment.systemProcessors ? (
@@ -206,14 +214,20 @@ function EnvironmentsPage() {
                               />
                             </>
                           ) : (
-                            "-"
+                            <>
+                              {environment.systemMemoryReadable
+                                ? `${environment.systemMemoryReadable}`
+                                : "-"}
+                            </>
                           )}
-                          {`${environment.systemMemoryReadable ?? " "}`}
                         </td>
+
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {`${environment.jvmName ?? "-"} ${
-                            environment.jvmVersion ?? " "
-                          }`}
+                          {environment.jvmName || environment.jvmVersion
+                            ? `${environment.jvmName ?? ""} ${
+                                environment.jvmVersion ?? ""
+                              }`
+                            : "-"}
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jmhVersion ?? "-"}
