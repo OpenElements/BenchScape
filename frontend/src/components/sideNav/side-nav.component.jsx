@@ -92,7 +92,7 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
                               <Link
                                 to={item.href}
                                 className={classNames(
-                                  item.current
+                                  pathname.includes(item.href)
                                     ? "bg-primary-purple text-white"
                                     : "text-indigo-200 hover:text-white hover:bg-indigo-900/40",
                                   "sidebar-nav-link"
@@ -100,7 +100,7 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
                               >
                                 <item.icon
                                   className={classNames(
-                                    item.current
+                                    pathname.includes(item.href)
                                       ? "text-white"
                                       : "text-indigo-200 group-hover:text-white",
                                     "h-6 w-6 shrink-0"
@@ -201,7 +201,7 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
                       <Link
                         to={item.href}
                         className={classNames(
-                          pathname === item.href
+                          pathname.includes(item.href)
                             ? "bg-primary-purple text-white"
                             : "text-indigo-200 hover:text-white hover:bg-indigo-900/40",
                           "sidebar-nav-link"
@@ -209,7 +209,7 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
                       >
                         <item.icon
                           className={classNames(
-                            pathname === item.href
+                            pathname.includes(item.href)
                               ? "text-white"
                               : "text-indigo-200 group-hover:text-white",
                             "h-6 w-6 shrink-0"

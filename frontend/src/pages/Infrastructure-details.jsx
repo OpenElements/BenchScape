@@ -1,45 +1,63 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useEnvironmentById } from "../hooks";
+import { useForm, Controller } from "react-hook-form";
+import { useEnvironmentById, useOS } from "../hooks";
 import { z } from "zod";
-import Select from "../components/tags/select";
+import { Select } from "../components";
 
 const schema = z.object({
   infraName: z.string(),
   infraDescription: z.string(),
-  osName: z.array(z.string()),
+  osName: z.string(),
   cores: z.string(),
   memory: z.string(),
   java: z.string(),
   jmh: z.string(),
 });
 
+const inputClasses =
+  "w-24 text-center text-sm border-0 border-b border-gray-200 focus:border-0 focus:border-b focus:border-gray-400";
+
 const InfrastructureDetails = () => {
   const { id } = useParams();
-  const { data } = useEnvironmentById(id);
-  const { handleSubmit, register } = useForm({
+  const { data, isLoading } = useEnvironmentById(id);
+  const { data: osOptions } = useOS();
+  const { handleSubmit, register, control, reset } = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
-    defaultValues: {
-      infraName: data?.name ?? "",
-      infraDescription: data?.description ?? "",
-      osName: data?.osName ?? "",
-      cores: data?.systemProcessors ?? "",
-      memory: data?.systemMemory ?? "",
-      java: data?.jvmVersion ?? "",
-      jmh: data?.jmhVersion ?? "",
-    },
   });
-
-  console.log(data);
 
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      reset({
+        infraName: data?.name || "",
+        infraDescription: data?.description || "",
+        osName: data?.osName || "",
+        cores: data?.systemProcessors || "",
+        memory: data?.systemMemoryReadable || "",
+        java: data?.jvmVersion || "",
+        jmh: data?.jmhVersion || "",
+      });
+    }
+  }, [
+    data?.description,
+    data?.jmhVersion,
+    data?.jvmVersion,
+    data?.name,
+    data?.osName,
+    data?.systemMemoryReadable,
+    data?.systemProcessors,
+    isLoading,
+    reset,
+  ]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-8 flex flex-col gap-6">
@@ -75,31 +93,58 @@ const InfrastructureDetails = () => {
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Operating System</div>
               <div className="text-sm text-gray-800">
-                <Select options={} />
+                <Controller
+                  name="osName"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={osOptions}
+                      labelExtractor={(label) => label}
+                      valueExtractor={(value) => value}
+                    />
+                  )}
+                />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">CPU cores</div>
               <div className="text-sm text-gray-800">
-                <input type="text" {...register("cores")} />
+                <input
+                  type="text"
+                  {...register("cores")}
+                  className={inputClasses}
+                />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Memory</div>
               <div className="text-sm text-gray-800">
-                <input type="text" {...register("memory")} />
+                <input
+                  type="text"
+                  {...register("memory")}
+                  className={inputClasses}
+                />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Java</div>
               <div className="text-sm text-gray-800">
-                <input type="text" {...register("java")} />
+                <input
+                  type="text"
+                  {...register("java")}
+                  className={inputClasses}
+                />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">JMH</div>
               <div className="text-sm text-gray-800">
-                <input type="text" {...register("jmh")} />
+                <input
+                  type="text"
+                  {...register("jmh")}
+                  className={inputClasses}
+                />
               </div>
             </div>
           </div>
@@ -115,6 +160,7 @@ const InfrastructureDetails = () => {
             Cancel
           </button>
           <button
+            type="submit"
             className="border-2 text-sm rounded-md bg-indigo-700 border-indigo-700 text-white"
             style={{
               padding: "6px 30px",
