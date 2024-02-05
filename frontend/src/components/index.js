@@ -3,6 +3,7 @@ import MeasurementsGraphComponent from "./measurements/measurements-graph.compon
 import MeasurementsTableComponent from "./measurements/measurements-table.component";
 import TopNav from "./topNav/top-nav.component";
 import SideNav from "./sideNav/side-nav.component";
+import Select from "./tags/select";
 
 export {
   AppBar,
@@ -10,4 +11,5 @@ export {
   MeasurementsTableComponent,
   TopNav,
   SideNav,
+  Select,
 };
