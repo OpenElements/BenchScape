@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useMeasurements, useMeasurementsSmooth } from "../../hooks";
 import GraphCard from "../../charts/GraphCard";
 
-const MeasurementsGraphComponent = ({ type }) => {
+const MeasurementsGraphComponent = () => {
   const { id } = useParams();
   const realData = useMeasurements(id);
   const smoothData = useMeasurementsSmooth(id);
@@ -33,8 +33,6 @@ const MeasurementsGraphComponent = ({ type }) => {
     ],
     timeStamps: realData.data?.map((d) => d.timestamp),
   };
-
-  console.log(graphData.datasets, "DATATS");
 
   // let plugins = [];
 
