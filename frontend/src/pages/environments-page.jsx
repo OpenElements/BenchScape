@@ -71,7 +71,7 @@ function EnvironmentsPage() {
           />
           <Select
             label="OS Version"
-            options={osVersionOptionsFiltered} // Use the filtered options here
+            options={osVersionOptionsFiltered}
             value={filters["osVersion"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
