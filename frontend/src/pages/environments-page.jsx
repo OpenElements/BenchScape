@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Select from "../components/tags/select";
-import { useEnvironmentMetadata, useEnvironments } from "../hooks";
+import {
+  useEnvironmentMetadata,
+  useEnvironments,
+  useOsVersionFilter,
+} from "../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faApple,
@@ -26,8 +30,9 @@ function EnvironmentsPage() {
   });
 
   const { data: environments } = useEnvironments(filters);
+  const { data: osVersionOptionsFiltered } = useOsVersionFilter(filters.os);
   const { data: osOptions } = useEnvironmentMetadata("os");
-  const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
+  //const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
   const { data: archOptions } = useEnvironmentMetadata("arch");
   const { data: jvmVersionOptions } = useEnvironmentMetadata("jvmVersion");
   const { data: coresOptions } = useEnvironmentMetadata("cores");
@@ -66,7 +71,7 @@ function EnvironmentsPage() {
           />
           <Select
             label="OS Version"
-            options={osVersionOptions}
+            options={osVersionOptionsFiltered} // Use the filtered options here
             value={filters["osVersion"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
