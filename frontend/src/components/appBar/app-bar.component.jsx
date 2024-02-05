@@ -3,8 +3,9 @@ import { Menu, Transition } from "@headlessui/react";
 import { CaretDown, List } from "@phosphor-icons/react";
 import { availableLanguages } from "../../i18n";
 import logo from "../../assets/logo.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { exportBenchmarksCsv } from "../../api";
+import { getUuidFromUrl } from "../../utils";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -17,10 +18,38 @@ const AppBar = ({
   setSidebarOpen,
 }) => {
   const { pathname } = useLocation();
-  console.log(pathname);
+  const navigate = useNavigate();
 
-  const heading = pathname === "/benchmarks" ? "Benchmarks" : "Environments";
-  const showActions = pathname === "/benchmarks" ? true : false;
+  const heading =
+    pathname.includes("/benchmarks") ||
+    pathname.includes("/graph") ||
+    pathname.includes("/table")
+      ? "Benchmarks"
+      : "Environments";
+
+  const showActions =
+    pathname.includes("/benchmarks") ||
+    pathname.includes("/graph") ||
+    pathname.includes("/table")
+      ? true
+      : false;
+
+  const showTableView = () => navigate(`/table/${getUuidFromUrl(pathname)}`);
+  const showGraphView = () => navigate(`/graph/${getUuidFromUrl(pathname)}`);
+
+  const actions = [
+    {
+      name: "Table View",
+      action: showTableView,
+      disabled: pathname.includes("/table"),
+    },
+    {
+      name: "Graph View",
+      action: showGraphView,
+      disabled: pathname.includes("/graph"),
+    },
+    { name: "Export", action: exportBenchmarksCsv },
+  ];
   return (
     <div>
       <div className="xl:hidden flex items-center justify-between gap-5 2xl:px-8 2xl:py-7 px-5 py-4 bg-primary-navy">
@@ -44,12 +73,16 @@ const AppBar = ({
             </div>
             {showActions && (
               <div className="flex items-center gap-2 text-sm">
-                <button
-                  onClick={exportBenchmarksCsv}
-                  className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150"
-                >
-                  Export
-                </button>
+                {actions.map(({ name, action, disabled }, index) => (
+                  <button
+                    key={index}
+                    onClick={action}
+                    disabled={disabled}
+                    className="bg-white rounded-sm text-center px-4 py-1.5 border border-gray-300 hover:bg-gray-100 transition-colors ease-in-out duration-150"
+                  >
+                    {name}
+                  </button>
+                ))}
               </div>
             )}
           </div>
