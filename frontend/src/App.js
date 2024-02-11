@@ -12,7 +12,6 @@ import EnvSettings from "./pages/env-settings";
 import { useState } from "react";
 import "./css/style.css";
 import InfrastructureDetails from "./pages/Infrastructure-details";
-import BenchmarkDetails from "./pages/Benchmark-details";
 
 function App() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -42,7 +41,6 @@ function App() {
                   path="/environments/:id"
                   element={<InfrastructureDetails />}
                 />
-                <Route path="/benchmarks/:id" element={<BenchmarkDetails />} />
               </Routes>
             </div>
           </div>

@@ -3,7 +3,21 @@ import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export async function dataFetcher(url) {
-  return await axios.get(url).then((res) => res.data);
+  return await axios
+    .get(url)
+    .then((res) => res.data)
+    .catch((error) => console.error(error));
+}
+
+export async function postData(url, payload) {
+  return await axios
+    .post(url, payload)
+    .then((res) => res.data)
+    .catch((error) => console.error(error));
+}
+
+export async function deleteData(url) {
+  return axios.delete(url).catch((error) => console.error(error));
 }
 
 export async function exportBenchmarksCsv() {
@@ -34,4 +48,12 @@ export async function getBenchmarkById(benchmarkId) {
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function saveEnvironment(payload) {
+  return await postData(`${apiUrl}/api/v2/environment`, payload);
+}
+
+export async function deleteEnvironment(id) {
+  return deleteData(`${apiUrl}/api/v2/environment/${id}`);
 }

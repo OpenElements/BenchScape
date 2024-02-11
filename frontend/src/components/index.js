@@ -4,6 +4,7 @@ import MeasurementsTableComponent from "./measurements/measurements-table.compon
 import TopNav from "./topNav/top-nav.component";
 import SideNav from "./sideNav/side-nav.component";
 import Select from "./tags/select";
+import OverflowMenu from "./overflowMenu/OverflowMenu";
 
 export {
   AppBar,
@@ -12,4 +13,5 @@ export {
   TopNav,
   SideNav,
   Select,
+  OverflowMenu,
 };

@@ -55,8 +55,7 @@ const Pagination = ({
         {/* Next Page Button */}
         <button
           onClick={() => handlePageChange(currentPage + 1)}
-          // disabled={indexOfLastItem >= data?.length}
-          disabled={true}
+          disabled={indexOfLastItem >= data?.length}
           className="relative inline-flex items-center px-2 py-2 mr-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
         >
           Next
