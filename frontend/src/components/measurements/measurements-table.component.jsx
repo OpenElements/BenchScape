@@ -36,12 +36,6 @@ const MeasurementsTableComponent = ({ type }) => {
                     <tr>
                       <th
                         scope="col"
-                        className="py-3.5 px-4 text-left text-sm font-medium text-gray-500 uppercase"
-                      >
-                        ID
-                      </th>
-                      <th
-                        scope="col"
                         className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
                       >
                         Timestamp
@@ -76,12 +70,9 @@ const MeasurementsTableComponent = ({ type }) => {
                     {currentItems?.map(
                       ({ id, timestamp, error, min, max, unit, value }) => (
                         <tr
-                          key={id} // Add a unique key for each row
+                          key={id}
                           className="group hover:bg-azure transition-colors ease-in-out duration-150"
                         >
-                          <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                            {id ?? "--"}
-                          </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                             {timestamp
                               ? new Date(timestamp).toLocaleString()

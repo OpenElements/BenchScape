@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useEnvironmentById, useOS } from "../hooks";
 import { z } from "zod";
 import { Select } from "../components";
+import { saveEnvironment } from "../api";
 
 const schema = z.object({
   infraName: z.string(),
@@ -30,8 +31,21 @@ const InfrastructureDetails = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const { infraName, infraDescription, memory, jmh, java, cores, osName } =
+      data;
+
+    const payload = {
+      id,
+      osName,
+      name: infraName,
+      description: infraDescription,
+      systemMemoryReadable: memory,
+      jmhVersion: jmh,
+      jvmVersion: java,
+      systemProcessors: cores,
+    };
+    await saveEnvironment(payload);
   };
 
   useEffect(() => {

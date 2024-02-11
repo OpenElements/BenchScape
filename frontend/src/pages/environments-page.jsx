@@ -12,10 +12,13 @@ import {
   faLinux,
 } from "@fortawesome/free-brands-svg-icons";
 import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination/Pagination";
+import { OverflowMenu } from "../components";
+import { deleteEnvironment } from "../api";
 
 function EnvironmentsPage() {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     os: "",
     osVersion: "",
@@ -28,6 +31,11 @@ function EnvironmentsPage() {
     memoryReadable: "",
     osFamily: "",
   });
+  const [hoveredRow, setHoveredRow] = useState(null);
+
+  const handleRowHover = (rowIndex) => {
+    setHoveredRow(rowIndex);
+  };
 
   const { data: environments } = useEnvironments(filters);
   const { data: osVersionOptionsFiltered } = useOsVersionFilter(filters.os);
@@ -169,8 +177,13 @@ function EnvironmentsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {currentEnvironments?.map((environment) => (
-                      <tr className="group hover:bg-azure transition-colors ease-in-out duration-150">
+                    {currentEnvironments?.map((environment, index) => (
+                      <tr
+                        className="group hover:bg-azure transition-colors ease-in-out duration-150"
+                        key={index}
+                        onMouseEnter={() => handleRowHover(index)}
+                        onMouseLeave={() => handleRowHover(null)}
+                      >
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
                           <Link to={`/environments/${environment.id}`}>
                             {environment.name ?? "--"}
@@ -237,6 +250,24 @@ function EnvironmentsPage() {
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jmhVersion ?? "-"}
                         </td>
+                        <div className="absolute right-16 mt-3">
+                          <OverflowMenu
+                            showMenu={index === hoveredRow}
+                            menuItems={[
+                              {
+                                name: "Edit",
+                                action: () =>
+                                  navigate(`/environments/${environment.id}`),
+                              },
+                              {
+                                delete: true,
+                                name: "Delete",
+                                action: async () =>
+                                  await deleteEnvironment(environment.id),
+                              },
+                            ]}
+                          />
+                        </div>
                       </tr>
                     ))}
                   </tbody>
