@@ -205,13 +205,11 @@ function EnvironmentsPage() {
                                 className="mr-2"
                               />
                             ))}
-                          {`${
-                            environment.osName || environment.osVersion
-                              ? (environment.osName || "") +
-                                " " +
-                                (environment.osVersion || "")
-                              : "-"
-                          }`}
+                          {environment.osName
+                            ? `${environment.osName} ${
+                                environment.osVersion || ""
+                              }`
+                            : "-"}
                         </td>
 
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">

@@ -17,7 +17,7 @@ export async function postData(url, payload) {
 }
 
 export async function deleteData(url) {
-  return axios.delete(url).catch((error) => console.error(error));
+  return await axios.delete(url).catch((error) => console.error(error));
 }
 
 export async function exportBenchmarksCsv() {
