@@ -34,10 +34,8 @@ const AppBar = ({ setSidebarOpen }) => {
       ? "Benchmarks"
       : "Environments";
 
-  console.log(state, "dfgdr");
-
   const showTableView = () =>
-    navigate(`/table/${state?.uuid}}`, { state: state });
+    navigate(`/table/${state?.uuid}`, { state: state });
 
   const showGraphView = () =>
     navigate(`/graph/${state?.uuid}`, { state: state });
