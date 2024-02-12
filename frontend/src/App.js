@@ -3,7 +3,7 @@ import {
   SideNav,
   MeasurementsGraphComponent,
   MeasurementsTableComponent,
-  TopNav,
+  AppBar,
 } from "./components";
 import SettingsPage from "./pages/settings-page";
 import BenchmarkPage from "./pages/benchmarks-page";
@@ -21,7 +21,7 @@ function App() {
       <div className="xl:pl-64 bg-primary-gray">
         <main className="w-full xl:p-4">
           <div className="bg-white xl:rounded-sm xl:shadow-sm h-full">
-            <TopNav setSidebarOpen={setSideBarOpen} />
+            <AppBar setSidebarOpen={setSideBarOpen} />
             <div className="">
               <Routes>
                 <Route path="/" element={<BenchmarkPage />} />

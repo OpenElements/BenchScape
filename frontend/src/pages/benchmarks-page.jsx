@@ -66,9 +66,7 @@ const BenchmarksPage = () => {
                           className="group hover:bg-azure transition-colors ease-in-out duration-150"
                         >
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                            <Link to={`/benchmarks/${benchmark.id}`}>
-                              {benchmark.name ?? "--"}
-                            </Link>
+                            {benchmark.name ?? "--"}
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                             <MeasurementLength benchmarkId={benchmark.id} />
@@ -76,6 +74,10 @@ const BenchmarksPage = () => {
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
                             <Link
                               to={`/graph/${benchmark.id}`}
+                              state={{
+                                showSwitchers: true,
+                                uuid: benchmark.id,
+                              }}
                               className="text-primary-green text-xs font-medium transition-colors ease-in-out duration-150"
                             >
                               View Graph
@@ -84,6 +86,10 @@ const BenchmarksPage = () => {
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
                             <Link
                               to={`/table/${benchmark.id}`}
+                              state={{
+                                showSwitchers: true,
+                                uuid: benchmark.id,
+                              }}
                               className="text-primary-green text-xs font-medium transition-colors ease-in-out duration-150"
                             >
                               View Table

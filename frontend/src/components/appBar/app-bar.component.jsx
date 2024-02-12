@@ -3,22 +3,29 @@ import { Menu, Transition } from "@headlessui/react";
 import { CaretDown, List } from "@phosphor-icons/react";
 import { availableLanguages } from "../../i18n";
 import logo from "../../assets/logo.svg";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { exportBenchmarksCsv } from "../../api";
-import { getUuidFromUrl } from "../../utils";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const AppBar = ({
-  label,
-  menuNavigations,
-  handleChangeLanguage,
-  setSidebarOpen,
-}) => {
-  const { pathname } = useLocation();
+const AppBar = ({ setSidebarOpen }) => {
+  const { pathname, state } = useLocation();
   const navigate = useNavigate();
+
+  const {
+    i18n: { changeLanguage },
+  } = useTranslation();
+  const menuNavigations = [
+    { name: "New item 1", href: "#" },
+    { name: "New item 2", href: "#" },
+  ];
+
+  const handleChangeLanguage = (newLanguage) => {
+    changeLanguage(newLanguage);
+  };
 
   const heading =
     pathname.includes("/benchmarks") ||
@@ -27,26 +34,22 @@ const AppBar = ({
       ? "Benchmarks"
       : "Environments";
 
-  const showActions =
-    pathname.includes("/benchmarks") ||
-    pathname.includes("/graph") ||
-    pathname.includes("/table")
-      ? true
-      : false;
+  console.log(state, "dfgdr");
 
-  const showTableView = () => navigate(`/table/${getUuidFromUrl(pathname)}`);
-  const showGraphView = () => navigate(`/graph/${getUuidFromUrl(pathname)}`);
+  const showTableView = () =>
+    navigate(`/table/${state?.uuid}}`, { state: state });
+
+  const showGraphView = () =>
+    navigate(`/graph/${state?.uuid}`, { state: state });
 
   const actions = [
     {
       name: "Table View",
       action: showTableView,
-      disabled: pathname.includes("/table"),
     },
     {
       name: "Graph View",
       action: showGraphView,
-      disabled: pathname.includes("/graph"),
     },
     { name: "Export", action: exportBenchmarksCsv },
   ];
@@ -71,7 +74,7 @@ const AppBar = ({
             <div className="space-y-0.5">
               <p className=" text-[22px] font-semibold">{heading}</p>
             </div>
-            {showActions && (
+            {state?.showSwitchers && (
               <div className="flex items-center gap-2 text-sm">
                 {actions.map(({ name, action, disabled }, index) => (
                   <button
@@ -92,7 +95,7 @@ const AppBar = ({
               <Menu.Button className="-m-1.5 flex items-center p-1.5">
                 <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
                   <span className="text-sm leading-6 " aria-hidden="true">
-                    {label}
+                    Menu Button
                   </span>
                   <CaretDown
                     className="ml-2 h-3 w-3 "
