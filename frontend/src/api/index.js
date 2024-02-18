@@ -20,9 +20,9 @@ export async function deleteData(url) {
   return await axios.delete(url).catch((error) => console.error(error));
 }
 
-export async function exportBenchmarksCsv() {
+export async function exportMeasurementsCsv(benchmarkId) {
   return axios({
-    url: `${apiUrl}/api/v2/export/benchmarks/csv`,
+    url: `${apiUrl}/api/v2/export/measurements/csv?benchmarkId=${benchmarkId}`,
     method: "GET",
     responseType: "blob",
   }).then((response) => {
