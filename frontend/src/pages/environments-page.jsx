@@ -37,7 +37,7 @@ function EnvironmentsPage() {
     setHoveredRow(rowIndex);
   };
 
-  const { data: environments } = useEnvironments(filters);
+  const { data: environments, mutate } = useEnvironments(filters);
   const { data: osVersionOptionsFiltered } = useOsVersionFilter(filters.os);
   const { data: osOptions } = useEnvironmentMetadata("os");
   //const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
@@ -260,8 +260,11 @@ function EnvironmentsPage() {
                               {
                                 delete: true,
                                 name: "Delete",
-                                action: async () =>
-                                  await deleteEnvironment(environment.id),
+                                action: async () => {
+                                  await deleteEnvironment(environment.id).then(
+                                    () => mutate()
+                                  );
+                                },
                               },
                             ]}
                           />
