@@ -55,5 +55,5 @@ export async function saveEnvironment(payload) {
 }
 
 export async function deleteEnvironment(id) {
-  return deleteData(`${apiUrl}/api/v2/environment/${id}`);
+  return deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
 }
