@@ -217,6 +217,24 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
+     * Get a list of all jvm versions for a specific jvm version that are currently part of environments (for the current
+     * tenant - see #{@link EnvironmentService}).
+     *
+     * @param jvmVersion the jvm version to get the names for
+     * @return all jvm names
+     */
+    @GetMapping("/jvmVersion/forJvmVersion")
+    public List<String> getAllJvmNamesForJvmVersion(@RequestParam final String jvmVersion) {
+        return environmentService.getAll().stream()
+                .filter(environment -> Objects.equals(environment.jvmVersion(), jvmVersion))
+                .map(Environment::jvmName)
+                .filter(jvmName -> jvmName != null && !jvmName.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    /**
      * Get a list of all jmh versions that are currently part of environments (for the current tenant - see
      * #{@link EnvironmentService}).
      *
@@ -227,6 +245,24 @@ public class BenchmarkEnvironmentMetadataEndpoint {
         return environmentService.getAll().stream()
                 .map(Environment::jmhVersion)
                 .filter(jmhVersion -> jmhVersion != null && !jmhVersion.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    /**
+     * Get a list of all jvm names for a specific jmh version that are currently part of environments (for the current
+     * tenant - see #{@link EnvironmentService}).
+     *
+     * @param jmhVersion the jmh version to get the names for
+     * @return all jvm names
+     */
+    @GetMapping("/jmhVersion/forJmhVersion")
+    public List<String> getAllJvmNamesForJmhVersion(@RequestParam final String jmhVersion) {
+        return environmentService.getAll().stream()
+                .filter(environment -> Objects.equals(environment.jmhVersion(), jmhVersion))
+                .map(Environment::jvmName)
+                .filter(jvmName -> jvmName != null && !jvmName.isBlank())
                 .distinct()
                 .sorted()
                 .toList();

@@ -5,7 +5,7 @@ import { availableLanguages } from "../../i18n";
 import logo from "../../assets/logo.svg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { exportBenchmarksCsv } from "../../api";
+import { exportMeasurementsCsv } from "../../api";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +49,7 @@ const AppBar = ({ setSidebarOpen }) => {
       name: "Graph View",
       action: showGraphView,
     },
-    { name: "Export", action: exportBenchmarksCsv },
+    { name: "Export", action: () => exportMeasurementsCsv(state?.uuid) },
   ];
   return (
     <div>
