@@ -45,7 +45,7 @@ const InfrastructureDetails = () => {
       jvmVersion: java,
       systemProcessors: cores,
     };
-    await saveEnvironment(payload);
+    await saveEnvironment(payload).then(() => navigate("/environments"));
   };
 
   useEffect(() => {
@@ -75,12 +75,6 @@ const InfrastructureDetails = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="p-8 flex flex-col gap-6">
-        <div>
-          <h1 className="h4">BenchScape V1.1</h1>
-          <h2 className="text-gray-900">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </h2>
-        </div>
         <div className="flex flex-col gap-3 ml-2">
           <div className="flex flex-col gap-1" style={{ maxWidth: "400px" }}>
             <label className="text-xs text-gray-800">Infrastructure name</label>
