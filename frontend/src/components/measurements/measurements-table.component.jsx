@@ -62,7 +62,7 @@ const MeasurementsTableComponent = ({ type }) => {
                         scope="col"
                         className="py-3.5 px-4 text-left text-sm font-semibold text-gray-500 uppercase"
                       >
-                        {"Max (ops/ms)s"}
+                        {"Max (ops/ms)"}
                       </th>{" "}
                     </tr>
                   </thead>
