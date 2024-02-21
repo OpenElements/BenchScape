@@ -57,9 +57,20 @@ export function useOS() {
   return useSwr(`${apiUrl}/api/v2/environment/metadata/os`, dataFetcher);
 }
 
+export function useOSFamily() {
+  return useSwr(`${apiUrl}/api/v2/environment/metadata/osFamily`, dataFetcher);
+}
+
 export function useOsVersionFilter(osName) {
   return useSwr(
     `${apiUrl}/api/v2/environment/metadata/osVersion/forOs?osName=${osName}`,
+    dataFetcher
+  );
+}
+
+export function useForOsFamilyFilter(osFamily) {
+  return useSwr(
+    `${apiUrl}/api/v2/environment/metadata/osVersion/forOsFamily?osFamily=${osFamily}`,
     dataFetcher
   );
 }
