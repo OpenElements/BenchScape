@@ -3,7 +3,7 @@ import Select from "../components/tags/select";
 import {
   useEnvironmentMetadata,
   useEnvironments,
-  useOsVersionFilter,
+  useForOsFamilyFilter,
 } from "../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -36,9 +36,10 @@ function EnvironmentsPage() {
   };
 
   const { data: environments, mutate } = useEnvironments(filters);
-  const { data: osVersionOptionsFiltered } = useOsVersionFilter(filters.os);
-  const { data: osOptions } = useEnvironmentMetadata("os");
-  //const { data: osVersionOptions } = useEnvironmentMetadata("osVersion");
+  const { data: forOsFamilyOptionsFiltered } = useForOsFamilyFilter(
+    filters.osFamily
+  );
+  const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
   const { data: archOptions } = useEnvironmentMetadata("arch");
   const { data: jvmVersionOptions } = useEnvironmentMetadata("jvmVersion");
   const { data: coresOptions } = useEnvironmentMetadata("cores");
@@ -69,19 +70,23 @@ function EnvironmentsPage() {
         <div className="flex flex-wrap gap-x-4 gap-y-6">
           <Select
             label="OS Family"
-            options={osOptions}
-            value={filters.os}
+            options={osFamilyOptions}
+            value={filters.osFamily}
             valueExtractor={(name) => name}
-            labelExtractor={(name) => name}
+            labelExtractor={(name) =>
+              name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+            }
+
             onChange={(e) => handleSelectionChange("osFamily", e)}
           />
+
           <Select
             label="OS Version"
-            options={osVersionOptionsFiltered}
-            value={filters["osVersion"]}
+            options={forOsFamilyOptionsFiltered}
+            value={filters["forOsFamily"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("osVersion", e)}
+            onChange={(e) => handleSelectionChange("forOsFamily", e)}
           />
           <Select
             label="Architecture"
@@ -190,25 +195,27 @@ function EnvironmentsPage() {
                           </Link>
                         </td>
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
-                          {(environment.osName === "Mac OS X" && (
+                          {(environment.osFamily === "MAC_OS" && (
                             <FontAwesomeIcon icon={faApple} className="mr-2" />
                           )) ||
-                            (environment.osName === "Windows" && (
+                            (environment.osFamily === "WINDOWS" && (
                               <FontAwesomeIcon
                                 icon={faWindows}
                                 className="mr-2"
                               />
                             )) ||
-                            (environment.osName === "Linux" && (
+                            (environment.osFamily === "LINUX" && (
                               <FontAwesomeIcon
                                 icon={faLinux}
                                 className="mr-2"
                               />
                             ))}
-                          {environment.osName
-                            ? `${environment.osName} ${
-                                environment.osVersion || ""
-                              }`
+                          {environment.osFamily
+                            ? `${environment.osFamily
+                                .charAt(0)
+                                .toUpperCase()}${environment.osFamily
+                                .slice(1)
+                                .toLowerCase()} ${environment.osVersion || ""}`
                             : "-"}
                         </td>
 
