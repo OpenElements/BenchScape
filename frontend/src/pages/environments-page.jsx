@@ -20,7 +20,7 @@ import { deleteEnvironment } from "../api";
 function EnvironmentsPage() {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    os: "",
+    osFamily: "",
     osVersion: "",
     systemArch: "",
     cores: "",
@@ -28,8 +28,6 @@ function EnvironmentsPage() {
     jvmName: "",
     jvmVersion: "",
     jmhVersion: "",
-    memoryReadable: "",
-    osFamily: "",
   });
   const [hoveredRow, setHoveredRow] = useState(null);
 
@@ -75,7 +73,7 @@ function EnvironmentsPage() {
             value={filters.os}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("os", e)}
+            onChange={(e) => handleSelectionChange("osFamily", e)}
           />
           <Select
             label="OS Version"
@@ -118,6 +116,7 @@ function EnvironmentsPage() {
             onChange={(e) => handleSelectionChange("jvmName", e)}
           />
           <Select
+            disabled={filters.osFamily === ""}
             label="JVM Version"
             options={jvmVersionOptions}
             value={filters["jvmVersion"]}
@@ -126,6 +125,7 @@ function EnvironmentsPage() {
             onChange={(e) => handleSelectionChange("jvmVersion", e)}
           />
           <Select
+            disabled={filters.osFamily === ""}
             label="JMH Version"
             options={jvhVersionOptions}
             value={filters["jmhVersion"]}
