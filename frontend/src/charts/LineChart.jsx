@@ -24,10 +24,12 @@ Chart.register(
   Tooltip
 );
 
-function LineChart({ data, width, height }) {
+function LineChart({ data }) {
   const [chart, setChart] = useState(null);
+  const [height, setHeight] = useState("");
   const canvas = useRef(null);
   const legend = useRef(null);
+  const containerRef = useRef(null);
   const { currentTheme } = useThemeProvider();
   const darkMode = currentTheme === "dark";
   const {
@@ -111,7 +113,7 @@ function LineChart({ data, width, height }) {
           mode: "nearest",
         },
         maintainAspectRatio: false,
-        resizeDelay: 200,
+        // responsive: true,
       },
       plugins: [
         {
@@ -208,6 +210,27 @@ function LineChart({ data, width, height }) {
     tooltipBorderColor.light,
   ]);
 
+  useEffect(() => {
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    const handleResize = () => {
+      const notLargeDesktop = windowWidth < 1280;
+
+      if (notLargeDesktop) {
+        setHeight(`${windowHeight - 288}px`);
+      } else {
+        setHeight(`${windowHeight - 234}px`);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <React.Fragment>
       <div className="px-5 py-3">
@@ -224,13 +247,12 @@ function LineChart({ data, width, height }) {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div className="grow">
-        <canvas
-          ref={canvas}
-          width={width}
-          height={height}
-          style={{ minHeight: "700px" }}
-        ></canvas>
+      <div
+        className="grow h-full"
+        ref={containerRef}
+        style={{ minHeight: height }}
+      >
+        <canvas ref={canvas} />
       </div>
     </React.Fragment>
   );

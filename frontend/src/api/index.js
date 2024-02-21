@@ -30,7 +30,7 @@ export async function exportMeasurementsCsv(benchmarkId) {
 
     const link = document.createElement("a");
     link.href = href;
-    link.setAttribute("download", "benchmarks.csv"); //or any other extension
+    link.setAttribute("download", "benchmarks.csv");
     document.body.appendChild(link);
     link.click();
 
@@ -55,5 +55,5 @@ export async function saveEnvironment(payload) {
 }
 
 export async function deleteEnvironment(id) {
-  return deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
+  return await deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
 }

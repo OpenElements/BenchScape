@@ -20,7 +20,7 @@ import { deleteEnvironment } from "../api";
 function EnvironmentsPage() {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    os: "",
+    osFamily: "",
     osVersion: "",
     systemArch: "",
     cores: "",
@@ -28,8 +28,6 @@ function EnvironmentsPage() {
     jvmName: "",
     jvmVersion: "",
     jmhVersion: "",
-    memoryReadable: "",
-    osFamily: "",
   });
   const [hoveredRow, setHoveredRow] = useState(null);
 
@@ -78,13 +76,14 @@ function EnvironmentsPage() {
             labelExtractor={(name) =>
               name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
             }
+
             onChange={(e) => handleSelectionChange("osFamily", e)}
           />
 
           <Select
             label="OS Version"
             options={forOsFamilyOptionsFiltered}
-            //value={filters["forOsFamily"]}
+            value={filters["forOsFamily"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
             onChange={(e) => handleSelectionChange("forOsFamily", e)}
@@ -122,6 +121,7 @@ function EnvironmentsPage() {
             onChange={(e) => handleSelectionChange("jvmName", e)}
           />
           <Select
+            disabled={filters.osFamily === ""}
             label="JVM Version"
             options={jvmVersionOptions}
             value={filters["jvmVersion"]}
@@ -130,6 +130,7 @@ function EnvironmentsPage() {
             onChange={(e) => handleSelectionChange("jvmVersion", e)}
           />
           <Select
+            disabled={filters.osFamily === ""}
             label="JMH Version"
             options={jvhVersionOptions}
             value={filters["jmhVersion"]}
