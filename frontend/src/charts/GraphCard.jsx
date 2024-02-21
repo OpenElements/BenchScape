@@ -84,7 +84,7 @@ function GraphCard({ data = [], timeStamps }) {
   };
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
+    <div className=" h-full flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
       <div className="flex gap-2 justify-around items-center mt-4">
         {/* <Select label="Architecture" options={["options"]} /> */}
         <div className="flex gap-4 ">
@@ -125,7 +125,7 @@ function GraphCard({ data = [], timeStamps }) {
         </div>
         {/* <Select label="Architecture" options={["options"]} /> */}
       </div>
-      <LineChart data={chartData} width={"auto"} height={"auto"} />
+      <LineChart data={chartData} />
     </div>
   );
 }
