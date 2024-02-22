@@ -74,9 +74,10 @@ function EnvironmentsPage() {
             value={filters.osFamily}
             valueExtractor={(name) => name}
             labelExtractor={(name) =>
-              name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+              name === "MAC_OS"
+                ? "Mac_Os"
+                : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
             }
-
             onChange={(e) => handleSelectionChange("osFamily", e)}
           />
 
@@ -211,12 +212,15 @@ function EnvironmentsPage() {
                               />
                             ))}
                           {environment.osFamily
-                            ? `${environment.osFamily
-                                .charAt(0)
-                                .toUpperCase()}${environment.osFamily
-                                .slice(1)
-                                .toLowerCase()} ${environment.osVersion || ""}`
+                            ? environment.osFamily === "MAC_OS"
+                              ? "Mac_Os "
+                              : `${environment.osFamily
+                                  .charAt(0)
+                                  .toUpperCase()}${environment.osFamily
+                                  .slice(1)
+                                  .toLowerCase()} `
                             : "-"}
+                          {environment.osVersion || ""}
                         </td>
 
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
