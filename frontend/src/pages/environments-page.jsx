@@ -75,7 +75,7 @@ function EnvironmentsPage() {
             valueExtractor={(name) => name}
             labelExtractor={(name) =>
               name === "MAC_OS"
-                ? "Mac_Os"
+                ? "Mac OS"
                 : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
             }
             onChange={(e) => handleSelectionChange("osFamily", e)}
