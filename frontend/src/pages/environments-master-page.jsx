@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Select from "../components/tags/select";
+import Select from "../components/Select";
 import {
   useEnvironmentMetadata,
   useEnvironments,
@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import Pagination from "../components/pagination/Pagination";
+import Pagination from "../components/Pagination";
 import { OverflowMenu } from "../components";
 import { deleteEnvironment } from "../api";
 

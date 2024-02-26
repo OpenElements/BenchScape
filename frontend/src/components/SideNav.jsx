@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Dialog, Transition } from "@headlessui/react";
 import { CirclesThree, Wrench, Gear, Globe } from "@phosphor-icons/react";
 import { Link, useLocation } from "react-router-dom";
-import { useCount } from "../../hooks";
-import { availableLanguages } from "../../i18n";
+import { useCount } from "../hooks";
+import { availableLanguages } from "../i18n";
 import { Menu } from "@headlessui/react";
-import logo from "../../assets/logo.svg";
+import logo from "../assets/logo.svg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -74,14 +74,6 @@ const SideNav = ({ setSidebarOpen, sidebarOpen }) => {
                     <Link to="/">
                       <img src={logo} className="w-full" alt="Logo" />
                     </Link>
-                    {/* <button
-                        type="button"
-                        className="p-px bg-red-500 rounded-sm text-white hover:bg-red-600 transition-colors ease-in-out duration-150"
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <span className="sr-only">Close sidebar</span>
-                        <X className="h-5 w-5 shrink-0" aria-hidden="true" />
-                      </button> */}
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul className="flex flex-1 flex-col gap-y-7">

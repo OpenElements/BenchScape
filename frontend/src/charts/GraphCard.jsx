@@ -1,7 +1,7 @@
 import React from "react";
 import LineChart from "./LineChart";
 import { tailwindConfig } from "./utils/Utils";
-import Datepicker from "../components/datepicker/DatePicker";
+import Datepicker from "../components/DatePicker";
 
 function GraphCard({ data = [], timeStamps }) {
   const smooth = data.find((d) => d.label === "SMOOTH DATA");

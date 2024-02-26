@@ -1,9 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useMeasurements, useMeasurementsSmooth } from "../../hooks";
-import GraphCard from "../../charts/GraphCard";
+import { useMeasurements, useMeasurementsSmooth } from "../hooks";
+import GraphCard from "../charts/GraphCard";
 
-const MeasurementsGraphComponent = () => {
+const BenchmarksDetailsGraph = () => {
   const { id } = useParams();
   const realData = useMeasurements(id);
   const smoothData = useMeasurementsSmooth(id);
@@ -50,4 +50,4 @@ const MeasurementsGraphComponent = () => {
   );
 };
 
-export default MeasurementsGraphComponent;
+export default BenchmarksDetailsGraph;

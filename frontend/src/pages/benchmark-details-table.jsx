@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useMeasurements } from "../../hooks";
+import { useMeasurements } from "../hooks";
 import { useParams } from "react-router-dom";
-import Pagination from "../pagination/Pagination";
-import { dataSlicer } from "../../utils";
+import Pagination from "../components/Pagination";
+import { dataSlicer } from "../utils";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();

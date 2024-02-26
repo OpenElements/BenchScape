@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBenchMarks, useMeasurements } from "../hooks";
-import Pagination from "../components/pagination/Pagination";
+import Pagination from "../components/Pagination";
 
 const BenchmarksPage = () => {
   const { data, isLoading } = useBenchMarks();

@@ -39,15 +39,10 @@ export async function exportMeasurementsCsv(benchmarkId) {
   });
 }
 
-export async function getBenchmarkById(benchmarkId) {
+export async function getMeasurementsForBechmark(benchmarkId) {
   const url = `${apiUrl}/api/v2/measurement/find?benchmarkId=${benchmarkId}`;
-
-  try {
-    const data = await dataFetcher(url);
-    return data?.length;
-  } catch (error) {
-    console.error(error);
-  }
+  const data = await dataFetcher(url);
+  return data?.length;
 }
 
 export async function saveEnvironment(payload) {

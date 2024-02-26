@@ -20,7 +20,7 @@ const schema = z.object({
 const inputClasses =
   "w-24 text-center text-sm border-0 border-b border-gray-200 focus:border-0 focus:border-b focus:border-gray-400";
 
-const InfrastructureDetails = () => {
+const EnvironmentDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useEnvironmentById(id);
   const { data: osOptions } = useOS();
@@ -182,4 +182,4 @@ const InfrastructureDetails = () => {
   );
 };
 
-export default InfrastructureDetails;
+export default EnvironmentDetails;

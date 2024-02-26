@@ -1,11 +1,11 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { CaretDown, List } from "@phosphor-icons/react";
-import { availableLanguages } from "../../i18n";
-import logo from "../../assets/logo.svg";
+import { availableLanguages } from "../i18n";
+import logo from "../assets/logo.svg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { exportMeasurementsCsv } from "../../api";
+import { exportMeasurementsCsv } from "../api";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
