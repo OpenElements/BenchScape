@@ -122,6 +122,8 @@ const EnvironmentDetails = () => {
                   type="text"
                   {...register("cores")}
                   className={inputClasses}
+                  pattern="[0-9]*"
+                  title="Please CPU cores should be a valid number"
                 />
               </div>
             </div>
@@ -132,6 +134,7 @@ const EnvironmentDetails = () => {
                   type="text"
                   {...register("memory")}
                   className={inputClasses}
+                  readOnly
                 />
               </div>
             </div>
@@ -142,6 +145,7 @@ const EnvironmentDetails = () => {
                   type="text"
                   {...register("java")}
                   className={inputClasses}
+                  readOnly
                 />
               </div>
             </div>
@@ -152,6 +156,7 @@ const EnvironmentDetails = () => {
                   type="text"
                   {...register("jmh")}
                   className={inputClasses}
+                  readOnly
                 />
               </div>
             </div>

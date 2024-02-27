@@ -13,13 +13,6 @@ const Pagination = ({
     setCurrentPage(pageNumber);
   };
 
-  // Function to handle items per page change
-  const handleItemsPerPageChange = (event) => {
-    const newItemsPerPage = parseInt(event.target.value, 10);
-    setCurrentPage(1);
-    setItemsPerPage(newItemsPerPage);
-  };
-
   // Array of page numbers
   const pageNumbers = Array.from(
     { length: totalPages },
@@ -66,21 +59,6 @@ const Pagination = ({
             Next
           </button>
         )}
-      </div>
-      {/* Items per page dropdown */}
-      <div className="flex items-center space-x-2">
-        <span className="text-gray-500">Items per page:</span>
-        <select
-          value={itemsPerPage}
-          onChange={handleItemsPerPageChange}
-          className="relative inline-flex items-center pl-2 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring focus:border-blue-300 active:bg-gray-200"
-        >
-          <option value={10}>10</option>
-          <option value={11}>11</option>
-          <option value={12}>12</option>
-          <option value={13}>13</option>
-          {/* Add more options as needed */}
-        </select>
       </div>
     </div>
   );
