@@ -70,15 +70,17 @@ function EnvironmentsPage() {
         <div className="flex flex-wrap gap-x-4 gap-y-6">
           <Select
             label="OS Family"
-            options={osFamilyOptions}
-            value={filters.osFamily}
+            options={osFamilyOptions?.filter((option) => option !== "UNKNOWN")}
+            value={filters?.osFamily !== "UNKNOWN" ? filters.osFamily : null}
             valueExtractor={(name) => name}
             labelExtractor={(name) =>
               name === "MAC_OS"
                 ? "Mac OS"
                 : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
             }
-            onChange={(e) => handleSelectionChange("osFamily", e)}
+            onChange={(e) =>
+              handleSelectionChange("osFamily", e !== "UNKNOWN" ? e : null)
+            }
           />
 
           <Select
@@ -211,9 +213,10 @@ function EnvironmentsPage() {
                                 className="mr-2"
                               />
                             ))}
-                          {environment.osFamily
+                          {environment.osFamily &&
+                          environment.osFamily !== "UNKNOWN"
                             ? environment.osFamily === "MAC_OS"
-                              ? "Mac_Os "
+                              ? "Mac OS "
                               : `${environment.osFamily
                                   .charAt(0)
                                   .toUpperCase()}${environment.osFamily
