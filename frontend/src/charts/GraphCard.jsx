@@ -2,6 +2,7 @@ import React from "react";
 import LineChart from "./LineChart";
 import { tailwindConfig } from "./utils/Utils";
 import Datepicker from "../components/DatePicker";
+import Select from "../components/Select";
 
 function GraphCard({ data = [], timeStamps }) {
   const smooth = data.find((d) => d.label === "SMOOTH DATA");
@@ -86,7 +87,12 @@ function GraphCard({ data = [], timeStamps }) {
   return (
     <div className=" h-full flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
       <div className="flex gap-2 justify-around items-center mt-4">
-        {/* <Select label="Architecture" options={["options"]} /> */}
+        <Select
+          label="Environment"
+          options={["options"]}
+          valueExtractor={(name) => name}
+          labelExtractor={(name) => name}
+        />
         <div className="flex gap-4 ">
           <Datepicker label="Start Date" />
           <Datepicker label="End Date" />
@@ -123,7 +129,12 @@ function GraphCard({ data = [], timeStamps }) {
             </label>
           </div>
         </div>
-        {/* <Select label="Architecture" options={["options"]} /> */}
+        {/* <Select
+          label="Units"
+          options={["options"]}
+          valueExtractor={(name) => name}
+          labelExtractor={(name) => name}
+        /> */}
       </div>
       <LineChart data={chartData} />
     </div>
