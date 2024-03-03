@@ -23,13 +23,24 @@ function App() {
                 <Route path="/" element={<BenchmarkPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/benchmarks" element={<BenchmarkPage />} />
-                <Route path="/environments" element={<EnvironmentsPage />} />
-                <Route path="/table/:id" element={<BenchmarkDetailsTable />} />
-                <Route path="/graph/:id" element={<BenchmarkDetailsGraph />} />
                 <Route
-                  path="/environments/:id"
+                  path="/benchmark/:id"
+                  element={<BenchmarkDetailsGraph />}
+                />
+                <Route
+                  path="/benchmark/graph/:id"
+                  element={<BenchmarkDetailsGraph />}
+                />
+                <Route
+                  path="/benchmark/table/:id"
+                  element={<BenchmarkDetailsTable />}
+                />
+                <Route path="/environments" element={<EnvironmentsPage />} />
+                <Route
+                  path="/environment/:id"
                   element={<EnvironmentDetails />}
                 />
+                <Route path="/environment" element={<EnvironmentDetails />} />
               </Routes>
             </div>
           </div>

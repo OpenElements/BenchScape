@@ -193,7 +193,7 @@ function EnvironmentsPage() {
                         onMouseLeave={() => handleRowHover(null)}
                       >
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
-                          <Link to={`/environments/${environment.id}`}>
+                          <Link to={`/environment/${environment.id}`}>
                             {environment.name ?? "--"}
                           </Link>
                         </td>

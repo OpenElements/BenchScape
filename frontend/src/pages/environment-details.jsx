@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useEnvironmentById, useOS } from "../hooks";
+import { useEnvironmentById, useOSFamily } from "../hooks";
 import { z } from "zod";
 import { Select } from "../components";
 import { saveEnvironment } from "../api";
@@ -23,7 +23,7 @@ const inputClasses =
 const EnvironmentDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useEnvironmentById(id);
-  const { data: osOptions } = useOS();
+  const { data: osFamilyOptions } = useOSFamily();
   const { handleSubmit, register, control, reset } = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
@@ -32,12 +32,21 @@ const EnvironmentDetails = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    const { infraName, infraDescription, memory, jmh, java, cores, osName } =
-      data;
+    const {
+      infraName,
+      infraDescription,
+      memory,
+      jmh,
+      java,
+      cores,
+      osName,
+      osVersion,
+    } = data;
 
     const payload = {
       id,
       osName,
+      osVersion: osVersion,
       name: infraName,
       description: infraDescription,
       systemMemoryReadable: memory,
@@ -54,6 +63,7 @@ const EnvironmentDetails = () => {
         infraName: data?.name || "",
         infraDescription: data?.description || "",
         osName: data?.osName || "",
+        osVersion: data?.osVersion || "",
         cores: data?.systemProcessors || "",
         memory: data?.systemMemoryReadable || "",
         java: data?.jvmVersion || "",
@@ -66,6 +76,7 @@ const EnvironmentDetails = () => {
     data?.jvmVersion,
     data?.name,
     data?.osName,
+    data?.osVersion,
     data?.systemMemoryReadable,
     data?.systemProcessors,
     isLoading,
@@ -106,12 +117,37 @@ const EnvironmentDetails = () => {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      {...field}
-                      options={osOptions}
-                      labelExtractor={(label) => label}
-                      valueExtractor={(value) => value}
+                      options={osFamilyOptions?.filter(
+                        (option) => option !== "UNKNOWN"
+                      )}
+                      value={field.value !== "UNKNOWN" ? field.value : null}
+                      valueExtractor={(name) => name}
+                      labelExtractor={(label) => {
+                        if (label === "MAC_OS") {
+                          return "Mac OS";
+                        } else {
+                          return (
+                            label.charAt(0).toUpperCase() +
+                            label.slice(1).toLowerCase()
+                          );
+                        }
+                      }}
+                      onChange={(e) => {
+                        const selectedValue = e !== "UNKNOWN" ? e : null;
+                        field.onChange(selectedValue);
+                      }}
                     />
                   )}
+                />
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-800">Os Version</div>
+              <div className="text-sm text-gray-800">
+                <input
+                  type="text"
+                  {...register("osVersion")}
+                  className={inputClasses}
                 />
               </div>
             </div>
@@ -127,7 +163,7 @@ const EnvironmentDetails = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Memory</div>
               <div className="text-sm text-gray-800">
                 <input
@@ -158,6 +194,24 @@ const EnvironmentDetails = () => {
                   className={inputClasses}
                   readOnly
                 />
+              </div>
+            </div> */}
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-800">Memory</div>
+              <div className="text-sm text-gray-800 flex items-center">
+                {data?.systemMemoryReadable}
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-800">Java</div>
+              <div className="text-sm text-gray-800 flex items-center">
+                {data?.jvmVersion}
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-800">JMH</div>
+              <div className="text-sm text-gray-800 flex items-center">
+                {data?.jmhVersion}
               </div>
             </div>
           </div>

@@ -73,7 +73,7 @@ const BenchmarksPage = () => {
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
                             <Link
-                              to={`/graph/${benchmark.id}`}
+                              to={`/benchmark/graph/${benchmark.id}`}
                               state={{
                                 showSwitchers: true,
                                 uuid: benchmark.id,
@@ -85,7 +85,7 @@ const BenchmarksPage = () => {
                           </td>
                           <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500 text-right">
                             <Link
-                              to={`/table/${benchmark.id}`}
+                              to={`/benchmark/table/${benchmark.id}`}
                               state={{
                                 showSwitchers: true,
                                 uuid: benchmark.id,
