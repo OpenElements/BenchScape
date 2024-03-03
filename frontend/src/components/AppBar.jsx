@@ -1,11 +1,11 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { CaretDown, List } from "@phosphor-icons/react";
-import { availableLanguages } from "../i18n";
-import logo from "../assets/logo.svg";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { exportMeasurementsCsv } from "../api";
+import { availableLanguages } from "../i18n";
+import logo from "../assets/logo.svg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -29,16 +29,16 @@ const AppBar = ({ setSidebarOpen }) => {
 
   const heading =
     pathname.includes("/benchmarks") ||
-    pathname.includes("/graph") ||
-    pathname.includes("/table")
+    pathname.includes("/benchmark/graph") ||
+    pathname.includes("/benchmark/table")
       ? "Benchmarks"
       : "Environments";
 
   const showTableView = () =>
-    navigate(`/table/${state?.uuid}`, { state: state });
+    navigate(`/benchmark/table/${state?.uuid}`, { state: state });
 
   const showGraphView = () =>
-    navigate(`/graph/${state?.uuid}`, { state: state });
+    navigate(`/benchmark/graph/${state?.uuid}`, { state: state });
 
   const actions = [
     {
@@ -51,6 +51,7 @@ const AppBar = ({ setSidebarOpen }) => {
     },
     { name: "Export", action: () => exportMeasurementsCsv(state?.uuid) },
   ];
+
   return (
     <div>
       <div className="xl:hidden flex items-center justify-between gap-5 2xl:px-8 2xl:py-7 px-5 py-4 bg-primary-navy">
@@ -135,7 +136,7 @@ const AppBar = ({ setSidebarOpen }) => {
               <Menu.Button className="-m-1.5 flex items-center p-1.5">
                 <span className="hidden lg:flex lg:items-center text-primary-navy transition-colors ease-in-out duration-150">
                   <span className="text-sm leading-6 " aria-hidden="true">
-                    Select Langauge
+                    Select Language
                   </span>
                   <CaretDown
                     className="ml-2 h-3 w-3 "
