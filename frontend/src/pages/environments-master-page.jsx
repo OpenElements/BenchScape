@@ -16,9 +16,12 @@ import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { OverflowMenu } from "../components";
 import { deleteEnvironment } from "../api";
+import { apiUrl } from "../utils/constants";
+import { useSWRConfig } from "swr";
 
 function EnvironmentsPage() {
   const navigate = useNavigate();
+  const { mutate: globalMutator } = useSWRConfig();
   const [filters, setFilters] = useState({
     osFamily: "",
     osVersion: "",
@@ -276,7 +279,14 @@ function EnvironmentsPage() {
                                 name: "Delete",
                                 action: async () => {
                                   await deleteEnvironment(environment.id).then(
-                                    () => mutate()
+                                    () => {
+                                      mutate();
+
+                                      // updates the count value in the Side nav
+                                      globalMutator(
+                                        `${apiUrl}/api/v2/environment/count`
+                                      );
+                                    }
                                   );
                                 },
                               },

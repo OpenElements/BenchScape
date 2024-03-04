@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import { apiUrl } from "../utils/constants";
 
 export async function dataFetcher(url) {
   return await axios
