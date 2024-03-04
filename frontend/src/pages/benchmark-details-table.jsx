@@ -4,11 +4,17 @@ import { useParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { dataSlicer } from "../utils";
 import Datepicker from "../components/DatePicker";
-import Select from "../components/Select";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
-  const { data } = useMeasurements(id);
+
+  const [filters, setFilters] = useState({
+    benchmarkId: id,
+    start: "",
+    end: "",
+  });
+
+  const { data } = useMeasurements(filters);
 
   // Number of items per page
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -24,58 +30,24 @@ const MeasurementsTableComponent = ({ type }) => {
   // Calculate the total number of pages
   const totalPages = dataSlicer(data, itemsPerPage);
 
+  const handDateChange = (field, date) => {
+    setFilters((prev) => ({ ...prev, [field]: date }));
+  };
+
   return (
     <div className="py-6">
       <div className="flow-root">
-        <div className="flex gap-2 justify-around items-center mt-4">
-          <Select
-            label="Environment"
-            options={["options"]}
-            valueExtractor={(name) => name}
-            labelExtractor={(name) => name}
+        <div className="flex gap-2 ml-8">
+          <Datepicker
+            label="Start Date"
+            value={filters.start}
+            onChange={(date) => handDateChange("start", date)}
           />
-          <div className="flex gap-4 ml-4">
-            <Datepicker label="Start Date" />
-            <Datepicker label="End Date" />
-          </div>
-          <div className="flex gap-4 mt-5">
-            <div className="flex items-center">
-              <input
-                name="ShowMin"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label htmlFor="ShowMin" className="ml-2 text-xs text-gray-500">
-                Show Minimum
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                name="ShowMax"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label htmlFor="ShowMax" className="ml-2 text-xs text-gray-500">
-                Show Maximum
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                name="ShowError"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label htmlFor="ShowError" className="ml-2 text-xs text-gray-500">
-                Show Error
-              </label>
-            </div>
-          </div>
-          {/* <Select
-            label="Units"
-            options={["options"]}
-            valueExtractor={(name) => name}
-            labelExtractor={(name) => name}
-          /> */}
+          <Datepicker
+            label="End Date"
+            value={filters.end}
+            onChange={(date) => handDateChange("end", date)}
+          />
         </div>
         <div className="overflow-x-auto mt-4">
           {" "}
