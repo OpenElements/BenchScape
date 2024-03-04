@@ -1,14 +1,16 @@
 import React from "react";
 import LineChart from "./LineChart";
 import { tailwindConfig } from "./utils/Utils";
-import Datepicker from "../components/DatePicker";
-import Select from "../components/Select";
 
-function GraphCard({ data = [], timeStamps }) {
-  const smooth = data.find((d) => d.label === "SMOOTH DATA");
+function GraphCard({ data = [], timeStamps = [] }) {
   const real = data.find((d) => d.label === "REAL DATA");
+  const realMin = data.find((d) => d.label === "REAL DATA MIN");
+  const realMax = data.find((d) => d.label === "REAL DATA MAX");
+  const realError = data.find((d) => d.label === "REAL DATA ERROR");
+  const smooth = data.find((d) => d.label === "SMOOTH DATA");
   const smoothMin = data.find((d) => d.label === "SMOOTH DATA MIN");
   const smoothMax = data.find((d) => d.label === "SMOOTH DATA MAX");
+  const smoothError = data.find((d) => d.label === "SMOOTH DATA ERROR");
 
   const labelDate = timeStamps.map((t) => {
     const parsedDate = new Date(t);
@@ -22,21 +24,6 @@ function GraphCard({ data = [], timeStamps }) {
   const chartData = {
     labels: labelDate,
     datasets: [
-      // Indigo line
-      {
-        ...smooth,
-        borderColor: tailwindConfig().theme.colors.indigo[500],
-        fill: false,
-        borderWidth: 2,
-        tension: 0,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: tailwindConfig().theme.colors.indigo[500],
-        pointHoverBackgroundColor: tailwindConfig().theme.colors.indigo[500],
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
-        clip: 20,
-      },
       // Blue line
       {
         ...real,
@@ -52,10 +39,66 @@ function GraphCard({ data = [], timeStamps }) {
         pointHoverBorderWidth: 0,
         clip: 20,
       },
+      {
+        ...realMin,
+        borderColor: tailwindConfig().theme.colors.orange[400],
+        fill: false,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
+      },
+      {
+        ...realMax,
+        borderColor: tailwindConfig().theme.colors.orange[400],
+        fill: false,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
+      },
+      {
+        ...realError,
+        borderColor: tailwindConfig().theme.colors.red[400],
+        fill: false,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
+      },
+      {
+        ...smooth,
+        borderColor: tailwindConfig().theme.colors.blue[400],
+        fill: false,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.blue[400],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
+      },
       // emerald line
       {
         ...smoothMin,
-        borderColor: tailwindConfig().theme.colors.emerald[500],
+        borderColor: tailwindConfig().theme.colors.orange[500],
         fill: false,
         borderWidth: 2,
         tension: 0,
@@ -69,7 +112,21 @@ function GraphCard({ data = [], timeStamps }) {
       },
       {
         ...smoothMax,
-        borderColor: tailwindConfig().theme.colors.green[500],
+        borderColor: tailwindConfig().theme.colors.orange[500],
+        fill: false,
+        borderWidth: 2,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+        pointBackgroundColor: tailwindConfig().theme.colors.green[500],
+        pointHoverBackgroundColor: tailwindConfig().theme.colors.green[500],
+        pointBorderWidth: 0,
+        pointHoverBorderWidth: 0,
+        clip: 20,
+      },
+      {
+        ...smoothError,
+        borderColor: tailwindConfig().theme.colors.red[500],
         fill: false,
         borderWidth: 2,
         tension: 0,
@@ -84,61 +141,7 @@ function GraphCard({ data = [], timeStamps }) {
     ],
   };
 
-  return (
-    <div className=" h-full flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
-      <div className="flex gap-2 justify-around items-center mt-4">
-        <Select
-          label="Environment"
-          options={["options"]}
-          valueExtractor={(name) => name}
-          labelExtractor={(name) => name}
-        />
-        <div className="flex gap-4 ">
-          <Datepicker label="Start Date" />
-          <Datepicker label="End Date" />
-        </div>
-        <div className="flex gap-4 mt-5">
-          <div className="flex items-center">
-            <input
-              name="ShowMin"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label htmlFor="ShowMin" className="ml-2 text-xs text-gray-500">
-              Show Minimum
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              name="ShowMax"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label htmlFor="ShowMax" className="ml-2 text-xs text-gray-500">
-              Show Maximum
-            </label>
-          </div>
-          <div className="flex items-center">
-            <input
-              name="ShowError"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label htmlFor="ShowError" className="ml-2 text-xs text-gray-500">
-              Show Error
-            </label>
-          </div>
-        </div>
-        {/* <Select
-          label="Units"
-          options={["options"]}
-          valueExtractor={(name) => name}
-          labelExtractor={(name) => name}
-        /> */}
-      </div>
-      <LineChart data={chartData} />
-    </div>
-  );
+  return <LineChart data={chartData} />;
 }
 
 export default GraphCard;

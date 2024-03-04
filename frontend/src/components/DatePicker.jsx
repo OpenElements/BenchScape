@@ -1,7 +1,7 @@
 import React from "react";
 import Flatpickr from "react-flatpickr";
 
-function Datepicker({ align, label }) {
+function Datepicker({ align, label, onChange, value, ...restProps }) {
   const options = {
     mode: "single",
     static: true,
@@ -28,6 +28,9 @@ function Datepicker({ align, label }) {
       <Flatpickr
         className="form-input pl-9 text-slate-500 hover:text-slate-900 font-medium w-[15.5rem] text-xs rounded border-slate-300"
         options={options}
+        value={value}
+        onChange={(date) => onChange(new Date(date).toISOString())}
+        {...restProps}
       />
       <div className="absolute inset-0 right-auto flex items-center pointer-events-none top-5">
         <svg

@@ -8,11 +8,15 @@ export function useBenchMarks() {
 }
 
 export function useEnvironments(queries) {
-  const withValues = Object.entries(queries)
-    .filter(([key, value]) => Boolean(value))
-    .map(([key, value]) => [key, value]);
+  let params = "";
 
-  const params = new URLSearchParams(withValues).toString();
+  if (queries) {
+    const withValues = Object.entries(queries)
+      .filter(([key, value]) => Boolean(value))
+      .map(([key, value]) => [key, value]);
+
+    params = new URLSearchParams(withValues).toString();
+  }
 
   return useSwr(
     `${apiUrl}/api/v2/environment/findByQuery?${params}`,
@@ -24,11 +28,17 @@ export function useEnvironmentById(id) {
   return useSwr(`${apiUrl}/api/v2/environment/find?id=${id}`, dataFetcher);
 }
 
-export function useMeasurements(id) {
-  return useSwr(
-    `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}`,
-    dataFetcher
-  );
+export function useMeasurements(filters) {
+  let params = "";
+
+  if (filters) {
+    const withValues = Object.entries(filters)
+      .filter(([key, value]) => Boolean(value))
+      .map(([key, value]) => [key, value]);
+
+    params = new URLSearchParams(withValues).toString();
+  }
+  return useSwr(`${apiUrl}/api/v2/measurement/find?${params}`, dataFetcher);
 }
 
 export function useMeasurementsSmooth(id) {
