@@ -27,12 +27,14 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     private final TenantService tenantService;
 
     @Autowired
-    public EnvironmentService(final @NonNull EnvironmentRepository repository, TenantService tenantService) {
+    public EnvironmentService(final @NonNull EnvironmentRepository repository,
+            final @NonNull TenantService tenantService) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
         this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
     }
 
     @Override
+    @NonNull
     protected TenantService getTenantService() {
         return tenantService;
     }
@@ -45,7 +47,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
 
     @NonNull
     @Override
-    protected Environment mapToData(@NonNull EnvironmentEntity entity) {
+    protected Environment mapToData(@NonNull final EnvironmentEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Environment(entity.getId(), entity.getName(), entity.getDescription(), entity.getGitOriginUrl(),
                 entity.getGitBranch(), entity.getSystemArch(),
@@ -68,8 +70,8 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
 
     @NonNull
     @Override
-    protected EnvironmentEntity updateEntity(@NonNull EnvironmentEntity entity,
-                                             @NonNull Environment environment) {
+    protected EnvironmentEntity updateEntity(@NonNull final EnvironmentEntity entity,
+                                             @NonNull final Environment environment) {
         entity.setId(environment.id());
         entity.setName(environment.name());
         entity.setDescription(environment.description());
@@ -111,11 +113,11 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         return isMatchingEnvironment(metadata, environment);
     }
 
-    public boolean isAnyMatchingEnvironment(@NonNull final Environment e,
+    public boolean isAnyMatchingEnvironment(@NonNull final Environment env,
             @NonNull final List<MeasurementMetadata> metadata) {
         Objects.requireNonNull(metadata, "metadata must not be null");
         return metadata.stream()
-                .filter(m -> isMatchingEnvironment(m, e))
+                .filter(m -> isMatchingEnvironment(m, env))
                 .findAny()
                 .isPresent();
     }
@@ -272,6 +274,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         }
     }
 
+    @NonNull
     public List<Environment> findByQuery(@NonNull final EnvironmentQuery environmentQuery) {
         Objects.requireNonNull(environmentQuery, "environmentQuery must not be null");
         return repository.findAllByQuery(environmentQuery).stream()

@@ -48,6 +48,25 @@ public record Environment(@Nullable UUID id, @NonNull String name,
 
     public Environment {
         Objects.requireNonNull(name, "name must not be null");
+
+        if (systemProcessors != null && systemProcessors < 0) {
+            throw new IllegalStateException("systemProcessors must be > 0");
+        }
+        if (systemProcessorsMin != null && systemProcessorsMin < 0) {
+            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        }
+        if (systemProcessorsMax != null && systemProcessorsMax < 0) {
+            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        }
+        if (systemMemoryMax != null && systemMemoryMax < 0) {
+            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        }
+        if (systemMemoryMin != null && systemMemoryMin < 0) {
+            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        }
+        if (systemMemoryMax != null && systemMemoryMax < 0) {
+            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        }
     }
 
 }

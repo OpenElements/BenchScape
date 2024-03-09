@@ -19,7 +19,8 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
 
     private final TenantService tenantService;
 
-    public BenchmarkService(final @NonNull BenchmarkRepository benchmarkRepository, TenantService tenantService) {
+    public BenchmarkService(final @NonNull BenchmarkRepository benchmarkRepository,
+            final @NonNull TenantService tenantService) {
         this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
         this.tenantService = Objects.requireNonNull(tenantService, "tenantService must not be null");
     }
@@ -37,7 +38,7 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
 
     @NonNull
     @Override
-    protected Benchmark mapToData(@NonNull BenchmarkEntity entity) {
+    protected Benchmark mapToData(@NonNull final BenchmarkEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Benchmark(entity.getId(), entity.getName(), Collections.unmodifiableMap(entity.getParams()),
                 Collections.unmodifiableList(entity.getTags()));
@@ -45,7 +46,7 @@ public class BenchmarkService extends AbstractServiceWithTenant<BenchmarkEntity,
 
     @NonNull
     @Override
-    protected BenchmarkEntity updateEntity(@NonNull BenchmarkEntity entity, @NonNull Benchmark benchmark) {
+    protected BenchmarkEntity updateEntity(@NonNull final BenchmarkEntity entity, @NonNull final Benchmark benchmark) {
         entity.setId(benchmark.id());
         entity.setName(benchmark.name());
         entity.setParams(Collections.unmodifiableMap(benchmark.params()));

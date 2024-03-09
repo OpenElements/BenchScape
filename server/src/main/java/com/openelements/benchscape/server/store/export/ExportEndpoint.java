@@ -10,6 +10,7 @@ import com.openelements.benchscape.server.store.data.MeasurementQuery;
 import com.openelements.benchscape.server.store.services.BenchmarkService;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import com.openelements.benchscape.server.store.services.MeasurementService;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
@@ -41,8 +42,9 @@ public class ExportEndpoint {
     private final MeasurementService measurementService;
 
     @Autowired
-    public ExportEndpoint(final EnvironmentService environmentService, BenchmarkService benchmarkService,
-            MeasurementService measurementService) {
+    public ExportEndpoint(@NonNull final EnvironmentService environmentService,
+            @NonNull final BenchmarkService benchmarkService,
+            @NonNull final MeasurementService measurementService) {
         this.environmentService = Objects.requireNonNull(environmentService, "environmentService must not be null");
         this.benchmarkService = Objects.requireNonNull(benchmarkService, "benchmarkService must not be null");
         this.measurementService = Objects.requireNonNull(measurementService, "measurementService must not be null");
@@ -80,7 +82,7 @@ public class ExportEndpoint {
         return createData(osw -> CsvExport.exportMeasurements(osw, measurements));
     }
 
-    private byte[] createData(final Consumer<Appendable> consumer) {
+    private byte[] createData(@NonNull final Consumer<Appendable> consumer) {
         Objects.requireNonNull(consumer, "consumer must not be null");
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             final OutputStreamWriter osw = new OutputStreamWriter(baos);
