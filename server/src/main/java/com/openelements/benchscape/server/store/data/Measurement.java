@@ -20,10 +20,11 @@ import java.util.UUID;
  * @param min       min value of the measurement
  * @param max       max value of the measurement
  * @param unit      unit of the measurement
+ * @param comment   comment of the measurement
  */
 public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double value, @Nullable Double error,
                           @Nullable Double min, @Nullable Double max,
-                          @NonNull BenchmarkUnit unit) implements DataBase {
+                          @NonNull BenchmarkUnit unit, @Nullable String comment) implements DataBase {
 
     public Measurement {
         Objects.requireNonNull(timestamp, "timestamp must not be null");
@@ -65,6 +66,6 @@ public record Measurement(@Nullable UUID id, @NonNull Instant timestamp, double 
                 .map(e -> unit.convert(e, this.unit))
                 .orElse(null);
         return new Measurement(id, timestamp, convertedValue, convertedError,
-                convertedMin, convertedMax, unit);
+                convertedMin, convertedMax, unit, comment);
     }
 }

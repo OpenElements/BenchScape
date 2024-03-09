@@ -81,7 +81,7 @@ public class InterpolationUtils {
                     sortedList.get(i).timestamp(),
                     yValuesSmooth[i],
                     yErrorSmooth[i],
-                    yMinSmooth[i], yMaxSmooth[i], sortedList.get(i).unit());
+                    yMinSmooth[i], yMaxSmooth[i], sortedList.get(i).unit(), sortedList.get(i).comment());
             results.add(interpolatedMeasurement);
         }
         return results;

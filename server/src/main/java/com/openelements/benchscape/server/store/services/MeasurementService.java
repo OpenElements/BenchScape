@@ -94,7 +94,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     protected Measurement mapToData(@NonNull MeasurementEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Measurement(entity.getId(), entity.getTimestamp(), entity.getValue(),
-                entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit());
+                entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit(), entity.getComment());
 
     }
 

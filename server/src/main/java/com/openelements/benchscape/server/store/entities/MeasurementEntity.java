@@ -4,6 +4,7 @@ import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.server.base.data.AbstractEntity;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,6 +36,9 @@ public class MeasurementEntity extends AbstractEntityWithTenant {
 
     @Column(nullable = false)
     private BenchmarkUnit unit;
+
+    @Column
+    private String comment;
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, optional = false, cascade = CascadeType.ALL)
     private MeasurementMetadataEntity metadata;
@@ -103,6 +107,14 @@ public class MeasurementEntity extends AbstractEntityWithTenant {
         this.metadata = metadata;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,14 +124,14 @@ public class MeasurementEntity extends AbstractEntityWithTenant {
             return false;
         }
         MeasurementEntity that = (MeasurementEntity) o;
-        return Double.compare(value, that.value) == 0 && Objects.equals(getId(), that.getId())
-                && Objects.equals(benchmarkId, that.benchmarkId) && Objects.equals(timestamp,
-                that.timestamp) && Objects.equals(error, that.error) && Objects.equals(min, that.min)
-                && Objects.equals(max, that.max) && unit == that.unit;
+        return Double.compare(value, that.value) == 0 && Objects.equals(benchmarkId, that.benchmarkId)
+                && Objects.equals(timestamp, that.timestamp) && Objects.equals(error, that.error)
+                && Objects.equals(min, that.min) && Objects.equals(max, that.max) && unit == that.unit
+                && Objects.equals(comment, that.comment) && Objects.equals(metadata, that.metadata);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), benchmarkId, timestamp, value, error, min, max, unit);
+        return Objects.hash(benchmarkId, timestamp, value, error, min, max, unit, comment, metadata);
     }
 }

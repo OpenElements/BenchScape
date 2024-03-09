@@ -18,9 +18,10 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
 
         //then
-        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit));
+        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -33,10 +34,12 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(NullPointerException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -49,9 +52,11 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
-        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit));
+        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -64,9 +69,11 @@ public class MeasurementTests {
         final Double min = null;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
-        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit));
+        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -79,9 +86,11 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = null;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
-        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit));
+        Assertions.assertDoesNotThrow(() -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -94,10 +103,12 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = null;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(NullPointerException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -110,10 +121,12 @@ public class MeasurementTests {
         final Double min = 0.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -126,10 +139,12 @@ public class MeasurementTests {
         final Double min = 2.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(IllegalStateException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -142,10 +157,12 @@ public class MeasurementTests {
         final Double min = 2.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(IllegalStateException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 
     @Test
@@ -158,9 +175,11 @@ public class MeasurementTests {
         final Double min = 9.0d;
         final Double max = 5.0d;
         final BenchmarkUnit unit = BenchmarkUnit.MILLISECONDS_PER_OPERATION;
+        final String comment = "comment";
+
 
         //then
         Assertions.assertThrows(IllegalStateException.class,
-                () -> new Measurement(id, timestamp, value, error, min, max, unit));
+                () -> new Measurement(id, timestamp, value, error, min, max, unit, comment));
     }
 }

@@ -25,11 +25,11 @@ public class CsvExportUtils {
             data.forEach(d -> {
                 try {
                     printer.printRecord(csvData.getData(d));
-                } catch (IOException e) {
-                    throw new RuntimeException("Error printing entry  '" + d + "'", e);
+                } catch (final Exception e) {
+                    throw new RuntimeException("Error printing csv for entry '" + d + "'", e);
                 }
             });
-        } catch (IOException e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Error printing CSV", e);
         }
     }
