@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KeyDataService {
+public class ApiKeyService {
 
     public static final String SHA_256 = "SHA-256";
 
@@ -23,7 +23,7 @@ public class KeyDataService {
     private final UserService userService;
 
     @Autowired
-    public KeyDataService(@NonNull final KeyEntityRepository repository,
+    public ApiKeyService(@NonNull final KeyEntityRepository repository,
             @NonNull final TenantService tenantService,
             @NonNull final UserService userService) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
