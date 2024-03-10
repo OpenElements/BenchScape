@@ -32,7 +32,8 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
 
     @Autowired
     public MeasurementService(@NonNull final MeasurementRepository measurementRepository,
-            @NonNull final EnvironmentService environmentService, TenantService tenantService) {
+            @NonNull final EnvironmentService environmentService,
+            @NonNull final TenantService tenantService) {
         this.measurementRepository = Objects.requireNonNull(measurementRepository,
                 "measurementRepository must not be null");
         this.environmentService = Objects.requireNonNull(environmentService,
@@ -41,12 +42,13 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     }
 
     @Override
+    @NonNull
     protected TenantService getTenantService() {
         return tenantService;
     }
 
     @NonNull
-    public List<Measurement> findAllForBenchmark(final @NonNull String benchmarkId) {
+    public List<Measurement> findAllForBenchmark(@NonNull final String benchmarkId) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         return measurementRepository.findByBenchmarkId(UUID.fromString(benchmarkId))
                 .stream()
@@ -55,7 +57,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     }
 
     @NonNull
-    public List<Measurement> find(final @NonNull MeasurementQuery query) {
+    public List<Measurement> find(@NonNull final MeasurementQuery query) {
         Objects.requireNonNull(query, "query must not be null");
         return measurementRepository.find(UUID.fromString(query.benchmarkId()), query.start(), query.end())
                 .stream()
@@ -91,7 +93,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
 
     @NonNull
     @Override
-    protected Measurement mapToData(@NonNull MeasurementEntity entity) {
+    protected Measurement mapToData(@NonNull final MeasurementEntity entity) {
         Objects.requireNonNull(entity, "entity must not be null");
         return new Measurement(entity.getId(), entity.getTimestamp(), entity.getValue(),
                 entity.getError(), entity.getMin(), entity.getMax(), entity.getUnit(), entity.getComment());
@@ -100,7 +102,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
 
     @NonNull
     @Override
-    protected MeasurementEntity updateEntity(@NonNull MeasurementEntity entity,
+    protected MeasurementEntity updateEntity(@NonNull final MeasurementEntity entity,
             @NonNull Measurement measurement) {
         Objects.requireNonNull(entity, "entity must not be null");
         Objects.requireNonNull(measurement, "measurement must not be null");
@@ -121,7 +123,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     }
 
     private boolean isMatchingEnvironment(@NonNull final Measurement measurement,
-            @NonNull Collection<String> environmentIds) {
+            @NonNull final Collection<String> environmentIds) {
         Objects.requireNonNull(measurement, "measurement must not be null");
         Objects.requireNonNull(environmentIds, "environmentIds must not be null");
         if (environmentIds.isEmpty()) {
@@ -135,11 +137,13 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
                 .isPresent();
     }
 
-    public MeasurementMetadata getMetadataForMeasurement(String measurementId) {
+    @NonNull
+    public MeasurementMetadata getMetadataForMeasurement(@NonNull final String measurementId) {
         return getMetadataForMeasurement(UUID.fromString(measurementId));
     }
 
-    public MeasurementMetadata getMetadataForMeasurement(UUID measurementId) {
+    @NonNull
+    public MeasurementMetadata getMetadataForMeasurement(@NonNull final UUID measurementId) {
         return measurementRepository.findByIdAndTenantId(measurementId, getCurrentTenantId())
                 .map(m -> m.getMetadata())
                 .map(m -> convertMetadataEntity(m))
@@ -163,12 +167,14 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
                 entity.getJmhVersion(), entity.getSystemProperties(), entity.getEnvironmentProperties());
     }
 
-    public DateTimePeriode getPeriode(String benchmarkId) {
+    @NonNull
+    public DateTimePeriode getPeriode(@NonNull final String benchmarkId) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         return getPeriode(UUID.fromString(benchmarkId));
     }
 
-    public DateTimePeriode getPeriode(UUID benchmarkId) {
+    @NonNull
+    public DateTimePeriode getPeriode(@NonNull final UUID benchmarkId) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final Instant start = measurementRepository.findFirst(benchmarkId)
                 .map(m -> m.getTimestamp())

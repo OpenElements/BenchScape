@@ -17,8 +17,7 @@ import java.util.UUID;
  * @param tags   tags of the benchmark (Currently I have no idea why I integrated that...)
  */
 public record Benchmark(@Nullable UUID id, @NonNull String name, @NonNull Map<String, String> params,
-                        @NonNull List<String> tags) implements
-        DataBase {
+                        @NonNull List<String> tags) implements DataBase {
     public Benchmark {
         Objects.requireNonNull(name, "name must not be null");
         Objects.requireNonNull(params, "params must not be null");

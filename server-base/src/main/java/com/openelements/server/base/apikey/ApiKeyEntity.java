@@ -14,8 +14,8 @@ public class ApiKeyEntity extends AbstractEntityWithTenant {
     @Column(nullable = false, name = "api_key_user")
     private String user;
 
-    @Column(nullable = false, name = "api_key_key")
-    private String key;
+    @Column(nullable = false, name = "api_key_key_hash")
+    private String keyHash;
 
     @Column(nullable = false)
     private LocalDateTime validUntil;
@@ -32,16 +32,16 @@ public class ApiKeyEntity extends AbstractEntityWithTenant {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(final String user) {
         this.user = user;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public String getKeyHash() {
+        return keyHash;
     }
 
-    public String getKey() {
-        return key;
+    public void setKeyHash(String keyHash) {
+        this.keyHash = keyHash;
     }
 
     public LocalDateTime getValidUntil() {

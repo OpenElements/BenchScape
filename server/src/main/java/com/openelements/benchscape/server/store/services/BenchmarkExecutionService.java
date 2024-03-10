@@ -29,7 +29,8 @@ public class BenchmarkExecutionService {
     @Autowired
     public BenchmarkExecutionService(
             final @NonNull BenchmarkRepository benchmarkRepository,
-            final @NonNull MeasurementRepository measurementRepository, TenantService tenantService) {
+            final @NonNull MeasurementRepository measurementRepository,
+            final @NonNull TenantService tenantService) {
         this.benchmarkRepository = Objects.requireNonNull(benchmarkRepository, "benchmarkRepository must not be null");
         this.measurementRepository = Objects.requireNonNull(measurementRepository,
                 "measurementRepository must not be null");
@@ -44,14 +45,14 @@ public class BenchmarkExecutionService {
                 .map(e -> e.getId())
                 .findAny()
                 .orElseGet(() -> {
-                    BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
+                    final BenchmarkEntity benchmarkEntity = new BenchmarkEntity();
                     benchmarkEntity.setName(benchmarkExecution.benchmarkName());
                     benchmarkEntity.setParams(benchmarkExecution.parameters());
                     benchmarkEntity.setTenantId(tenantService.getCurrentTenant());
                     return benchmarkRepository.save(benchmarkEntity).getId();
                 });
 
-        MeasurementEntity measurementEntity = new MeasurementEntity();
+        final MeasurementEntity measurementEntity = new MeasurementEntity();
         measurementEntity.setBenchmarkId(benchmarkEntityId);
         measurementEntity.setTimestamp(benchmarkExecution.execution().startTime());
         measurementEntity.setUnit(benchmarkExecution.result().unit());
@@ -61,7 +62,7 @@ public class BenchmarkExecutionService {
         measurementEntity.setError(benchmarkExecution.result().error());
         measurementEntity.setTenantId(tenantService.getCurrentTenant());
 
-        MeasurementMetadataEntity metadataEntity = new MeasurementMetadataEntity();
+        final MeasurementMetadataEntity metadataEntity = new MeasurementMetadataEntity();
         metadataEntity.setGitBranch(benchmarkExecution.gitState().branch());
         metadataEntity.setGitCommitId(benchmarkExecution.gitState().commitId());
         metadataEntity.setGitOriginUrl(benchmarkExecution.gitState().originUrl());
