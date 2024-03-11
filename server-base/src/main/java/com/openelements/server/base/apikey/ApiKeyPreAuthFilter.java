@@ -9,9 +9,9 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 //Based on https://howtodoinjava.com/spring-security/custom-token-auth-example/
 public class ApiKeyPreAuthFilter extends AbstractPreAuthenticatedProcessingFilter {
 
-    private final ApiKeyService apiKeyService;
+    private final DefaultApiKeyService apiKeyService;
 
-    public ApiKeyPreAuthFilter(@NonNull final ApiKeyService apiKeyService) {
+    public ApiKeyPreAuthFilter(@NonNull final DefaultApiKeyService apiKeyService) {
         this.apiKeyService = Objects.requireNonNull(apiKeyService, "apiKeyService must not be null");
     }
 
