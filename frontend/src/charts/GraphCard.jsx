@@ -1,6 +1,6 @@
 import React from "react";
 import LineChart from "./LineChart";
-import { tailwindConfig } from "./utils/Utils";
+import { tailwindConfig } from "../utils";
 
 function GraphCard({ data = [], timeStamps = [] }) {
   const real = data.find((d) => d.label === "REAL DATA");
