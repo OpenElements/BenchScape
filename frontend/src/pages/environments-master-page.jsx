@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "../components/Select";
 import {
   useEnvironmentMetadata,
@@ -17,6 +17,7 @@ import Pagination from "../components/Pagination";
 import { OverflowMenu } from "../components";
 import { deleteEnvironment } from "../api";
 import { apiUrl } from "../utils/constants";
+import { createAppBarConfig } from "../utils";
 import { useSWRConfig } from "swr";
 
 function EnvironmentsPage() {
@@ -67,6 +68,14 @@ function EnvironmentsPage() {
   const handleSelectionChange = (name, { target }) => {
     setFilters((prev) => ({ ...prev, [name]: target.value }));
   };
+
+  useEffect(() => {
+    createAppBarConfig({
+      title: "Environments",
+      actions: [],
+    });
+  }, []);
+
   return (
     <div>
       <div className="flex items-center bg-alice-blue 2xl:px-8 2xl:py-7 px-5 py-4 w-full">

@@ -33,3 +33,9 @@ export const getCurrentBreakpoint = () => {
   }
   return currentBreakpoint;
 };
+
+export const createAppBarConfig = (appBarConfig) => {
+  return document.dispatchEvent(
+    new CustomEvent("appBarConfig", { detail: appBarConfig })
+  );
+};

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEnvironments, useMeasurements } from "../hooks";
 import Datepicker from "../components/DatePicker";
 import Select from "../components/Select";
 import GraphCard from "../charts/GraphCard";
 import Checkbox from "../components/Checkbox";
+import { createAppBarConfig } from "../utils";
 
 const BenchmarksDetailsGraph = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     benchmarkId: id,
     environmentIds: "",
@@ -141,6 +143,19 @@ const BenchmarksDetailsGraph = () => {
   const handleChage = (field, { target }) => {
     setFilters((prev) => ({ ...prev, [field]: target.value }));
   };
+
+  useEffect(() => {
+    createAppBarConfig({
+      title: "Bechmark details",
+      actions: [
+        {
+          name: "Table View",
+          action: () => navigate(`/benchmark/table/${id}`),
+        },
+      ],
+    });
+    // eslint-disable-next-line
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;

@@ -77,7 +77,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                 <ul className="mt-auto -mx-6">
                   <li>
                     <Link
-                      to="#"
+                      to="/settings"
                       className="sidebar-nav-link hover:bg-indigo-900/40"
                     >
                       <span className="flex items-center gap-3">

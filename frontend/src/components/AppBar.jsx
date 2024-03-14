@@ -1,39 +1,29 @@
 import { List } from "@phosphor-icons/react";
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { exportMeasurementsCsv } from "../api";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import SideNav from "./SideNav";
 import logo from "../assets/logo.svg";
 
 const AppBar = () => {
-  const { pathname, state } = useLocation();
-  const navigate = useNavigate();
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const [{ actions, title }, setAppBarConfig] = useState({
+    title: "",
+    actions: [],
+  });
 
-  const heading =
-    pathname.includes("/benchmarks") ||
-    pathname.includes("/benchmark/graph") ||
-    pathname.includes("/benchmark/table")
-      ? "Benchmarks"
-      : "Environments";
+  // Custom event to listen to changes in the appBar configurations
+  // This only runs on initial page load. If more retriggering is needed later,
+  // dependecies should be added accordingly.
+  useEffect(() => {
+    const listener = (event) => {
+      setAppBarConfig(event.detail);
+    };
+    document.addEventListener("appBarConfig", listener);
 
-  const showTableView = () =>
-    navigate(`/benchmark/table/${state?.uuid}`, { state: state });
-
-  const showGraphView = () =>
-    navigate(`/benchmark/graph/${state?.uuid}`, { state: state });
-
-  const actions = [
-    {
-      name: "Table View",
-      action: showTableView,
-    },
-    {
-      name: "Graph View",
-      action: showGraphView,
-    },
-    { name: "Export", action: () => exportMeasurementsCsv(state?.uuid) },
-  ];
+    return () => {
+      document.removeEventListener("appBarConfig", listener);
+    };
+  }, []);
 
   return (
     <div>
@@ -56,9 +46,9 @@ const AppBar = () => {
             <div className="xl:pl-4 flex-1 flex flex-col items-center gap-5">
               <div className="flex md:flex-row flex-col md:items-center md:justify-between gap-5 text-primary-navy w-full">
                 <div className="space-y-0.5">
-                  <p className=" text-[22px] font-semibold">{heading}</p>
+                  <p className=" text-[22px] font-semibold">{title}</p>
                 </div>
-                {state?.showSwitchers && (
+                {Array.isArray(actions) && (
                   <div className="flex items-center gap-2 text-sm">
                     {actions.map(({ name, action, disabled }, index) => (
                       <button

@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { useEnvironmentById, useOSFamily } from "../hooks";
+import { createAppBarConfig } from "../utils";
 import { z } from "zod";
 import { Select } from "../components";
 import { saveEnvironment } from "../api";
@@ -56,6 +57,13 @@ const EnvironmentDetails = () => {
     };
     await saveEnvironment(payload).then(() => navigate("/environments"));
   };
+
+  useEffect(() => {
+    createAppBarConfig({
+      title: "Environment details",
+      actions: [],
+    });
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {

@@ -1,7 +1,7 @@
 import useSwr from "swr";
 import { getCurrentBreakpoint } from "../utils";
 import { dataFetcher } from "../api";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 /*********************** Resources  ***************************/
 /**
