@@ -1,5 +1,12 @@
 import useSwr from "swr";
+import { getCurrentBreakpoint } from "../utils";
 import { dataFetcher } from "../api";
+import { useEffect, useState } from "react";
+
+/*********************** Resources  ***************************/
+/**
+ *  SWR documentation: https://swr.vercel.app/docs/getting-started
+ */
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -85,4 +92,27 @@ export function useForOsFamilyFilter(osFamily) {
   );
 }
 
-// SWR documentation: https://swr.vercel.app/docs/getting-started
+export function useBreakpoint(breakpointKey) {
+  const [bool, setBool] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      const currentBreakpoint = getCurrentBreakpoint();
+      setBool(currentBreakpoint === breakpointKey);
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [breakpointKey]);
+
+  const capitalizedKey =
+    breakpointKey[0].toUpperCase() + breakpointKey.substring(1);
+  return {
+    [`is${capitalizedKey}`]: bool,
+  };
+}

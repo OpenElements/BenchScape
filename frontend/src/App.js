@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
-import { AppBar, SideNav } from "./components";
+import { AppBar } from "./components";
 import SettingsPage from "./pages/settings-page";
 import BenchmarkPage from "./pages/benchmarks-master";
 import EnvironmentsPage from "./pages/environments-master-page";
@@ -10,15 +9,13 @@ import BenchmarkDetailsTable from "./pages/benchmark-details-table";
 import "./css/style.css";
 
 function App() {
-  const [sideBarOpen, setSideBarOpen] = useState(false);
   return (
     <div>
-      <SideNav sidebarOpen={sideBarOpen} setSidebarOpen={setSideBarOpen} />
-      <div className="xl:pl-64 bg-primary-gray">
-        <main className="w-full xl:p-4">
-          <div className="bg-white xl:rounded-sm xl:shadow-sm h-full">
-            <AppBar setSidebarOpen={setSideBarOpen} />
-            <div>
+      <div className="bg-primary-gray">
+        <AppBar />
+        <div className="xl:pl-64">
+          <main className="w-full xl:px-4">
+            <div className="bg-white xl:rounded-sm xl:shadow-sm h-full">
               <Routes>
                 <Route path="/" element={<BenchmarkPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
@@ -43,8 +40,8 @@ function App() {
                 <Route path="/environment" element={<EnvironmentDetails />} />
               </Routes>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
   );

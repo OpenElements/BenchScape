@@ -12,7 +12,8 @@ import {
   Tooltip,
 } from "chart.js";
 import "chartjs-adapter-moment";
-import { tailwindConfig, formatValue } from "./utils/Utils";
+import { formatValue } from "./utils/Utils";
+import { tailwindConfig } from "../utils";
 
 Chart.register(
   LineController,

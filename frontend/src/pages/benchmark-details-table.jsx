@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMeasurements } from "../hooks";
-import { useParams } from "react-router-dom";
-import Pagination from "../components/Pagination";
+import { useParams, useNavigate } from "react-router-dom";
+import { createAppBarConfig } from "../utils";
 import { dataSlicer } from "../utils";
+import Pagination from "../components/Pagination";
 import Datepicker from "../components/DatePicker";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     benchmarkId: id,
@@ -33,6 +35,19 @@ const MeasurementsTableComponent = ({ type }) => {
   const handDateChange = (field, date) => {
     setFilters((prev) => ({ ...prev, [field]: date }));
   };
+
+  useEffect(() => {
+    createAppBarConfig({
+      title: "Bechmark details",
+      actions: [
+        {
+          name: "Graph View",
+          action: () => navigate(`/benchmark/graph/${id}`),
+        },
+      ],
+    });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="py-6">

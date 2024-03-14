@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { createAppBarConfig } from "../utils";
 import { useBenchMarks, useMeasurements } from "../hooks";
 import Pagination from "../components/Pagination";
 
@@ -19,6 +20,13 @@ const BenchmarksPage = () => {
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(data?.length / itemsPerPage);
+
+  useEffect(() => {
+    createAppBarConfig({
+      title: "Benchmarks",
+      actions: [],
+    });
+  }, []);
 
   return (
     <div className="App">
