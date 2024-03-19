@@ -55,11 +55,13 @@ const MeasurementsTableComponent = ({ type }) => {
         <div className="flex gap-2 ml-8">
           <Datepicker
             label="Start Date"
+            placeholder="Enter start date"
             value={filters.start}
             onChange={(date) => handDateChange("start", date)}
           />
           <Datepicker
             label="End Date"
+            placeholder="Enter end date"
             value={filters.end}
             onChange={(date) => handDateChange("end", date)}
           />
