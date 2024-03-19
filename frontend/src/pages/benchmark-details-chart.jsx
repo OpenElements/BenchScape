@@ -113,7 +113,7 @@ const BenchmarksDetailsGraph = () => {
       ...(showSmoothDataMax
         ? [
             {
-              label: `SMOOTH DATA`,
+              label: `SMOOTH DATA MAX`,
               data: smoothData?.map((d) => d.max),
               // key: 'showSmoothData'
             },
@@ -123,7 +123,7 @@ const BenchmarksDetailsGraph = () => {
       ...(showSmoothDataError
         ? [
             {
-              label: `SMOOTH DATA`,
+              label: `SMOOTH DATA ERROR`,
               data: smoothData?.map((d) => d.error),
               // key: 'showSmoothData'
             },
