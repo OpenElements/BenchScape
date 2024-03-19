@@ -175,17 +175,20 @@ const BenchmarksDetailsGraph = () => {
         <div className="flex gap-2">
           <Datepicker
             label="Start Date"
+            placeholder="Enter start date"
             value={filters.start}
             onChange={(date) => handDateChange("start", date)}
           />
           <Datepicker
             label="End Date"
+            placeholder="Enter end date"
             value={filters.end}
             onChange={(date) => handDateChange("end", date)}
           />
         </div>
         <div className="grid grid-cols-4 gap-y-2">
           <Checkbox
+            defaultChecked
             label="Show Value"
             name="ShowValue"
             value={checks.showRealDataMin}
@@ -216,6 +219,7 @@ const BenchmarksDetailsGraph = () => {
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
+            defaultChecked
             label="Show Smooth"
             name="ShowSmooth"
             value={checks.showRealDataMin}
