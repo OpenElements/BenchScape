@@ -144,9 +144,10 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
 export default SideNav;
 
 function NavWrapper({ setSideBarOpen, sidebarOpen, children }) {
+  const { is2xl } = useBreakpoint("2xl");
   const { isXl } = useBreakpoint("xl");
 
-  return isXl ? (
+  return isXl || is2xl ? (
     children
   ) : (
     <Transition.Root show={sidebarOpen} as={Fragment}>

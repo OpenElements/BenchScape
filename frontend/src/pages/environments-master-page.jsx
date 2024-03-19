@@ -281,7 +281,7 @@ function EnvironmentsPage() {
                               {
                                 name: "Edit",
                                 action: () =>
-                                  navigate(`/environments/${environment.id}`),
+                                  navigate(`/environment/${environment.id}`),
                               },
                               {
                                 delete: true,
