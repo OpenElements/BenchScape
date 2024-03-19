@@ -133,6 +133,6 @@ const BenchmarksPage = () => {
 export default BenchmarksPage;
 
 function MeasurementLength({ benchmarkId }) {
-  const { data } = useMeasurements(benchmarkId);
+  const { data } = useMeasurements({ benchmarkId: benchmarkId });
   return <>{data?.length}</>;
 }

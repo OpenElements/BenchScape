@@ -8,16 +8,16 @@ export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const tailwindConfig = () => {
+export function tailwindConfig() {
   return resolveConfig("../../tailwind.config.js");
-};
+}
 
-export const getBreakpointValue = (value) => {
+export function getBreakpointValue(value) {
   const breakpoints = tailwindConfig().theme.screens;
   return +breakpoints[value].slice(0, breakpoints[value].indexOf("px"));
-};
+}
 
-export const getCurrentBreakpoint = () => {
+export function getCurrentBreakpoint() {
   const breakpoints = tailwindConfig().theme.screens;
   let currentBreakpoint;
   let biggestBreakpointValue = 0;
@@ -31,11 +31,11 @@ export const getCurrentBreakpoint = () => {
       currentBreakpoint = breakpoint;
     }
   }
-  return currentBreakpoint;
-};
+  return { currentBreakpoint, currentBreakpointValue: biggestBreakpointValue };
+}
 
-export const createAppBarConfig = (appBarConfig) => {
+export function createAppBarConfig(appBarConfig) {
   return document.dispatchEvent(
     new CustomEvent("appBarConfig", { detail: appBarConfig })
   );
-};
+}

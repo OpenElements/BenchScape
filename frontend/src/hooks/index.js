@@ -1,4 +1,5 @@
 import useSwr from "swr";
+import { apiUrl } from "../utils/constants";
 import { getCurrentBreakpoint } from "../utils";
 import { dataFetcher } from "../api";
 import { useEffect, useState } from "react";
@@ -7,8 +8,6 @@ import { useEffect, useState } from "react";
 /**
  *  SWR documentation: https://swr.vercel.app/docs/getting-started
  */
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export function useBenchMarks() {
   return useSwr(`${apiUrl}/api/v2/benchmark/all`, dataFetcher);
@@ -97,7 +96,7 @@ export function useBreakpoint(breakpointKey) {
 
   useEffect(() => {
     function handleResize() {
-      const currentBreakpoint = getCurrentBreakpoint();
+      const { currentBreakpoint } = getCurrentBreakpoint();
       setBool(currentBreakpoint === breakpointKey);
     }
 
