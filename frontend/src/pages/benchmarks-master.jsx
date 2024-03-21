@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { createAppBarConfig } from "../utils";
 import { useBenchMarks, useMeasurements } from "../hooks";
 import Pagination from "../components/Pagination";
+import { exportBenchmarksCsv } from "../api";
 
 const BenchmarksPage = () => {
   const { data, isLoading } = useBenchMarks();
@@ -21,10 +22,19 @@ const BenchmarksPage = () => {
   // Calculate the total number of pages
   const totalPages = Math.ceil(data?.length / itemsPerPage);
 
+  const handleExportCsv = async () => {
+    await exportBenchmarksCsv();
+  };
+
   useEffect(() => {
     createAppBarConfig({
       title: "Benchmarks",
-      actions: [],
+      actions: [
+        {
+          name: "Export CSV",
+          action: handleExportCsv,
+        },
+      ],
     });
   }, []);
 

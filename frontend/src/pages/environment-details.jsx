@@ -213,7 +213,7 @@ const EnvironmentDetails = () => {
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Java</div>
               <div className="text-sm text-gray-800 flex items-center">
-                {data?.jvmVersion}
+                {data?.jvmName} {data?.jvmVersion}
               </div>
             </div>
             <div className="flex justify-between items-center">
