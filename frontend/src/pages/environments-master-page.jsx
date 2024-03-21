@@ -19,6 +19,7 @@ import { deleteEnvironment } from "../api";
 import { apiUrl } from "../utils/constants";
 import { createAppBarConfig } from "../utils";
 import { useSWRConfig } from "swr";
+import { exportEnvironmentsCsv } from "../api";
 
 function EnvironmentsPage() {
   const navigate = useNavigate();
@@ -69,10 +70,19 @@ function EnvironmentsPage() {
     setFilters((prev) => ({ ...prev, [name]: target.value }));
   };
 
+  const handleExportCsv = async () => {
+    await exportEnvironmentsCsv();
+  };
+
   useEffect(() => {
     createAppBarConfig({
       title: "Environments",
-      actions: [],
+      actions: [
+        {
+          name: "Export CSV",
+          action: handleExportCsv,
+        },
+      ],
     });
   }, []);
 

@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, Transition } from "@headlessui/react";
-import { CirclesThree, Wrench, Gear, Globe } from "@phosphor-icons/react";
+//import { CirclesThree, Wrench, Gear, Globe } from "@phosphor-icons/react";
+import { CirclesThree, Wrench } from "@phosphor-icons/react";
 import { Link, useLocation } from "react-router-dom";
 import { useBreakpoint, useCount } from "../hooks";
 import { availableLanguages } from "../i18n";
@@ -75,7 +76,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
               </li>
               <li>
                 <ul className="mt-auto -mx-6">
-                  <li>
+                  {/* <li>
                     <Link
                       to="/settings"
                       className="sidebar-nav-link hover:bg-indigo-900/40"
@@ -85,10 +86,10 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                         {t("Settings")}
                       </span>
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Menu as="div" className="relative w-full">
-                      <Menu.Button className="w-full ">
+                      {/* <Menu.Button className="w-full ">
                         <span className="sidebar-nav-link hover:bg-indigo-900/40">
                           <Globe
                             className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
@@ -101,7 +102,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                             Select Langauge
                           </span>
                         </span>
-                      </Menu.Button>
+                      </Menu.Button> */}
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-100"

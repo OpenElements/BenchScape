@@ -5,6 +5,7 @@ import { createAppBarConfig } from "../utils";
 import { dataSlicer } from "../utils";
 import Pagination from "../components/Pagination";
 import Datepicker from "../components/DatePicker";
+import { exportMeasurementsCsv } from "../api";
 
 const MeasurementsTableComponent = ({ type }) => {
   const { id } = useParams();
@@ -36,13 +37,21 @@ const MeasurementsTableComponent = ({ type }) => {
     setFilters((prev) => ({ ...prev, [field]: date }));
   };
 
+  const handleExportCsv = async () => {
+    await exportMeasurementsCsv(id);
+  };
+
   useEffect(() => {
     createAppBarConfig({
-      title: "Bechmark details",
+      title: "Benchmark details",
       actions: [
         {
           name: "Graph View",
           action: () => navigate(`/benchmark/graph/${id}`),
+        },
+        {
+          name: "Export CSV",
+          action: handleExportCsv,
         },
       ],
     });
