@@ -11,10 +11,14 @@ import {
   faWindows,
   faLinux,
 } from "@fortawesome/free-brands-svg-icons";
-import { faMemory, faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMemory,
+  faMicrochip,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
-import { OverflowMenu } from "../components";
 import { deleteEnvironment } from "../api";
 import { apiUrl } from "../utils/constants";
 import { createAppBarConfig } from "../utils";
@@ -34,15 +38,10 @@ function EnvironmentsPage() {
     jvmVersion: "",
     jmhVersion: "",
   });
-  const [hoveredRow, setHoveredRow] = useState(null);
-
-  const handleRowHover = (rowIndex) => {
-    setHoveredRow(rowIndex);
-  };
 
   const { data: environments, mutate } = useEnvironments(filters);
   const { data: forOsFamilyOptionsFiltered } = useForOsFamilyFilter(
-    filters.osFamily,
+    filters.osFamily
   );
   const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
   const { data: archOptions } = useEnvironmentMetadata("arch");
@@ -51,7 +50,7 @@ function EnvironmentsPage() {
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
   const { data: jvhVersionOptions } = useEnvironmentMetadata("jmhVersion");
   const { data: systemMemoryReadableOptions } = useEnvironmentMetadata(
-    "systemMemoryReadable",
+    "systemMemoryReadable"
   );
 
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -61,13 +60,22 @@ function EnvironmentsPage() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentEnvironments = environments?.slice(
     indexOfFirstItem,
-    indexOfLastItem,
+    indexOfLastItem
   );
 
   const totalPages = Math.ceil(environments?.length / itemsPerPage);
 
   const handleSelectionChange = (name, { target }) => {
     setFilters((prev) => ({ ...prev, [name]: target.value }));
+  };
+
+  const handleDeletion = async (environmentId) => {
+    await deleteEnvironment(environmentId).then(() => {
+      mutate();
+
+      // updates the count value in the Side nav
+      globalMutator(`${apiUrl}/api/v2/environment/count`);
+    });
   };
 
   const handleExportCsv = async () => {
@@ -204,6 +212,10 @@ function EnvironmentsPage() {
                       >
                         JMH
                       </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-4 text-sm font-semibold text-gray-500 uppercase text-left"
+                      ></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -211,8 +223,6 @@ function EnvironmentsPage() {
                       <tr
                         className="group hover:bg-azure transition-colors ease-in-out duration-150"
                         key={index}
-                        onMouseEnter={() => handleRowHover(index)}
-                        onMouseLeave={() => handleRowHover(null)}
                       >
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-medium text-gray-900">
                           <Link to={`/environment/${environment.id}`}>
@@ -256,13 +266,11 @@ function EnvironmentsPage() {
                               <FontAwesomeIcon
                                 icon={faMicrochip}
                                 className="ml-2 & mr-2"
-                                style={{}}
                               />
                               {`${environment.systemProcessors}`}
                               <FontAwesomeIcon
                                 icon={faMemory}
                                 className="ml-2 & mr-2"
-                                style={{}}
                               />
                             </>
                           ) : (
@@ -284,34 +292,26 @@ function EnvironmentsPage() {
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jmhVersion ?? "-"}
                         </td>
-                        <div className="absolute right-16 mt-3">
-                          <OverflowMenu
-                            showMenu={index === hoveredRow}
-                            menuItems={[
-                              {
-                                name: "Edit",
-                                action: () =>
-                                  navigate(`/environment/${environment.id}`),
-                              },
-                              {
-                                delete: true,
-                                name: "Delete",
-                                action: async () => {
-                                  await deleteEnvironment(environment.id).then(
-                                    () => {
-                                      mutate();
-
-                                      // updates the count value in the Side nav
-                                      globalMutator(
-                                        `${apiUrl}/api/v2/environment/count`,
-                                      );
-                                    },
-                                  );
-                                },
-                              },
-                            ]}
-                          />
-                        </div>
+                        <td class="text-sm font-light text-gray-500">
+                          <div>
+                            <button
+                              onClick={() =>
+                                navigate(`/environment/${environment.id}`)
+                              }
+                            >
+                              <span class="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
+                                <FontAwesomeIcon icon={faPen} fontSize={12} />
+                              </span>
+                            </button>
+                            <button
+                              onClick={() => handleDeletion(environment.id)}
+                            >
+                              <span class="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
+                                <FontAwesomeIcon icon={faTrash} fontSize={12} />
+                              </span>
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
