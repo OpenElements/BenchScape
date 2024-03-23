@@ -1,7 +1,6 @@
 import axios from "axios";
 import { apiUrl } from "../utils/constants";
 
-// Common function for exporting CSV
 async function exportCsv(url, filename) {
   try {
     const response = await axios({
@@ -25,7 +24,7 @@ async function exportCsv(url, filename) {
 }
 
 export async function dataFetcher(url) {
-  return axios
+  return await axios
     .get(url)
     .then((res) => res.data)
     .catch((error) => {
@@ -34,7 +33,7 @@ export async function dataFetcher(url) {
 }
 
 export async function postData(url, payload) {
-  return axios
+  return await axios
     .post(url, payload)
     .then((res) => res.data)
     .catch((error) => {
@@ -43,7 +42,7 @@ export async function postData(url, payload) {
 }
 
 export async function deleteData(url) {
-  return axios.delete(url).catch((error) => {
+  return await axios.delete(url).catch((error) => {
     throw new Error(error);
   });
 }
@@ -70,9 +69,9 @@ export async function getMeasurementsForBechmark(benchmarkId) {
 }
 
 export async function saveEnvironment(payload) {
-  return postData(`${apiUrl}/api/v2/environment`, payload);
+  return await postData(`${apiUrl}/api/v2/environment`, payload);
 }
 
 export async function deleteEnvironment(id) {
-  return deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
+  return await deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
 }
