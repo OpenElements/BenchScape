@@ -140,7 +140,7 @@ const BenchmarksDetailsGraph = () => {
     setFilters((prev) => ({ ...prev, [field]: date }));
   };
 
-  const handleChage = (field, { target }) => {
+  const handleChange = (field, { target }) => {
     setFilters((prev) => ({ ...prev, [field]: target.value }));
   };
 
@@ -162,15 +162,15 @@ const BenchmarksDetailsGraph = () => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200 dark:border-slate-100 mt-4">
-      <div className="flex justify-around items-center gap-2 m-4">
+    <div className="col-span-full mt-4 flex h-full w-full flex-col rounded-sm border border-slate-200 bg-white shadow-lg dark:border-slate-100 sm:col-span-6">
+      <div className="m-4 flex items-center justify-around gap-2">
         <Select
           label="Environment"
           options={environments}
           value={filters.environmentIds}
           valueExtractor={(option) => option.id}
           labelExtractor={(option) => option.name}
-          onChange={(e) => handleChage("environmentIds", e)}
+          onChange={(e) => handleChange("environmentIds", e)}
         />
         <div className="flex gap-2">
           <Datepicker
