@@ -36,6 +36,6 @@ export function getCurrentBreakpoint() {
 
 export function createAppBarConfig(appBarConfig) {
   return document.dispatchEvent(
-    new CustomEvent("appBarConfig", { detail: appBarConfig })
+    new CustomEvent("appBarConfig", { detail: appBarConfig }),
   );
 }

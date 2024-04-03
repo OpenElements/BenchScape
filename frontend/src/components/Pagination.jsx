@@ -16,7 +16,7 @@ const Pagination = ({
   // Array of page numbers
   const pageNumbers = Array.from(
     { length: totalPages },
-    (_, index) => index + 1
+    (_, index) => index + 1,
   );
 
   const isFirstPage = currentPage === 1;

@@ -55,7 +55,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                           pathname.includes(item.href)
                             ? "bg-primary-purple text-white"
                             : "text-indigo-200 hover:text-white hover:bg-indigo-900/40",
-                          "sidebar-nav-link"
+                          "sidebar-nav-link",
                         )}
                       >
                         <item.icon
@@ -63,7 +63,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                             pathname.includes(item.href)
                               ? "text-white"
                               : "text-indigo-200 group-hover:text-white",
-                            "h-6 w-6 shrink-0"
+                            "h-6 w-6 shrink-0",
                           )}
                           aria-hidden="true"
                         />
@@ -120,7 +120,7 @@ const SideNav = ({ setSideBarOpen, sidebarOpen }) => {
                                   onClick={() => changeLanguage(lang)}
                                   className={classNames(
                                     active ? "" : "",
-                                    "block px-8 py-2 text-sm leading-6 text-white hover:bg-white/5"
+                                    "block px-8 py-2 text-sm leading-6 text-white hover:bg-white/5",
                                   )}
                                 >
                                   {lang}

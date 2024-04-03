@@ -17,5 +17,5 @@ root.render(
         </I18nextProvider>
       </SWRConfig>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
