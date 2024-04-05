@@ -45,7 +45,7 @@ const OverflowMenu = ({ menuItems, showMenu }) => {
                             : "text-gray-700",
                           "block px-4 py-2 text-sm",
                           "w-full text-left",
-                          item.delete && "hover:bg-red-600"
+                          item.delete && "hover:bg-red-600",
                         )}
                       >
                         {item.name}

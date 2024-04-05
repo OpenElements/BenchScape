@@ -22,7 +22,7 @@ Chart.register(
   PointElement,
   LinearScale,
   TimeScale,
-  Tooltip
+  Tooltip,
 );
 
 function LineChart({ data }) {
@@ -139,7 +139,7 @@ function LineChart({ data }) {
               button.onclick = () => {
                 c.setDatasetVisibility(
                   item.datasetIndex,
-                  !c.isDatasetVisible(item.datasetIndex)
+                  !c.isDatasetVisible(item.datasetIndex),
                 );
                 c.update();
               };

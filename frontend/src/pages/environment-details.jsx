@@ -126,7 +126,7 @@ const EnvironmentDetails = () => {
                   render={({ field }) => (
                     <Select
                       options={osFamilyOptions?.filter(
-                        (option) => option !== "UNKNOWN"
+                        (option) => option !== "UNKNOWN",
                       )}
                       value={field.value !== "UNKNOWN" ? field.value : null}
                       valueExtractor={(name) => name}

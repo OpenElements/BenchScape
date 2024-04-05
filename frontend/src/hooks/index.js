@@ -26,7 +26,7 @@ export function useEnvironments(queries) {
 
   return useSwr(
     `${apiUrl}/api/v2/environment/findByQuery?${params}`,
-    dataFetcher
+    dataFetcher,
   );
 }
 
@@ -50,14 +50,14 @@ export function useMeasurements(filters) {
 export function useMeasurementsSmooth(id) {
   return useSwr(
     `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}&smooth=true`,
-    dataFetcher
+    dataFetcher,
   );
 }
 
 export function useMeasurementsInterpolated(id, interpolationType, points) {
   return useSwr(
     `${apiUrl}/api/v2/measurement/findInterpolated?benchmarkId=${id}&interpolationType=${interpolationType}&interpolationPoints=${points}`,
-    dataFetcher
+    dataFetcher,
   );
 }
 
@@ -80,14 +80,14 @@ export function useOSFamily() {
 export function useOsVersionFilter(osName) {
   return useSwr(
     `${apiUrl}/api/v2/environment/metadata/osVersion/forOs?osName=${osName}`,
-    dataFetcher
+    dataFetcher,
   );
 }
 
 export function useForOsFamilyFilter(osFamily) {
   return useSwr(
     `${apiUrl}/api/v2/environment/metadata/osVersion/forOsFamily?osFamily=${osFamily}`,
-    dataFetcher
+    dataFetcher,
   );
 }
 

@@ -51,7 +51,7 @@ const MeasurementsTableComponent = ({ type }) => {
           name: "Graph View",
           action: () =>
             navigate(
-              `/benchmark/graph/${id}?environment=${filters.environmentIds}`
+              `/benchmark/graph/${id}?environment=${filters.environmentIds}`,
             ),
         },
         {
@@ -151,7 +151,7 @@ const MeasurementsTableComponent = ({ type }) => {
                           {max ? max.toFixed(4) : "--"}
                         </td>
                       </tr>
-                    )
+                    ),
                   )}
                 </tbody>
               </table>
