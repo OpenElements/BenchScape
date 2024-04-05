@@ -42,7 +42,7 @@ function EnvironmentsPage() {
 
   const { data: environments, mutate } = useEnvironments(filters);
   const { data: forOsFamilyOptionsFiltered } = useForOsFamilyFilter(
-    filters.osFamily
+    filters.osFamily,
   );
   const { data: osFamilyOptions } = useEnvironmentMetadata("osFamily");
   const { data: archOptions } = useEnvironmentMetadata("arch");
@@ -51,7 +51,7 @@ function EnvironmentsPage() {
   const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
   const { data: jvhVersionOptions } = useEnvironmentMetadata("jmhVersion");
   const { data: systemMemoryReadableOptions } = useEnvironmentMetadata(
-    "systemMemoryReadable"
+    "systemMemoryReadable",
   );
 
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -61,7 +61,7 @@ function EnvironmentsPage() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentEnvironments = environments?.slice(
     indexOfFirstItem,
-    indexOfLastItem
+    indexOfLastItem,
   );
 
   const totalPages = Math.ceil(environments?.length / itemsPerPage);
@@ -309,9 +309,9 @@ function EnvironmentsPage() {
 
                                       // updates the count value in the Side nav
                                       globalMutator(
-                                        `${apiUrl}/api/v2/environment/count`
+                                        `${apiUrl}/api/v2/environment/count`,
                                       );
-                                    }
+                                    },
                                   );
                                 },
                               },
