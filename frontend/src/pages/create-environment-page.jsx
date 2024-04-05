@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useEnvironmentById, useOSFamily } from "../hooks";
+import { useOSFamily } from "../hooks";
 import { createAppBarConfig } from "../utils";
 import { z } from "zod";
 import { Select } from "../components";
@@ -21,12 +21,10 @@ const schema = z.object({
 const inputClasses =
   "w-24 text-center text-sm border-0 border-b border-gray-200 focus:border-0 focus:border-b focus:border-gray-400";
 
-const EnvironmentDetails = () => {
-  const { id } = useParams();
-  const { data, isLoading } = useEnvironmentById(id);
+const CreateEnvironment = () => {
   const { data: osFamilyOptions } = useOSFamily();
-  const { handleSubmit, register, control, reset } = useForm({
-    mode: "onChange",
+  const { handleSubmit, register, control } = useForm({
+    mode: "all",
     resolver: zodResolver(schema),
   });
 
@@ -45,7 +43,6 @@ const EnvironmentDetails = () => {
     } = data;
 
     const payload = {
-      id,
       osName,
       osVersion: osVersion,
       name: infraName,
@@ -53,46 +50,22 @@ const EnvironmentDetails = () => {
       systemMemoryReadable: memory,
       jmhVersion: jmh,
       jvmVersion: java,
-      systemProcessors: cores,
+      systemProcessors: Number(cores),
     };
     await saveEnvironment(payload).then(() => navigate("/environments"));
   };
 
+  const onError = (err) => console.error(err);
+
   useEffect(() => {
     createAppBarConfig({
-      title: "Environment details",
+      title: "Create Environment",
       actions: [],
     });
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      reset({
-        infraName: data?.name || "",
-        infraDescription: data?.description || "",
-        osName: data?.osName || "",
-        osVersion: data?.osVersion || "",
-        cores: data?.systemProcessors || "",
-        memory: data?.systemMemoryReadable || "",
-        java: data?.jvmVersion || "",
-        jmh: data?.jmhVersion || "",
-      });
-    }
-  }, [
-    data?.description,
-    data?.jmhVersion,
-    data?.jvmVersion,
-    data?.name,
-    data?.osName,
-    data?.osVersion,
-    data?.systemMemoryReadable,
-    data?.systemProcessors,
-    isLoading,
-    reset,
-  ]);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit, onError)}>
       <div className="p-8 flex flex-col gap-6">
         <div className="flex flex-col gap-3 ml-2">
           <div className="flex flex-col gap-1" style={{ maxWidth: "400px" }}>
@@ -126,7 +99,7 @@ const EnvironmentDetails = () => {
                   render={({ field }) => (
                     <Select
                       options={osFamilyOptions?.filter(
-                        (option) => option !== "UNKNOWN",
+                        (option) => option !== "UNKNOWN"
                       )}
                       value={field.value !== "UNKNOWN" ? field.value : null}
                       valueExtractor={(name) => name}
@@ -166,60 +139,37 @@ const EnvironmentDetails = () => {
                   type="text"
                   {...register("cores")}
                   className={inputClasses}
-                  pattern="[0-9]*"
-                  title="Please CPU cores should be a valid number"
                 />
               </div>
             </div>
-            {/* <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Memory</div>
-              <div className="text-sm text-gray-800">
+              <div className="text-sm text-gray-800 flex items-center">
                 <input
                   type="text"
                   {...register("memory")}
                   className={inputClasses}
-                  readOnly
                 />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Java</div>
-              <div className="text-sm text-gray-800">
+              <div className="text-sm text-gray-800 flex items-center">
                 <input
                   type="text"
                   {...register("java")}
                   className={inputClasses}
-                  readOnly
                 />
               </div>
             </div>
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">JMH</div>
-              <div className="text-sm text-gray-800">
+              <div className="text-sm text-gray-800 flex items-center">
                 <input
                   type="text"
                   {...register("jmh")}
                   className={inputClasses}
-                  readOnly
                 />
-              </div>
-            </div> */}
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">Memory</div>
-              <div className="text-sm text-gray-800 flex items-center">
-                {data?.systemMemoryReadable}
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">Java</div>
-              <div className="text-sm text-gray-800 flex items-center">
-                {data?.jvmName} {data?.jvmVersion}
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">JMH</div>
-              <div className="text-sm text-gray-800 flex items-center">
-                {data?.jmhVersion}
               </div>
             </div>
           </div>
@@ -249,4 +199,4 @@ const EnvironmentDetails = () => {
   );
 };
 
-export default EnvironmentDetails;
+export default CreateEnvironment;
