@@ -32,7 +32,7 @@ const EnvironmentDetails = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async ({ data }) => {
     const {
       infraName,
       infraDescription,

@@ -172,6 +172,12 @@ function EnvironmentsPage() {
             onChange={(e) => handleSelectionChange("jmhVersion", e)}
           />
         </div>
+        <button
+          onClick={() => navigate("/environment/create")}
+          className="border-2 p-2 mt-4 ml-4 text-sm rounded-md bg-indigo-700 border-indigo-700 text-white"
+        >
+          Add Environment
+        </button>
       </div>
 
       <div className="py-6">
