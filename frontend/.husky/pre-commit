@@ -3,4 +3,4 @@
 
 set -e  # die on error
 
-cd frontend && npm run prettier
+cd frontend && echo "Running TypeScript compilation..." && tsc && npm run prettier

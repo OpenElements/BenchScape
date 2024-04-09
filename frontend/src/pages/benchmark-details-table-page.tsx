@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMeasurements, useEnvironments } from "../hooks";
 import { useParams, useNavigate } from "react-router-dom";
-import { createAppBarConfig } from "../utils";
+import { createAppBarConfig, itemsPerPage } from "../utils";
 import { dataSlicer } from "../utils";
 import Pagination from "../components/Pagination";
 import Datepicker from "../components/DatePicker";
 import Select from "../components/Select";
 import { exportMeasurementsCsv } from "../api";
 
-const MeasurementsTableComponent = ({ type }) => {
+const MeasurementsTableComponent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,13 +21,12 @@ const MeasurementsTableComponent = ({ type }) => {
 
   const { data: environments } = useEnvironments();
   const { data } = useMeasurements(filters);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = dataSlicer(data, itemsPerPage);
-  const handDateChange = (field, date) => {
+  const handDateChange = (field: string, date: string) => {
     setFilters((prev) => ({ ...prev, [field]: date }));
   };
 
@@ -51,7 +50,7 @@ const MeasurementsTableComponent = ({ type }) => {
           name: "Graph View",
           action: () =>
             navigate(
-              `/benchmark/graph/${id}?environment=${filters.environmentIds}`,
+              `/benchmark/graph/${id}?environment=${filters.environmentIds}`
             ),
         },
         {
@@ -128,7 +127,7 @@ const MeasurementsTableComponent = ({ type }) => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {currentItems?.map(
-                    ({ id, timestamp, error, min, max, unit, value }) => (
+                    ({ id, timestamp, error, min, max, value }) => (
                       <tr
                         key={id}
                         className="group transition-colors duration-150 ease-in-out hover:bg-azure"
@@ -151,7 +150,7 @@ const MeasurementsTableComponent = ({ type }) => {
                           {max ? max.toFixed(4) : "--"}
                         </td>
                       </tr>
-                    ),
+                    )
                   )}
                 </tbody>
               </table>
@@ -161,13 +160,9 @@ const MeasurementsTableComponent = ({ type }) => {
       </div>
       {/* Pagination */}
       <Pagination
-        itemsPerPage={itemsPerPage}
         setCurrentPage={setCurrentPage}
-        setItemsPerPage={setItemsPerPage}
         totalPages={totalPages}
         currentPage={currentPage}
-        indexOfLastItem={indexOfLastItem}
-        data={data}
       />
     </div>
   );

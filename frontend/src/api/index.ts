@@ -1,7 +1,8 @@
 import axios from "axios";
 import { apiUrl } from "../utils/constants";
+import { Environment, Measurement } from "../types";
 
-async function exportCsv(url, filename) {
+async function exportCsv(url: string, filename: string) {
   try {
     const response = await axios({
       url,
@@ -23,31 +24,31 @@ async function exportCsv(url, filename) {
   }
 }
 
-export async function dataFetcher(url) {
+export async function dataFetcher<T>(url: string) {
   return await axios
-    .get(url)
+    .get<T>(url)
     .then((res) => res.data)
     .catch((error) => {
       throw new Error(error);
     });
 }
 
-export async function postData(url, payload) {
+export async function postData<T>(url: string, payload: any) {
   return await axios
-    .post(url, payload)
+    .post<T>(url, payload)
     .then((res) => res.data)
     .catch((error) => {
       throw new Error(error);
     });
 }
 
-export async function deleteData(url) {
+export async function deleteData(url: string) {
   return await axios.delete(url).catch((error) => {
     throw new Error(error);
   });
 }
 
-export async function exportMeasurementsCsv(benchmarkId) {
+export async function exportMeasurementsCsv(benchmarkId: string) {
   const url = `${apiUrl}/api/v2/export/measurements/csv?benchmarkId=${benchmarkId}`;
   await exportCsv(url, "measurements.csv");
 }
@@ -62,16 +63,19 @@ export async function exportBenchmarksCsv() {
   await exportCsv(url, "benchmarks.csv");
 }
 
-export async function getMeasurementsForBechmark(benchmarkId) {
+export async function getMeasurementsForBechmark(benchmarkId: string) {
   const url = `${apiUrl}/api/v2/measurement/find?benchmarkId=${benchmarkId}`;
-  const data = await dataFetcher(url);
+  const data = await dataFetcher<Array<Measurement>>(url);
   return data?.length;
 }
 
-export async function saveEnvironment(payload) {
-  return await postData(`${apiUrl}/api/v2/environment`, payload);
+export async function saveEnvironment(payload: Object) {
+  return await postData<Array<Environment>>(
+    `${apiUrl}/api/v2/environment`,
+    payload
+  );
 }
 
-export async function deleteEnvironment(id) {
+export async function deleteEnvironment(id: string) {
   return await deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
 }

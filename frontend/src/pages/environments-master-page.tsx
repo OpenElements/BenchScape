@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Select from "../components/Select";
 import {
   useEnvironmentMetadata,
@@ -21,7 +21,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import { deleteEnvironment } from "../api";
 import { apiUrl } from "../utils/constants";
-import { createAppBarConfig } from "../utils";
+import { createAppBarConfig, itemsPerPage } from "../utils";
 import { useSWRConfig } from "swr";
 import { exportEnvironmentsCsv } from "../api";
 
@@ -53,7 +53,6 @@ function EnvironmentsPage() {
     "systemMemoryReadable"
   );
 
-  const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -65,11 +64,11 @@ function EnvironmentsPage() {
 
   const totalPages = Math.ceil(environments?.length / itemsPerPage);
 
-  const handleSelectionChange = (name, { target }) => {
+  const handleSelectionChange = (name: string, { target }) => {
     setFilters((prev) => ({ ...prev, [name]: target.value }));
   };
 
-  const handleDeletion = async (environmentId) => {
+  const handleDeletion = async (environmentId: string) => {
     await deleteEnvironment(environmentId).then(() => {
       mutate();
 
@@ -108,9 +107,7 @@ function EnvironmentsPage() {
                 ? "Mac OS"
                 : name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
             }
-            onChange={(e) =>
-              handleSelectionChange("osFamily", e !== "UNKNOWN" ? e : null)
-            }
+            onChange={(e) => handleSelectionChange("osFamily", e)}
           />
 
           <Select
@@ -298,21 +295,21 @@ function EnvironmentsPage() {
                         <td className="whitespace-nowrap py-3.5 px-4 text-sm font-light text-gray-500">
                           {environment.jmhVersion ?? "-"}
                         </td>
-                        <td class="text-sm font-light text-gray-500">
+                        <td className="text-sm font-light text-gray-500">
                           <div>
                             <button
                               onClick={() =>
                                 navigate(`/environment/${environment.id}`)
                               }
                             >
-                              <span class="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
+                              <span className="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
                                 <FontAwesomeIcon icon={faPen} fontSize={12} />
                               </span>
                             </button>
                             <button
                               onClick={() => handleDeletion(environment.id)}
                             >
-                              <span class="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
+                              <span className="rounded-full flex justify-center bg-transparent hover:bg-slate-300 p-2">
                                 <FontAwesomeIcon icon={faTrash} fontSize={12} />
                               </span>
                             </button>
@@ -331,13 +328,9 @@ function EnvironmentsPage() {
       {/* Pagination */}
       {environments?.length > 0 && (
         <Pagination
-          itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          setItemsPerPage={setItemsPerPage}
           totalPages={totalPages}
           currentPage={currentPage}
-          indexOfLastItem={indexOfLastItem}
-          data={environments}
         />
       )}
     </div>

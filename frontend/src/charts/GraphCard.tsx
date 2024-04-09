@@ -1,8 +1,17 @@
-import React from "react";
 import LineChart from "./LineChart";
 import { tailwindConfig } from "../utils";
 
-function GraphCard({ data = [], timeStamps = [] }) {
+type DataSets = Array<{
+  label: string;
+  data: number[];
+}>;
+
+interface GraphCardProps {
+  data: DataSets;
+  timeStamps: Array<string>;
+}
+
+function GraphCard({ data = [], timeStamps = [] }: GraphCardProps) {
   const real = data.find((d) => d.label === "REAL DATA");
   const realMin = data.find((d) => d.label === "REAL DATA MIN");
   const realMax = data.find((d) => d.label === "REAL DATA MAX");
