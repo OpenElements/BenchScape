@@ -1,4 +1,17 @@
-function Select({
+import { SyntheticEvent } from "react";
+
+interface SelectProps<T> {
+  label?: string;
+  value: string;
+  options: Array<T>;
+  name?: string;
+  onChange: (e: SyntheticEvent) => void;
+  labelExtractor: (option: T) => string;
+  valueExtractor: (option: T) => string;
+  disabled?: boolean;
+}
+
+function Select<T>({
   label,
   value,
   options,
@@ -8,7 +21,7 @@ function Select({
   valueExtractor,
   disabled,
   ...restProps
-}) {
+}: SelectProps<T>) {
   return (
     <div className="w-auto">
       <label htmlFor="label" className="block text-xs text-gray-700">

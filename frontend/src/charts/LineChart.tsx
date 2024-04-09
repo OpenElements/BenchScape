@@ -22,7 +22,7 @@ Chart.register(
   PointElement,
   LinearScale,
   TimeScale,
-  Tooltip,
+  Tooltip
 );
 
 function LineChart({ data }) {
@@ -95,7 +95,7 @@ function LineChart({ data }) {
           },
           tooltip: {
             callbacks: {
-              title: () => false, // Disable tooltip title
+              title: () => false as unknown as void, // Disable tooltip title
               label: (context) => formatValue(context.parsed.y),
             },
             bodyColor: darkMode
@@ -119,7 +119,7 @@ function LineChart({ data }) {
       plugins: [
         {
           id: "htmlLegend",
-          afterUpdate(c, args, options) {
+          afterUpdate(c) {
             const ul = legend.current;
             if (!ul) return;
             // Remove old legend items
@@ -139,7 +139,7 @@ function LineChart({ data }) {
               button.onclick = () => {
                 c.setDatasetVisibility(
                   item.datasetIndex,
-                  !c.isDatasetVisible(item.datasetIndex),
+                  !c.isDatasetVisible(item.datasetIndex)
                 );
                 c.update();
               };
@@ -151,8 +151,8 @@ function LineChart({ data }) {
               box.style.borderRadius = tailwindConfig().theme.borderRadius.full;
               box.style.marginRight = tailwindConfig().theme.margin[2];
               box.style.borderWidth = "3px";
-              box.style.borderColor =
-                c.data.datasets[item.datasetIndex].borderColor;
+              box.style.borderColor = c.data.datasets[item.datasetIndex]
+                .borderColor as unknown as string;
               box.style.pointerEvents = "none";
               // Label
               const label = document.createElement("span");

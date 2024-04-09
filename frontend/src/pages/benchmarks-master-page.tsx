@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { createAppBarConfig } from "../utils";
+import { createAppBarConfig, itemsPerPage } from "../utils";
 import { useBenchMarks, useMeasurements } from "../hooks";
 import Pagination from "../components/Pagination";
 import { exportBenchmarksCsv } from "../api";
@@ -8,18 +8,11 @@ import { exportBenchmarksCsv } from "../api";
 const BenchmarksPage = () => {
   const { data, isLoading } = useBenchMarks();
 
-  // Number of items per page
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-
-  // State for current page
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate the index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentBenchmarks = data?.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   const handleExportCsv = async () => {
@@ -127,13 +120,9 @@ const BenchmarksPage = () => {
       {/* Pagination */}
       {data?.length > 0 && (
         <Pagination
-          itemsPerPage={itemsPerPage}
           setCurrentPage={setCurrentPage}
-          setItemsPerPage={setItemsPerPage}
           totalPages={totalPages}
           currentPage={currentPage}
-          indexOfLastItem={indexOfLastItem}
-          data={data}
         />
       )}
     </div>

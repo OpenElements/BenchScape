@@ -3,6 +3,12 @@ import { apiUrl } from "../utils/constants";
 import { getCurrentBreakpoint } from "../utils";
 import { dataFetcher } from "../api";
 import { useEffect, useState } from "react";
+import {
+  BenchmarksResponse,
+  Environment,
+  EnvironmentsResponse,
+  MeasurementsResponse,
+} from "../types";
 
 /*********************** Resources  ***************************/
 /**
@@ -10,88 +16,110 @@ import { useEffect, useState } from "react";
  */
 
 export function useBenchMarks() {
-  return useSwr(`${apiUrl}/api/v2/benchmark/all`, dataFetcher);
+  return useSwr<BenchmarksResponse, Error>(
+    `${apiUrl}/api/v2/benchmark/all`,
+    dataFetcher
+  );
 }
 
-export function useEnvironments(queries) {
+export function useEnvironments(queries?: Object) {
   let params = "";
 
-  if (queries) {
+  if (queries !== undefined) {
     const withValues = Object.entries(queries)
-      .filter(([key, value]) => Boolean(value))
+      .filter(([_key, value]) => Boolean(value))
       .map(([key, value]) => [key, value]);
 
     params = new URLSearchParams(withValues).toString();
   }
 
-  return useSwr(
+  return useSwr<EnvironmentsResponse, Error>(
     `${apiUrl}/api/v2/environment/findByQuery?${params}`,
-    dataFetcher,
+    dataFetcher
   );
 }
 
-export function useEnvironmentById(id) {
-  return useSwr(`${apiUrl}/api/v2/environment/find?id=${id}`, dataFetcher);
+export function useEnvironmentById(id: string) {
+  return useSwr<Environment, Error>(
+    `${apiUrl}/api/v2/environment/find?id=${id}`,
+    dataFetcher
+  );
 }
 
-export function useMeasurements(filters) {
+export function useMeasurements(filters: Object) {
   let params = "";
 
-  if (filters) {
+  if (filters !== undefined) {
     const withValues = Object.entries(filters)
-      .filter(([key, value]) => Boolean(value))
+      .filter(([_key, value]) => Boolean(value))
       .map(([key, value]) => [key, value]);
 
     params = new URLSearchParams(withValues).toString();
   }
-  return useSwr(`${apiUrl}/api/v2/measurement/find?${params}`, dataFetcher);
+  return useSwr<MeasurementsResponse, Error>(
+    `${apiUrl}/api/v2/measurement/find?${params}`,
+    dataFetcher
+  );
 }
 
-export function useMeasurementsSmooth(id) {
-  return useSwr(
+export function useMeasurementsSmooth(id: string) {
+  return useSwr<MeasurementsResponse, Error>(
     `${apiUrl}/api/v2/measurement/find?benchmarkId=${id}&smooth=true`,
-    dataFetcher,
+    dataFetcher
   );
 }
 
-export function useMeasurementsInterpolated(id, interpolationType, points) {
-  return useSwr(
+export function useMeasurementsInterpolated(
+  id: string,
+  interpolationType: string,
+  points: any
+) {
+  return useSwr<MeasurementsResponse, Error>(
     `${apiUrl}/api/v2/measurement/findInterpolated?benchmarkId=${id}&interpolationType=${interpolationType}&interpolationPoints=${points}`,
-    dataFetcher,
+    dataFetcher
   );
 }
 
-export function useEnvironmentMetadata(data) {
-  return useSwr(`${apiUrl}/api/v2/environment/metadata/${data}`, dataFetcher);
+export function useEnvironmentMetadata(meta: string) {
+  return useSwr<Array<string>, Error>(
+    `${apiUrl}/api/v2/environment/metadata/${meta}`,
+    dataFetcher
+  );
 }
 
-export function useCount(name) {
-  return useSwr(`${apiUrl}/api/v2/${name}/count`, dataFetcher);
+export function useCount(name: string) {
+  return useSwr<number, Error>(`${apiUrl}/api/v2/${name}/count`, dataFetcher);
 }
 
 export function useOS() {
-  return useSwr(`${apiUrl}/api/v2/environment/metadata/os`, dataFetcher);
+  return useSwr<Array<string>, Error>(
+    `${apiUrl}/api/v2/environment/metadata/os`,
+    dataFetcher
+  );
 }
 
 export function useOSFamily() {
-  return useSwr(`${apiUrl}/api/v2/environment/metadata/osFamily`, dataFetcher);
+  return useSwr<Array<string>, Error>(
+    `${apiUrl}/api/v2/environment/metadata/osFamily`,
+    dataFetcher
+  );
 }
 
-export function useOsVersionFilter(osName) {
+export function useOsVersionFilter(osName: string) {
   return useSwr(
     `${apiUrl}/api/v2/environment/metadata/osVersion/forOs?osName=${osName}`,
-    dataFetcher,
+    dataFetcher
   );
 }
 
-export function useForOsFamilyFilter(osFamily) {
-  return useSwr(
+export function useForOsFamilyFilter(osFamily: string) {
+  return useSwr<Array<string>, Error>(
     `${apiUrl}/api/v2/environment/metadata/osVersion/forOsFamily?osFamily=${osFamily}`,
-    dataFetcher,
+    dataFetcher
   );
 }
 
-export function useBreakpoint(breakpointKey) {
+export function useBreakpoint(breakpointKey: string) {
   const [bool, setBool] = useState(false);
 
   useEffect(() => {

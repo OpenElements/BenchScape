@@ -1,6 +1,11 @@
+import { Config } from "tailwindcss";
 import resolveConfig from "tailwindcss/resolveConfig";
 
-export function dataSlicer(data, itemsPerPage) {
+import localConfig from "../../tailwind.config.js";
+
+export * from "./constants.js";
+
+export function dataSlicer(data: Array<Object>, itemsPerPage: number) {
   return Math.ceil(data?.length / itemsPerPage);
 }
 
@@ -9,10 +14,10 @@ export function classNames(...classes) {
 }
 
 export function tailwindConfig() {
-  return resolveConfig("../../tailwind.config.js");
+  return resolveConfig(localConfig as Config);
 }
 
-export function getBreakpointValue(value) {
+export function getBreakpointValue(value: string) {
   const breakpoints = tailwindConfig().theme.screens;
   return +breakpoints[value].slice(0, breakpoints[value].indexOf("px"));
 }
@@ -36,6 +41,6 @@ export function getCurrentBreakpoint() {
 
 export function createAppBarConfig(appBarConfig) {
   return document.dispatchEvent(
-    new CustomEvent("appBarConfig", { detail: appBarConfig }),
+    new CustomEvent("appBarConfig", { detail: appBarConfig })
   );
 }

@@ -1,6 +1,10 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const ThemeContext = createContext({
+interface Context {
+  currentTheme: string;
+  changeCurrentTheme: (theme: string) => void;
+}
+const ThemeContext = createContext<Context>({
   currentTheme: "light",
   changeCurrentTheme: () => {},
 });
@@ -9,7 +13,7 @@ export default function ThemeProvider({ children }) {
   const persistedTheme = localStorage.getItem("theme");
   const [theme, setTheme] = useState(persistedTheme || "light");
 
-  const changeCurrentTheme = (newTheme) => {
+  const changeCurrentTheme = (newTheme: string) => {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };

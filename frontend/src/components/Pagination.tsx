@@ -1,14 +1,4 @@
-import React from "react";
-
-const Pagination = ({
-  itemsPerPage,
-  setCurrentPage,
-  setItemsPerPage,
-  totalPages,
-  currentPage,
-  indexOfLastItem,
-  data,
-}) => {
+const Pagination = ({ setCurrentPage, totalPages, currentPage }) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -16,7 +6,7 @@ const Pagination = ({
   // Array of page numbers
   const pageNumbers = Array.from(
     { length: totalPages },
-    (_, index) => index + 1,
+    (_, index) => index + 1
   );
 
   const isFirstPage = currentPage === 1;

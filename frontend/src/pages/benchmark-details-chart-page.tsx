@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEnvironments, useMeasurements } from "../hooks";
 import Datepicker from "../components/DatePicker";
@@ -136,11 +136,11 @@ const BenchmarksDetailsGraph = () => {
     ],
   };
 
-  const handDateChange = (field, date) => {
+  const handDateChange = (field: string, date: string) => {
     setFilters((prev) => ({ ...prev, [field]: date }));
   };
 
-  const handleChange = (field, { target }) => {
+  const handleChange = (field: string, { target }) => {
     setFilters((prev) => ({ ...prev, [field]: target.value }));
   };
 
@@ -191,28 +191,28 @@ const BenchmarksDetailsGraph = () => {
             defaultChecked
             label="Show Value"
             name="ShowValue"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) => handleChecked("showRealData", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Show Minimum"
             name="ShowMin"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) => handleChecked("showRealDataMin", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label=" Show Maximum"
             name="ShowMax"
-            value={checks.showRealDataMax}
+            value={String(checks.showRealDataMax)}
             onChange={(e) => handleChecked("showRealDataMax", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Show Error"
             name="ShowError"
-            value={checks.showRealDataError}
+            value={String(checks.showRealDataError)}
             onChange={(e) =>
               handleChecked("showRealDataError", e.target.checked)
             }
@@ -222,14 +222,14 @@ const BenchmarksDetailsGraph = () => {
             defaultChecked
             label="Show Smooth"
             name="ShowSmooth"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) => handleChecked("showSmoothData", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Smooth Min"
             name="ShowSmoothMin"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) =>
               handleChecked("showSmoothDataMin", e.target.checked)
             }
@@ -238,7 +238,7 @@ const BenchmarksDetailsGraph = () => {
           <Checkbox
             label="Smooth Max"
             name="ShowSmoothMax"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) =>
               handleChecked("showSmoothDataMax", e.target.checked)
             }
@@ -247,7 +247,7 @@ const BenchmarksDetailsGraph = () => {
           <Checkbox
             label="Smooth Error"
             name="ShowSmoothError"
-            value={checks.showRealDataMin}
+            value={String(checks.showRealDataMin)}
             onChange={(e) =>
               handleChecked("showSmoothDataError", e.target.checked)
             }

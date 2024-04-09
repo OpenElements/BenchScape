@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -11,12 +11,15 @@ import { saveEnvironment } from "../api";
 const schema = z.object({
   infraName: z.string(),
   infraDescription: z.string(),
+  osVersion: z.string(),
   osName: z.string(),
   cores: z.string(),
   memory: z.string(),
   java: z.string(),
   jmh: z.string(),
 });
+
+type EnvironmentFormData = z.infer<typeof schema>;
 
 const inputClasses =
   "w-24 text-center text-sm border-0 border-b border-gray-200 focus:border-0 focus:border-b focus:border-gray-400";
@@ -25,14 +28,15 @@ const EnvironmentDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useEnvironmentById(id);
   const { data: osFamilyOptions } = useOSFamily();
-  const { handleSubmit, register, control, reset } = useForm({
-    mode: "onChange",
-    resolver: zodResolver(schema),
-  });
+  const { handleSubmit, register, control, reset } =
+    useForm<EnvironmentFormData>({
+      mode: "onChange",
+      resolver: zodResolver(schema),
+    });
 
   const navigate = useNavigate();
 
-  const onSubmit = async ({ data }) => {
+  const onSubmit = async (data: EnvironmentFormData) => {
     const {
       infraName,
       infraDescription,
@@ -53,7 +57,7 @@ const EnvironmentDetails = () => {
       systemMemoryReadable: memory,
       jmhVersion: jmh,
       jvmVersion: java,
-      systemProcessors: cores,
+      systemProcessors: Number(cores),
     };
     await saveEnvironment(payload).then(() => navigate("/environments"));
   };
@@ -72,7 +76,7 @@ const EnvironmentDetails = () => {
         infraDescription: data?.description || "",
         osName: data?.osName || "",
         osVersion: data?.osVersion || "",
-        cores: data?.systemProcessors || "",
+        cores: data?.systemProcessors ? String(data?.systemProcessors) : "",
         memory: data?.systemMemoryReadable || "",
         java: data?.jvmVersion || "",
         jmh: data?.jmhVersion || "",
@@ -109,7 +113,6 @@ const EnvironmentDetails = () => {
             </label>
             <textarea
               className="border-2 border-slate-300 rounded"
-              type="text"
               {...register("infraDescription")}
             />
           </div>
@@ -126,7 +129,7 @@ const EnvironmentDetails = () => {
                   render={({ field }) => (
                     <Select
                       options={osFamilyOptions?.filter(
-                        (option) => option !== "UNKNOWN",
+                        (option) => option !== "UNKNOWN"
                       )}
                       value={field.value !== "UNKNOWN" ? field.value : null}
                       valueExtractor={(name) => name}
@@ -140,10 +143,7 @@ const EnvironmentDetails = () => {
                           );
                         }
                       }}
-                      onChange={(e) => {
-                        const selectedValue = e !== "UNKNOWN" ? e : null;
-                        field.onChange(selectedValue);
-                      }}
+                      onChange={(e) => field.onChange(e)}
                     />
                   )}
                 />

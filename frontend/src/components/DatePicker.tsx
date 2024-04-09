@@ -1,7 +1,19 @@
-import React from "react";
 import Flatpickr from "react-flatpickr";
 
-function Datepicker({ align, label, onChange, value, ...restProps }) {
+interface DatePickerProps {
+  label: string;
+  value: string;
+  onChange: (date: string) => void;
+  placeholder: string;
+}
+
+function Datepicker({
+  label,
+  onChange,
+  value,
+  placeholder,
+  ...restProps
+}: DatePickerProps) {
   const options = {
     mode: "single",
     static: true,
@@ -11,11 +23,14 @@ function Datepicker({ align, label, onChange, value, ...restProps }) {
       '<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
     nextArrow:
       '<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
-    onChange: (selectedDates, dateStr, instance) => {
+    onChange: (selectedDates, _dateStr, instance) => {
       const dateObject = new Date(selectedDates[0]);
 
-      const options = { month: "short", day: "numeric", year: "numeric" };
-      const formattedDate = dateObject.toLocaleString("en-US", options);
+      const formattedDate = dateObject.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
       instance.element.value = formattedDate;
     },
   };
@@ -30,6 +45,7 @@ function Datepicker({ align, label, onChange, value, ...restProps }) {
         options={options}
         value={value}
         onChange={(date) => onChange(new Date(date).toISOString())}
+        placeholder={placeholder}
         {...restProps}
       />
       <div className="absolute inset-0 right-auto flex items-center pointer-events-none top-5">

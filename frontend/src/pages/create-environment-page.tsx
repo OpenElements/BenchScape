@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -12,25 +12,28 @@ const schema = z.object({
   infraName: z.string(),
   infraDescription: z.string(),
   osName: z.string(),
+  osVersion: z.string(),
   cores: z.string(),
   memory: z.string(),
   java: z.string(),
   jmh: z.string(),
 });
 
+type EnvironmentFormData = z.infer<typeof schema>;
+
 const inputClasses =
   "w-24 text-center text-sm border-0 border-b border-gray-200 focus:border-0 focus:border-b focus:border-gray-400";
 
 const CreateEnvironment = () => {
   const { data: osFamilyOptions } = useOSFamily();
-  const { handleSubmit, register, control } = useForm({
+  const { handleSubmit, register, control } = useForm<EnvironmentFormData>({
     mode: "all",
     resolver: zodResolver(schema),
   });
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: EnvironmentFormData) => {
     const {
       infraName,
       infraDescription,
@@ -82,7 +85,6 @@ const CreateEnvironment = () => {
             </label>
             <textarea
               className="border-2 border-slate-300 rounded"
-              type="text"
               {...register("infraDescription")}
             />
           </div>
@@ -99,7 +101,7 @@ const CreateEnvironment = () => {
                   render={({ field }) => (
                     <Select
                       options={osFamilyOptions?.filter(
-                        (option) => option !== "UNKNOWN",
+                        (option) => option !== "UNKNOWN"
                       )}
                       value={field.value !== "UNKNOWN" ? field.value : null}
                       valueExtractor={(name) => name}
@@ -113,10 +115,7 @@ const CreateEnvironment = () => {
                           );
                         }
                       }}
-                      onChange={(e) => {
-                        const selectedValue = e !== "UNKNOWN" ? e : null;
-                        field.onChange(selectedValue);
-                      }}
+                      onChange={(e) => field.onChange(e)}
                     />
                   )}
                 />

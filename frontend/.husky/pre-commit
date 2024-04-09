@@ -3,4 +3,4 @@
 
 set -e  # die on error
 
-cd frontend && npm run prettier
+cd frontend && tsc && npm run prettier
