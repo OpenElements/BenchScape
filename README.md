@@ -73,7 +73,7 @@ To run the frontend and have it fetch data from a backend hosted on your local m
 
 - Ensure that you have the backend server running locally on your machine, typically on localhost or a specific port (e.g., http://localhost:8080).
 - In your frontend project directory `cd frontend`, locate the `.env.development` file. This file contains environment-specific configuration settings.
-- Set the API URL in `.env.development` to point to your local backend server. For example: `REACT_APP_API_URL=http://localhost:8080/api`
+- Set the API URL in `.env.development` to point to your local backend server. For example: `VITE_APP_API_URL=http://localhost:8080/api`
 - Start the React frontend as you normally would for development (using npm start). The frontend will now make API requests to your local backend server.
 - We are using dotenv as described at https://create-react-app.dev/docs/adding-custom-environment-variables/#what-other-env-files-can-be-used. The set different environments we use env-cmd (https://github.com/toddbluhm/env-cmd) and custom npm scripts (see `package.json`)
 
