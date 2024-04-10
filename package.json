@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "husky": "^9.0.11",
-    "typescript": "^5.4.4"
-  }
-}
