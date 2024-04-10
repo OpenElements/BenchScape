@@ -3,10 +3,10 @@ import { useMeasurements, useEnvironments } from "../hooks";
 import { useParams, useNavigate } from "react-router-dom";
 import { createAppBarConfig, itemsPerPage } from "../utils";
 import { dataSlicer } from "../utils";
-import Pagination from "../components/Pagination";
+import { exportMeasurementsCsv } from "../api";
+import Pagination from "../components/Pagination/Pagination";
 import Datepicker from "../components/DatePicker";
 import Select from "../components/Select";
-import { exportMeasurementsCsv } from "../api";
 
 const MeasurementsTableComponent = () => {
   const { id } = useParams();
@@ -160,6 +160,7 @@ const MeasurementsTableComponent = () => {
       </div>
       {/* Pagination */}
       <Pagination
+        kind="cardbox"
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
         currentPage={currentPage}

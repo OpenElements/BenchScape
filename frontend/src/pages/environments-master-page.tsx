@@ -18,7 +18,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import Pagination from "../components/Pagination";
+import Pagination from "../components/Pagination/Pagination";
 import { deleteEnvironment } from "../api";
 import { apiUrl } from "../utils/constants";
 import { createAppBarConfig, itemsPerPage } from "../utils";
@@ -328,6 +328,7 @@ function EnvironmentsPage() {
       {/* Pagination */}
       {environments?.length > 0 && (
         <Pagination
+          kind="cardbox"
           setCurrentPage={setCurrentPage}
           totalPages={totalPages}
           currentPage={currentPage}
