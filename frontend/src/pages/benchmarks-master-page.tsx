@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createAppBarConfig, itemsPerPage } from "../utils";
 import { useBenchMarks, useMeasurements } from "../hooks";
-import Pagination from "../components/Pagination/Pagination";
+import { Pagination } from "../components";
 import { exportBenchmarksCsv } from "../api";
 
 const BenchmarksPage = () => {

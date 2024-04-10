@@ -4,9 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { createAppBarConfig, itemsPerPage } from "../utils";
 import { dataSlicer } from "../utils";
 import { exportMeasurementsCsv } from "../api";
-import Pagination from "../components/Pagination/Pagination";
-import Datepicker from "../components/DatePicker";
-import Select from "../components/Select";
+import { Select, Datepicker, Pagination } from "../components";
 
 const MeasurementsTableComponent = () => {
   const { id } = useParams();
