@@ -13,8 +13,10 @@ const schema = z.object({
   infraDescription: z.string(),
   osVersion: z.string(),
   osName: z.string(),
+  systemArch: z.string(),
   cores: z.string(),
   memory: z.string(),
+  jvmName: z.string(),
   java: z.string(),
   jmh: z.string(),
 });
@@ -40,10 +42,12 @@ const EnvironmentDetails = () => {
     const {
       infraName,
       infraDescription,
+      jvmName,
       memory,
       jmh,
       java,
       cores,
+      systemArch,
       osName,
       osVersion,
     } = data;
@@ -56,7 +60,9 @@ const EnvironmentDetails = () => {
       description: infraDescription,
       systemMemoryReadable: memory,
       jmhVersion: jmh,
+      jvmName: jvmName,
       jvmVersion: java,
+      systemArch: systemArch,
       systemProcessors: Number(cores),
     };
     await saveEnvironment(payload).then(() => navigate("/environments"));
@@ -80,6 +86,8 @@ const EnvironmentDetails = () => {
         memory: data?.systemMemoryReadable || "",
         java: data?.jvmVersion || "",
         jmh: data?.jmhVersion || "",
+        jvmName: data?.jvmName || "",
+        systemArch: data?.systemArch || "",
       });
     }
   }, [
@@ -91,6 +99,8 @@ const EnvironmentDetails = () => {
     data?.osVersion,
     data?.systemMemoryReadable,
     data?.systemProcessors,
+    data?.systemArch,
+    data?.jvmName,
     isLoading,
     reset,
   ]);
@@ -171,39 +181,6 @@ const EnvironmentDetails = () => {
                 />
               </div>
             </div>
-            {/* <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">Memory</div>
-              <div className="text-sm text-gray-800">
-                <input
-                  type="text"
-                  {...register("memory")}
-                  className={inputClasses}
-                  readOnly
-                />
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">Java</div>
-              <div className="text-sm text-gray-800">
-                <input
-                  type="text"
-                  {...register("java")}
-                  className={inputClasses}
-                  readOnly
-                />
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">JMH</div>
-              <div className="text-sm text-gray-800">
-                <input
-                  type="text"
-                  {...register("jmh")}
-                  className={inputClasses}
-                  readOnly
-                />
-              </div>
-            </div> */}
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Memory</div>
               <div className="text-sm text-gray-800 flex items-center">
