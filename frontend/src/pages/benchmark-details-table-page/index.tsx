@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useMeasurements, useEnvironments } from "../hooks";
+import { useMeasurements, useEnvironments } from "../../hooks";
 import { useParams, useNavigate } from "react-router-dom";
-import { createAppBarConfig, itemsPerPage } from "../utils";
-import { dataSlicer } from "../utils";
-import { exportMeasurementsCsv } from "../api";
-import { Select, Datepicker, Pagination } from "../components";
+import { createAppBarConfig, itemsPerPage } from "../../utils";
+import { dataSlicer } from "../../utils";
+import { exportMeasurementsCsv } from "../../api";
+import { Select, Datepicker, Pagination } from "../../components";
 
 const MeasurementsTableComponent = () => {
   const { id } = useParams();

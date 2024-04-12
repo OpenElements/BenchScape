@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createAppBarConfig } from "../utils";
+import { createAppBarConfig } from "../../utils";
 
 const SettingsPage = () => {
   useEffect(() => {

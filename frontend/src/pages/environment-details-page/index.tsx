@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useEnvironmentById, useOSFamily } from "../hooks";
-import { createAppBarConfig } from "../utils";
+import { useEnvironmentById, useOSFamily } from "../../hooks";
+import { createAppBarConfig } from "../../utils";
 import { z } from "zod";
-import { Select } from "../components";
-import { saveEnvironment } from "../api";
+import { Select } from "../../components";
+import { saveEnvironment } from "../../api";
 
 const schema = z.object({
   infraName: z.string(),

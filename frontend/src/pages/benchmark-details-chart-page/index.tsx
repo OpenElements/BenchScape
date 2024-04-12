@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEnvironments, useMeasurements } from "../hooks";
-import Datepicker from "../components/DatePicker";
-import Select from "../components/Select";
-import GraphCard from "../charts/GraphCard";
-import Checkbox from "../components/Checkbox";
-import { createAppBarConfig } from "../utils";
+import { useEnvironments, useMeasurements } from "../../hooks";
+import Datepicker from "../../components/DatePicker";
+import Select from "../../components/Select";
+import GraphCard from "../../charts/GraphCard";
+import Checkbox from "../../components/Checkbox";
+import { createAppBarConfig } from "../../utils";
 
 const BenchmarksDetailsGraph = () => {
   const { id } = useParams();
