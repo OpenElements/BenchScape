@@ -3,5 +3,6 @@
 
 set -e  # die on error
 
+cd frontend
 echo "Running TypeScript compilation..." && npx tsc --noEmit
 npm run test:run
