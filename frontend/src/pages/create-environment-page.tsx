@@ -56,7 +56,7 @@ const CreateEnvironment = () => {
       osVersion: osVersion,
       name: infraName,
       description: infraDescription,
-      systemMemoryReadable: memory,
+      systemMemory: Number(memory),
       jmhVersion: jmh,
       jvmVersion: java,
       systemProcessors: Number(cores),

@@ -269,11 +269,12 @@ function EnvironmentsPage() {
                                 icon={faMicrochip}
                                 className="ml-2 & mr-2"
                               />
-                              {`${environment.systemProcessors}`}
+                              {`${environment.systemProcessors}`} 
                               <FontAwesomeIcon
                                 icon={faMemory}
                                 className="ml-2 & mr-2"
                               />
+                              {`${environment.systemMemoryReadable}`}
                             </>
                           ) : (
                             <>
