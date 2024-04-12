@@ -24,10 +24,15 @@ function Select<T>({
 }: SelectProps<T>) {
   return (
     <div className="w-auto">
-      <label htmlFor="label" className="block text-xs text-gray-700">
+      <label
+        role="label"
+        htmlFor="label"
+        className="block text-xs text-gray-700"
+      >
         {label}
       </label>
       <select
+        role="select"
         name={name}
         value={value}
         onChange={onChange}

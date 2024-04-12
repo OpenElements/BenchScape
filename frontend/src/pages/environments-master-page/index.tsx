@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Select, Pagination } from "../components";
+import { Select, Pagination } from "../../components";
 import {
   useEnvironmentMetadata,
   useEnvironments,
   useForOsFamilyFilter,
-} from "../hooks";
+} from "../../hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faApple,
@@ -18,11 +18,11 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteEnvironment } from "../api";
-import { apiUrl } from "../utils/constants";
-import { createAppBarConfig, itemsPerPage } from "../utils";
+import { deleteEnvironment } from "../../api";
+import { apiUrl } from "../../utils/constants";
+import { createAppBarConfig, itemsPerPage } from "../../utils";
 import { useSWRConfig } from "swr";
-import { exportEnvironmentsCsv } from "../api";
+import { exportEnvironmentsCsv } from "../../api";
 
 function EnvironmentsPage() {
   const navigate = useNavigate();
@@ -181,8 +181,11 @@ function EnvironmentsPage() {
           <div className="overflow-x-auto">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <div className="overflow-hidden ring-1 ring-black ring-opacity-5 sm:rounded-sm">
-                <table className="min-w-full divide-y divide-gray-300">
-                  <thead className="bg-gray-50">
+                <table
+                  data-testid="environments-table"
+                  className="min-w-full divide-y divide-gray-300"
+                >
+                  <thead role="columnHeader" className="bg-gray-50">
                     <tr>
                       <th
                         scope="col"

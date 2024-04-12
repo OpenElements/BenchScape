@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useOSFamily, useEnvironmentMetadata } from "../hooks";
-import { createAppBarConfig } from "../utils";
+import { useOSFamily } from "../../hooks";
+import { createAppBarConfig } from "../../utils";
 import { z } from "zod";
-import { Select } from "../components";
-import { saveEnvironment } from "../api";
+import { Select } from "../../components";
+import { saveEnvironment } from "../../api";
 
 const schema = z.object({
   infraName: z.string(),
@@ -17,8 +17,6 @@ const schema = z.object({
   memory: z.string(),
   java: z.string(),
   jmh: z.string(),
-  jvm: z.string(),
-  systemArch: z.string(),
 });
 
 type EnvironmentFormData = z.infer<typeof schema>;
@@ -28,8 +26,6 @@ const inputClasses =
 
 const CreateEnvironment = () => {
   const { data: osFamilyOptions } = useOSFamily();
-  const { data: archOptions } = useEnvironmentMetadata("arch");
-  const { data: jvmNameOptions } = useEnvironmentMetadata("jvmName");
   const { handleSubmit, register, control } = useForm<EnvironmentFormData>({
     mode: "all",
     resolver: zodResolver(schema),
@@ -47,8 +43,6 @@ const CreateEnvironment = () => {
       cores,
       osName,
       osVersion,
-      jvm,
-      systemArch,
     } = data;
 
     const payload = {
@@ -56,12 +50,10 @@ const CreateEnvironment = () => {
       osVersion: osVersion,
       name: infraName,
       description: infraDescription,
-      systemMemory: Number(memory),
+      systemMemoryReadable: memory,
       jmhVersion: jmh,
       jvmVersion: java,
       systemProcessors: Number(cores),
-      systemArch: systemArch,
-      jvmName: jvm, 
     };
     await saveEnvironment(payload).then(() => navigate("/environments"));
   };
@@ -160,48 +152,12 @@ const CreateEnvironment = () => {
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">Jvm Name</div>
-              <div className="text-sm text-gray-800">
-                <Controller
-                  name="jvm"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      options={jvmNameOptions}
-                      value={field.value}
-                      valueExtractor={(name) => name}
-                      labelExtractor={(label) => label }
-                      onChange={(e) => field.onChange(e)}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
               <div className="text-sm text-gray-800">Java</div>
               <div className="text-sm text-gray-800 flex items-center">
                 <input
                   type="text"
                   {...register("java")}
                   className={inputClasses}
-                />
-              </div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-800">System Arch</div>
-              <div className="text-sm text-gray-800">
-                <Controller
-                  name="systemArch"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      options={archOptions}
-                      value={field.value}
-                      valueExtractor={(name) => name}
-                      labelExtractor={(label) => label }
-                      onChange={(e) => field.onChange(e)}
-                    />
-                  )}
                 />
               </div>
             </div>

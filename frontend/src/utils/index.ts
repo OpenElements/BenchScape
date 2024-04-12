@@ -3,7 +3,7 @@ import resolveConfig from "tailwindcss/resolveConfig";
 
 import localConfig from "../../tailwind.config.js";
 
-export * from "./constants.js";
+export * from "./constants";
 
 export function dataSlicer(data: Array<Object>, itemsPerPage: number) {
   return Math.ceil(data?.length / itemsPerPage);
