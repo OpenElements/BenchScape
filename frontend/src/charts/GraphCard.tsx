@@ -3,15 +3,14 @@ import { tailwindConfig } from "../utils";
 
 type DataSets = Array<{
   label: string;
-  data: number[];
+  data: Array<{ x: Date; y: number }>;
 }>;
 
 interface GraphCardProps {
   data: DataSets;
-  timeStamps: Array<string>;
 }
 
-function GraphCard({ data = [], timeStamps = [] }: GraphCardProps) {
+function GraphCard({ data = [] }: GraphCardProps) {
   const real = data.find((d) => d.label === "REAL DATA");
   const realMin = data.find((d) => d.label === "REAL DATA MIN");
   const realMax = data.find((d) => d.label === "REAL DATA MAX");
@@ -21,17 +20,8 @@ function GraphCard({ data = [], timeStamps = [] }: GraphCardProps) {
   const smoothMax = data.find((d) => d.label === "SMOOTH DATA MAX");
   const smoothError = data.find((d) => d.label === "SMOOTH DATA ERROR");
 
-  const labelDate = timeStamps.map((t) => {
-    const parsedDate = new Date(t);
-
-    const year = parsedDate.getFullYear();
-    const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
-    const day = String(parsedDate.getDate()).padStart(2, "0");
-    return `${month}-${day}-${year}`;
-  });
-
   const chartData = {
-    labels: labelDate,
+    labels: [],
     datasets: [
       // Blue line
       {

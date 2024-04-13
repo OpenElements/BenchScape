@@ -48,93 +48,111 @@ const BenchmarksDetailsGraph = () => {
   const handleChecked = (field, checked) =>
     setChecks((prev) => ({ ...prev, [field]: checked }));
 
-  let graphData = {
-    datasets: [
-      ...(showRealData
-        ? [
-            {
-              label: `REAL DATA`,
-              data: measurements?.map((d) => d.value),
-              // key: 'showRealData'
-            },
-          ]
-        : []),
+  let datasets = [
+    ...(showRealData
+      ? [
+          {
+            label: `REAL DATA`,
+            data: measurements?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.value,
+            })),
+            // key: 'showRealData'
+          },
+        ]
+      : []),
 
-      ...(showRealDataMin
-        ? [
-            {
-              label: `REAL DATA MIN`,
-              data: measurements?.map((d) => d.min),
-              // key: 'showRealDataMin'
-            },
-          ]
-        : []),
+    ...(showRealDataMin
+      ? [
+          {
+            label: `REAL DATA MIN`,
+            data: measurements?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.min,
+            })),
+            // key: 'showRealDataMin'
+          },
+        ]
+      : []),
 
-      ...(showRealDataMax
-        ? [
-            {
-              label: `REAL DATA MAX`,
-              data: measurements?.map((d) => d.max),
-              // key: 'showRealDataMax'
-            },
-          ]
-        : []),
+    ...(showRealDataMax
+      ? [
+          {
+            label: `REAL DATA MAX`,
+            data: measurements?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.max,
+            })),
+            // key: 'showRealDataMax'
+          },
+        ]
+      : []),
 
-      ...(showRealDataError
-        ? [
-            {
-              label: `REAL DATA ERROR`,
-              data: measurements?.map((d) => d.error),
-              // key: 'showRealDataError'
-            },
-          ]
-        : []),
+    ...(showRealDataError
+      ? [
+          {
+            label: `REAL DATA ERROR`,
+            data: measurements?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.error,
+            })),
+            // key: 'showRealDataError'
+          },
+        ]
+      : []),
 
-      ...(showSmoothData
-        ? [
-            {
-              label: `SMOOTH DATA`,
-              data: smoothData?.map((d) => d.value),
-              // key: 'showSmoothData'
-            },
-          ]
-        : []),
+    ...(showSmoothData
+      ? [
+          {
+            label: `SMOOTH DATA`,
+            data: smoothData?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.value,
+            })),
+            // key: 'showSmoothData'
+          },
+        ]
+      : []),
 
-      ...(showSmoothDataMin
-        ? [
-            {
-              label: `SMOOTH DATA MIN`,
-              data: smoothData?.map((d) => d.min),
-              // key: 'showSmoothDataMin'
-            },
-          ]
-        : []),
+    ...(showSmoothDataMin
+      ? [
+          {
+            label: `SMOOTH DATA MIN`,
+            data: smoothData?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.min,
+            })),
+            // key: 'showSmoothDataMin'
+          },
+        ]
+      : []),
 
-      ...(showSmoothDataMax
-        ? [
-            {
-              label: `SMOOTH DATA MAX`,
-              data: smoothData?.map((d) => d.max),
-              // key: 'showSmoothData'
-            },
-          ]
-        : []),
+    ...(showSmoothDataMax
+      ? [
+          {
+            label: `SMOOTH DATA MAX`,
+            data: smoothData?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.max,
+            })),
+            // key: 'showSmoothData'
+          },
+        ]
+      : []),
 
-      ...(showSmoothDataError
-        ? [
-            {
-              label: `SMOOTH DATA ERROR`,
-              data: smoothData?.map((d) => d.error),
-              // key: 'showSmoothData'
-            },
-          ]
-        : []),
-    ],
-    timeStamps: [
-      ...(measurements ? measurements?.map((d) => d.timestamp) : []),
-      ...(smoothData ? smoothData?.map((d) => d.timestamp) : []),
-    ],
-  };
+    ...(showSmoothDataError
+      ? [
+          {
+            label: `SMOOTH DATA ERROR`,
+            data: smoothData?.map((d) => ({
+              x: new Date(d.timestamp),
+              y: d.error,
+            })),
+            // key: 'showSmoothData'
+          },
+        ]
+      : []),
+  ];
 
   const handDateChange = (field: string, date: string) => {
     setFilters((prev) => ({ ...prev, [field]: date }));
@@ -261,7 +279,7 @@ const BenchmarksDetailsGraph = () => {
         labelExtractor={(name) => name}
       /> */}
       </div>
-      <GraphCard data={graphData.datasets} timeStamps={graphData.timeStamps} />
+      <GraphCard data={datasets} />
     </div>
   );
 };
