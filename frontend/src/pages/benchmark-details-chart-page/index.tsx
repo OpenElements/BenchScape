@@ -43,6 +43,7 @@ const BenchmarksDetailsGraph = () => {
   const { data: smoothData } = useMeasurements({
     benchmarkId: id,
     smooth: true,
+    ...filters,
   });
 
   const handleChecked = (field, checked) =>
