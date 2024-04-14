@@ -120,8 +120,8 @@ The maven goal has several config params:
 | `file`         | `String`  | The path of the file that contains the result (see `writeToFile`) | `${project.build.directory}/jmh-results.json` |
 | `upload`       | `boolean` | if `true` the result will be uploaded to a benchscape server.     | `true` |
 | `url`          | `String`  | The url of the benchscape server (see `upload`)                   | `https://backend.benchscape.cloud` |
-| `apiPrincipal` | `String`  | TODO                                                              | `null`  |
-| `apiKey`       | `String`  | TODO                                                              | `null`  |
+| `apiPrincipal` | `String`  | Will be used once we support multiple users                       | `null`  |
+| `apiKey`       | `String`  | Will be used once we support multiple users                       | `null`  |
 | `skip`         | `boolean` | if `true` the goal will do nothing                                | `false` |
 
 
