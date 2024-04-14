@@ -110,6 +110,21 @@ The plugin dependency that need to be added to a project looks like this:
 </plugin>
 ```
 
+The maven goal that runs all JMH benchmarks and uploads the results to benchscape (or provides them as a json file based on your config) is `benchscape:jmh`.
+
+The maven goal has several config params:
+
+| Name           | type      | description                                                       | default value |
+| -------------- | --------- |  ---------------------------------------------------------------- |  ------- |
+| `writeToFile`  | `boolean` | if `true` the result is written to a file in the build folder.    | `true` |
+| `file`         | `String`  | The path of the file that contains the result (see `writeToFile`) | `${project.build.directory}/jmh-results.json` |
+| `upload`       | `boolean` | if `true` the result will be uploaded to a benchscape server.     | `true` |
+| `url`          | `String`  | The url of the benchscape server (see `upload`)                   | `https://backend.benchscape.cloud` |
+| `apiPrincipal` | `String`  | TODO                                                              | `null`  |
+| `apiKey`       | `String`  | TODO                                                              | `null`  |
+| `skip`         | `boolean` | if `true` the goal will do nothing                                | `false` |
+
+
 ## Deployment for main branch
 
 The `main` branch is automatically deployed to Microsoft Azure.
