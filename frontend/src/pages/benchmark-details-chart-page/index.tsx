@@ -181,7 +181,7 @@ const BenchmarksDetailsGraph = () => {
   }
 
   return (
-    <div className="col-span-full mt-4 flex h-full w-full flex-col rounded-sm border border-slate-200 bg-white shadow-lg dark:border-slate-100 sm:col-span-6">
+    <div className="col-span-full flex h-full w-full flex-col rounded-sm border border-slate-200 bg-white shadow-lg dark:border-slate-100 sm:col-span-6">
       <div className="m-4 flex items-center justify-around gap-2">
         <Select
           label="Environment"
