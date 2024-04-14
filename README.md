@@ -98,6 +98,18 @@ the `pom.xml` of the module to see how the integration is working. Since the plu
 `verify` phase you can easily trigger a full execution by calling `./mvnw verify` on the root level
 of the repo (see build instruction) once the JMH Store server is running.
 
+Currently we have not published any final releases of the maven plugin. All modules are published as snapshot releases at https://s01.oss.sonatype.org/content/repositories/snapshots/com/open-elements/benchscape/.
+
+The plugin dependency that need to be added to a project looks like this:
+
+```
+<plugin>
+    <groupId>com.open-elements.benchscape</groupId>
+    <artifactId>jmh-maven-plugin</artifactId>
+    <version>0.4.0-SNAPSHOT</version>
+</plugin>
+```
+
 ## Deployment for main branch
 
 The `main` branch is automatically deployed to Microsoft Azure.
