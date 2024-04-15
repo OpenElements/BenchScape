@@ -12,16 +12,8 @@
 }
 
 .tooltip {
-  @apply invisible absolute;
-}
-
-.has-tooltip:hover .tooltip {
-  @apply visible z-50;
-}
-
-.tooltip {
-  @apply shadow-lg;
-  position: absolute;
+  @apply shadow-lg z-50;
+  position: fixed;
   top: calc(100% + 5px);
   left: 100%;
   width: 100%;

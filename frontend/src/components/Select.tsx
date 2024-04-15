@@ -1,11 +1,9 @@
-import { SyntheticEvent } from "react";
-
 interface SelectProps<T> {
   label?: string;
   value: string;
   options: Array<T>;
   name?: string;
-  onChange: (e: SyntheticEvent) => void;
+  onChange: (e) => void;
   labelExtractor: (option: T) => string;
   valueExtractor: (option: T) => string;
   disabled?: boolean;
