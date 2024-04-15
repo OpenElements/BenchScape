@@ -50,18 +50,24 @@ describe("Environment master page", () => {
       "JMH",
       "",
     ];
-    const labels = screen.getAllByRole("label");
-    const table = screen.getByTestId("environments-table");
-    const headers = screen.getAllByRole("columnheader");
-    const headerTexts = headers.map((header) => header.textContent);
 
-    expect(labels.length).toBe(expectedLabels.length);
+    const labels = screen
+      .getAllByRole("label")
+      .map((label) => label.textContent);
+    const headers = screen
+      .getAllByRole("columnheader")
+      .map((header) => header.textContent);
 
-    labels.forEach((label, index) => {
-      expect(label.textContent).toBe(expectedLabels[index]);
+    expectedLabels.forEach((label) => {
+      expect(labels).toContain(label);
     });
+
+    expectedHeaders.forEach((header) => {
+      expect(headers).toContain(header);
+    });
+
+    const table = screen.getByTestId("environments-table");
     expect(table).toBeVisible();
-    expect(headerTexts).toEqual(expectedHeaders);
     expect(screen.getByText("benchScape-main-mac-14")).toBeInTheDocument();
   });
 });

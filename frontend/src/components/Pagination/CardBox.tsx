@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { CommonPaginatonProps } from "./Pagination";
+import Select from "../Select";
 
 export default function CardBox({
   isFirstPage,
@@ -71,11 +72,21 @@ export default function CardBox({
         </button>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
+        <div className="flex items-center gap-4">
           <p className="text-sm text-gray-700">
             Page <span className="font-medium">{currentPage}</span> of{" "}
             <span className="font-medium">{totalPages}</span>
           </p>
+          <div>
+            <Select
+              label=""
+              labelExtractor={(page: number) => String(page)}
+              valueExtractor={(page: number) => String(page)}
+              value={String(currentPage)}
+              options={pageNumbers}
+              onChange={(e) => handlePageChange(e.target.value)}
+            />
+          </div>
         </div>
         <div>
           <nav
@@ -107,7 +118,11 @@ export default function CardBox({
                 {pageNum}
               </button>
             ))}
-            {showLastPages && endPage < totalPages && <Tooltip />}
+            {showLastPages && endPage < totalPages && (
+              <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
+                ...
+              </span>
+            )}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={isLastPage}
