@@ -124,6 +124,9 @@ The maven goal has several config params:
 | `apiKey`       | `String`  | Will be used once we support multiple users                       | `null`  |
 | `skip`         | `boolean` | if `true` the goal will do nothing                                | `false` |
 
+### Testdata from Maven projects
+
+We have a project that schedules builds of Maven projects that use the benchscape maven plugin in use. By doing so we create consitent test data. The project can be found at https://github.com/OpenElements/BenchScapeTestdata
 
 ## Deployment for main branch
 
