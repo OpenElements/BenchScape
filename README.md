@@ -3,6 +3,8 @@
 BenchScape contains functionality to collect and visualize [Java Microbenchmark Harness (JMH)](https://github.com/openjdk/jmh)
 results for continuous integration approaches.
 
+**BenchScape** is still in development. We plan to have a first useable version ready in spring 2024. 
+
 ## Overview
 
 The project contains the `server` module that acts as a server to store JMH results.
