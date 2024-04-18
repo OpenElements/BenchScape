@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Build Spring Boot server
+# Build BenchScape backend server
 echo "Building Spring Boot server..."
 ./mvnw verify || { echo "Error: failed to build Spring Boot server"; exit 1; }
 
-# Run Spring Boot server
+# Run BenchScape backend server
 echo "Starting Spring Boot server..."
 cd server/target || { echo "Error: server/target directory not found"; exit 1; }
 java -jar benchscape-server.jar &

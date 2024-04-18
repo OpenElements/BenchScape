@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Start Spring Boot server
+# Start BenchScape backend server
 echo "Starting Spring Boot server..."
 cd server/target || { echo "Error: server/target directory not found"; exit 1; }
 java -jar benchscape-server.jar &
 SERVER_PID=$!
 cd ../..
 
-# Start frontend server
+# Start BenchScape frontend server
 echo "Starting frontend server..."
 cd frontend || { echo "Error: frontend directory not found"; exit 1; }
 npm start &
