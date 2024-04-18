@@ -14,7 +14,55 @@ The project contains the `frontend` module that acts as a web frontend for the s
 JMH results can be created and uploaded automatically by using the Maven Plugin in the
 `jmh-maven-plugin` module or by calling the Uploader directly (see `jmh-client` module).
 
-## Building the project
+## Project Setup (Using `setup-benchscape.sh` script)
+
+### Full Project Setup Script
+The "Full Setup" script automates the entire setup process for the 
+Benchscape project, encompassing building the BenchScape backend 
+server, initiating it, and configuring the frontend module. It 
+streamlines the setup workflow for developers, eliminating the need for 
+manual intervention.
+
+#### Prerequisites
+- Java 17 installed
+- Maven
+
+#### Usage
+1. Navigate to the root directory of the Benchscape project in your terminal.
+2. Ensure that the script is executable by running the following command:
+    ```
+    chmod +x setup-benchscape.sh
+    ```
+3. Execute the script using the following command:
+    ```
+    make setup-benchscape
+    ```
+4. The script will:
+    - Build the BenchScape backend server.
+    - Start the BenchScape backend server.
+    - Install dependencies and start the BenchScape frontend server.
+5. Access the servers through the provided URLs in your browser.
+
+### Starting BenchScape Servers Script
+The "Running Servers" script automates the process of starting the 
+BenchScape backend server and the BenchScape frontend server for the 
+Benchscape project. It simplifies the workflow for developers by 
+handling the necessary steps to get both servers up and running quickly.
+
+#### Usage
+1. Navigate to the root directory of the Benchscape project in your terminal.
+2. Ensure that the script is executable by running the following command:
+    ```
+    chmod +x start-benchscape.sh
+    ```
+3. Run the script using the following command:
+    ```
+    make start-benchscape
+    ```
+4. The script will start the BenchScape backend server and the frontend server automatically.
+5. Access the servers through the provided URLs in your browser.
+
+## Building the project(Manually)
 
 The project is based on [Java 17](https://adoptium.net/de/temurin/releases/)
 and [Maven](https://maven.apache.org). You do not need to have a global Maven installation to build
