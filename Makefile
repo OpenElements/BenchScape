@@ -3,7 +3,7 @@
 all: setup-benchscape start-benchscape
 
 setup-benchscape:
-    ./setup-benchscape.sh
+	./setup-benchscape.sh
 
 start-benchscape:
-    ./start-benchscape.sh
+	./start-benchscape.sh
