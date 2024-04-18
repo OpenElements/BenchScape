@@ -24,8 +24,8 @@ streamlines the setup workflow for developers, eliminating the need for
 manual intervention.
 
 #### Prerequisites
-- Java Development Kit (JDK) installed
-- Node.js and npm installed
+- Java 17 installed
+- Maven
 
 #### Usage
 1. Navigate to the root directory of the Benchscape project in your terminal.
