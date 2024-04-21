@@ -1,20 +1,23 @@
 import { useState, useEffect } from "react";
-import { useMeasurements, useEnvironments } from "../../hooks";
+import { useMeasurements, useEnvironments, useFilters } from "../../hooks";
 import { useParams, useNavigate } from "react-router-dom";
-import { createAppBarConfig, itemsPerPage } from "../../utils";
+import {
+  createAppBarConfig,
+  itemsPerPage,
+  setGlobalFilters,
+} from "../../utils";
 import { dataSlicer } from "../../utils";
 import { exportMeasurementsCsv } from "../../api";
 import { Select, Datepicker, Pagination } from "../../components";
 
 const MeasurementsTableComponent = () => {
   const { id } = useParams();
+  const { filters: initialFilters } = useFilters();
   const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     benchmarkId: id,
-    start: "",
-    end: "",
-    environmentIds: "",
+    ...initialFilters,
   });
 
   const { data: environments } = useEnvironments();
@@ -46,10 +49,7 @@ const MeasurementsTableComponent = () => {
       actions: [
         {
           name: "Graph View",
-          action: () =>
-            navigate(
-              `/benchmark/graph/${id}?environment=${filters.environmentIds}`
-            ),
+          action: () => navigate(`/benchmark/graph/${id}`),
         },
         {
           name: "Export CSV",
@@ -59,6 +59,10 @@ const MeasurementsTableComponent = () => {
     });
     // eslint-disable-next-line
   }, [filters.environmentIds]);
+
+  useEffect(() => {
+    setGlobalFilters(filters);
+  }, [filters]);
 
   return (
     <div className="py-6">

@@ -1,32 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEnvironments, useMeasurements } from "../../hooks";
+import { useEnvironments, useMeasurements, useFilters } from "../../hooks";
 import Datepicker from "../../components/DatePicker";
 import Select from "../../components/Select";
 import GraphCard from "../../charts/GraphCard";
 import Checkbox from "../../components/Checkbox";
 import { createAppBarConfig } from "../../utils";
+import { setGlobalFilters } from "../../utils";
 
 const BenchmarksDetailsGraph = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { filters: initialFilters, checks: initialChecks } = useFilters();
   const [filters, setFilters] = useState({
     benchmarkId: id,
-    environmentIds: "",
-    start: "",
-    end: "",
+    ...initialFilters,
   });
 
-  const [checks, setChecks] = useState({
-    showRealData: true,
-    showRealDataMin: false,
-    showRealDataMax: false,
-    showRealDataError: false,
-    showSmoothData: true,
-    showSmoothDataMin: false,
-    showSmoothDataMax: false,
-    showSmoothDataError: false,
-  });
+  const [checks, setChecks] = useState(initialChecks);
 
   const {
     showRealData,
@@ -46,7 +37,7 @@ const BenchmarksDetailsGraph = () => {
     ...filters,
   });
 
-  const handleChecked = (field, checked) =>
+  const handleChecked = (field: string, checked: boolean) =>
     setChecks((prev) => ({ ...prev, [field]: checked }));
 
   let datasets = [
@@ -176,9 +167,9 @@ const BenchmarksDetailsGraph = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    setGlobalFilters(filters, checks);
+  }, [filters, checks]);
 
   return (
     <div className="col-span-full flex h-full w-full flex-col rounded-sm border border-slate-200 bg-white shadow-lg dark:border-slate-100 sm:col-span-6">
@@ -280,7 +271,7 @@ const BenchmarksDetailsGraph = () => {
         labelExtractor={(name) => name}
       /> */}
       </div>
-      <GraphCard data={datasets} />
+      {isLoading ? <div>Loading</div> : <GraphCard data={datasets} />}
     </div>
   );
 };

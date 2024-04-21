@@ -22,10 +22,6 @@ function App() {
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/benchmarks" element={<BenchmarkPage />} />
                 <Route
-                  path="/benchmark/:id"
-                  element={<BenchmarkDetailsGraph />}
-                />
-                <Route
                   path="/benchmark/graph/:id"
                   element={<BenchmarkDetailsGraph />}
                 />

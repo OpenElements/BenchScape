@@ -3,6 +3,7 @@ import { apiUrl } from "../utils/constants";
 import { getCurrentBreakpoint } from "../utils";
 import { dataFetcher } from "../api";
 import { useEffect, useState } from "react";
+import { filtersStore } from "../utils";
 import {
   BenchmarksResponse,
   Environment,
@@ -143,3 +144,5 @@ export function useBreakpoint(breakpointKey: string) {
     [`is${capitalizedKey}`]: bool,
   };
 }
+
+export const useFilters = () => filtersStore.getState();
