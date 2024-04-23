@@ -31,3 +31,10 @@ hs_err_pid*
 .DS_Store
 /frontend/build/*
 /frontend/node/*
+
+# IntelliJ
+.idea
+
+# Gradle
+.gradle/
+build/
