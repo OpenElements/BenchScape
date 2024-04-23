@@ -39,5 +39,17 @@
 }
 
 main {
-  min-height: 100vh;
+  height: calc(
+    100vh - 98px
+  ); /** minus topBar=66 + top and bottom padding of 1rem **/
+}
+
+canvas {
+  height: calc(100vh - 234px);
+}
+
+@media (max-width: 640) {
+  canvas {
+    height: calc(100vh - 288px);
+  }
 }
