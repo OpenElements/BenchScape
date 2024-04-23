@@ -198,31 +198,30 @@ const BenchmarksDetailsGraph = () => {
         </div>
         <div className="grid grid-cols-4 gap-y-2">
           <Checkbox
-            defaultChecked
             label="Show Value"
             name="ShowValue"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showRealData}
             onChange={(e) => handleChecked("showRealData", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Show Minimum"
             name="ShowMin"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showRealDataMin}
             onChange={(e) => handleChecked("showRealDataMin", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label=" Show Maximum"
             name="ShowMax"
-            value={String(checks.showRealDataMax)}
+            checked={checks.showRealDataMax}
             onChange={(e) => handleChecked("showRealDataMax", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Show Error"
             name="ShowError"
-            value={String(checks.showRealDataError)}
+            checked={checks.showRealDataError}
             onChange={(e) =>
               handleChecked("showRealDataError", e.target.checked)
             }
@@ -232,14 +231,14 @@ const BenchmarksDetailsGraph = () => {
             defaultChecked
             label="Show Smooth"
             name="ShowSmooth"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showSmoothData}
             onChange={(e) => handleChecked("showSmoothData", e.target.checked)}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <Checkbox
             label="Smooth Min"
             name="ShowSmoothMin"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showSmoothDataMin}
             onChange={(e) =>
               handleChecked("showSmoothDataMin", e.target.checked)
             }
@@ -248,7 +247,7 @@ const BenchmarksDetailsGraph = () => {
           <Checkbox
             label="Smooth Max"
             name="ShowSmoothMax"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showSmoothDataMax}
             onChange={(e) =>
               handleChecked("showSmoothDataMax", e.target.checked)
             }
@@ -257,19 +256,13 @@ const BenchmarksDetailsGraph = () => {
           <Checkbox
             label="Smooth Error"
             name="ShowSmoothError"
-            value={String(checks.showRealDataMin)}
+            checked={checks.showSmoothDataError}
             onChange={(e) =>
               handleChecked("showSmoothDataError", e.target.checked)
             }
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
         </div>
-        {/* <Select
-        label="Units"
-        options={["options"]}
-        valueExtractor={(name) => name}
-        labelExtractor={(name) => name}
-      /> */}
       </div>
       {isLoading ? <div>Loading</div> : <GraphCard data={datasets} />}
     </div>

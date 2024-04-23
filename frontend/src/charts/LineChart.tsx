@@ -27,7 +27,6 @@ Chart.register(
 
 function LineChart({ data }) {
   const [chart, setChart] = useState(null);
-  const [height, setHeight] = useState("");
   const canvas = useRef(null);
   const legend = useRef(null);
   const containerRef = useRef(null);
@@ -211,27 +210,6 @@ function LineChart({ data }) {
     tooltipBorderColor.light,
   ]);
 
-  useEffect(() => {
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
-    const handleResize = () => {
-      const notLargeDesktop = windowWidth < 1280;
-
-      if (notLargeDesktop) {
-        setHeight(`${windowHeight - 288}px`);
-      } else {
-        setHeight(`${windowHeight - 234}px`);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
     <React.Fragment>
       <div className="px-5 py-3">
@@ -248,11 +226,7 @@ function LineChart({ data }) {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div
-        className="grow h-full"
-        ref={containerRef}
-        style={{ minHeight: height }}
-      >
+      <div className="grow h-full" ref={containerRef}>
         <canvas ref={canvas} />
       </div>
     </React.Fragment>
