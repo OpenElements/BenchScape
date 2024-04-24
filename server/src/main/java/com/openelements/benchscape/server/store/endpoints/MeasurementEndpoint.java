@@ -45,6 +45,8 @@ public class MeasurementEndpoint {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
             @RequestParam(required = false) final List<String> environmentIds,
+                           @RequestParam(required = false) final String gitOriginUrl,
+                           @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false, defaultValue = "false") final boolean smooth) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
@@ -55,7 +57,7 @@ public class MeasurementEndpoint {
         final List<String> queryEnvironmentIds = Optional.ofNullable(environmentIds)
                 .map(list -> Collections.unmodifiableList(list)).orElse(List.of());
         final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
-                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
+                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds, gitOriginUrl, gitBranch);
         final List<Measurement> measurements = measurementService.find(query);
         if (smooth) {
             return InterpolationUtils.smooth(measurements);
@@ -71,6 +73,8 @@ public class MeasurementEndpoint {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
             @RequestParam(required = false) final List<String> environmentIds,
             @RequestParam(required = false) final InterpolationType interpolationType,
+                                                   @RequestParam(required = false) final String gitOriginUrl,
+                                                   @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false, defaultValue = "10") final int interpolationPoints) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
@@ -81,7 +85,7 @@ public class MeasurementEndpoint {
         final List<String> queryEnvironmentIds = Optional.ofNullable(environmentIds)
                 .map(list -> Collections.unmodifiableList(list)).orElse(List.of());
         final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
-                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
+                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds, gitOriginUrl, gitBranch);
         final List<Measurement> measurements = measurementService.find(query);
         return InterpolationUtils.interpolate(measurements,
                 Optional.ofNullable(interpolationType).orElse(InterpolationType.NONE), interpolationPoints);
@@ -93,4 +97,30 @@ public class MeasurementEndpoint {
         return measurementService.getPeriode(benchmarkId);
     }
 
+    @GetMapping("/findByQuery")
+    List<Measurement> findByQuery(@RequestParam final String benchmarkId,
+                                  @RequestParam(required = false) final BenchmarkUnit unit,
+                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
+                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
+                                  @RequestParam(required = false) final List<String> environmentIds,
+                                  @RequestParam(required = false) final String gitOriginUrl,
+                                  @RequestParam(required = false) final String gitBranch,
+                                  @RequestParam(required = false, defaultValue = "false") final boolean smooth) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
+        final ZonedDateTime queryStart = Optional.ofNullable(start)
+                .orElse(LocalDateTime.MIN.atZone(ZoneId.systemDefault()));
+        final ZonedDateTime queryEnd = Optional.ofNullable(end)
+                .orElse(LocalDateTime.MAX.atZone(ZoneId.systemDefault()));
+        final List<String> queryEnvironmentIds = Optional.ofNullable(environmentIds)
+                .map(list -> Collections.unmodifiableList(list)).orElse(List.of());
+        final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
+                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds, gitOriginUrl, gitBranch);
+        final List<Measurement> measurements = measurementService.find(query);
+        if (smooth) {
+            return InterpolationUtils.smooth(measurements);
+        } else {
+            return measurements;
+        }
+    }
 }

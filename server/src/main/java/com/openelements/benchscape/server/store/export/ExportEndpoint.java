@@ -67,6 +67,8 @@ public class ExportEndpoint {
             @RequestParam(required = false) final BenchmarkUnit unit,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
+                                                           @RequestParam(required = false) final String gitOriginUrl,
+                                                           @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false) final List<String> environmentIds) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
@@ -77,7 +79,7 @@ public class ExportEndpoint {
         final List<String> queryEnvironmentIds = Optional.ofNullable(environmentIds)
                 .map(list -> Collections.unmodifiableList(list)).orElse(List.of());
         final MeasurementQuery query = new MeasurementQuery(benchmarkId, queryUnit,
-                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds);
+                queryStart.toInstant(), queryEnd.toInstant(), queryEnvironmentIds, gitOriginUrl, gitBranch);
         final List<Measurement> measurements = measurementService.find(query);
         return createData(osw -> CsvExport.exportMeasurements(osw, measurements));
     }
