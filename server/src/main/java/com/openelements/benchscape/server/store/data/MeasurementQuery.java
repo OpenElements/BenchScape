@@ -22,12 +22,16 @@ import java.util.UUID;
  * @param end            end of the periode in that a measurement must be
  * @param environmentIds ids of environment. A measurement must fit to at least one environment of the list. If the list
  *                       is empty no environment filter will be used.
+ * @param gitOriginUrl   Git origin URL (nullable)
+ * @param gitBranch      Git branch (nullable)
  */
 public record MeasurementQuery(@NonNull String benchmarkId,
                                @NonNull BenchmarkUnit unit,
                                @NonNull Instant start,
                                @NonNull Instant end,
-                               @NonNull Collection<String> environmentIds) implements Serializable {
+                               @NonNull Collection<String> environmentIds,
+                               @Nullable String gitOriginUrl,
+                               @Nullable String gitBranch) implements Serializable {
 
     private static ZoneOffset DEFAULT_ZONE_OFFSET = ZoneOffset.UTC;
 
@@ -62,18 +66,18 @@ public record MeasurementQuery(@NonNull String benchmarkId,
 
     @NonNull
     public static MeasurementQuery of(@NonNull String benchmarkId, @Nullable BenchmarkUnit unit,
-            @NonNull Collection<String> environmentIds) {
-        return new MeasurementQuery(benchmarkId, unit, DEFAULT_START, DEFAULT_END, environmentIds);
+                                      @NonNull Collection<String> environmentIds) {
+        return new MeasurementQuery(benchmarkId, unit, DEFAULT_START, DEFAULT_END, environmentIds, null, null);
     }
 
     @NonNull
     public static MeasurementQuery ofToday(@NonNull String benchmarkId,
-            @Nullable BenchmarkUnit unit,
-            @NonNull Collection<String> environmentIds) {
+                                           @Nullable BenchmarkUnit unit,
+                                           @NonNull Collection<String> environmentIds) {
         return new MeasurementQuery(benchmarkId, unit,
                 LocalDate.now().atStartOfDay().toInstant(DEFAULT_ZONE_OFFSET),
                 LocalDate.now().atStartOfDay().plusDays(1).toInstant(DEFAULT_ZONE_OFFSET),
-                environmentIds);
+                environmentIds, null, null);
     }
 
 }

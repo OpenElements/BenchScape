@@ -193,6 +193,33 @@ public class DebugEndpoint {
             entity3.setTenantId(tenantService.getCurrentTenant());
             environmentRepository.save(entity3);
 
+            EnvironmentEntity entityLinuxDev = new EnvironmentEntity();
+            entityLinuxDev.setName("benchScape-dev-linux");
+            entityLinuxDev.setDescription("BenchScape development branch on Linux");
+            entityLinuxDev.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityLinuxDev.setGitBranch("intergration");
+            entityLinuxDev.setOsName("Linux");
+            entityLinuxDev.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityLinuxDev);
+        
+            EnvironmentEntity entityWinDev = new EnvironmentEntity();
+            entityWinDev.setName("benchScape-dev-win");
+            entityWinDev.setDescription("BenchScape development branch on Windows");
+            entityWinDev.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityWinDev.setGitBranch("development");
+            entityWinDev.setOsName("Windows");
+            entityWinDev.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityWinDev);
+        
+            EnvironmentEntity entityMacDev = new EnvironmentEntity();
+            entityMacDev.setName("benchScape-dev-mac");
+            entityMacDev.setDescription("BenchScape development branch on MacOS");
+            entityMacDev.setGitOriginUrl("https://github.com/OpenElements/BenchScape");
+            entityMacDev.setGitBranch("production");
+            entityMacDev.setOsName("Mac OS X");
+            entityMacDev.setTenantId(tenantService.getCurrentTenant());
+            environmentRepository.save(entityMacDev);
+
             EnvironmentEntity entity4 = new EnvironmentEntity();
             entity4.setName("4-plus-cores");
             entity4.setDescription("Execution on machine with more than 4 cores");
