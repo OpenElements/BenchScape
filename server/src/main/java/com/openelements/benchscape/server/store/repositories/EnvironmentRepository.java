@@ -19,13 +19,50 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
         return findAll(createSpecificationForQuery(environmentQuery));
     }
 
-    @NonNull
-    private static Specification<EnvironmentEntity> createSpecificationForQuery(
-            @NonNull final EnvironmentQuery environmentQuery) {
+    static Specification<EnvironmentEntity> createSpecificationForQuery(@NonNull final EnvironmentQuery environmentQuery) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (environmentQuery.systemArch() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("systemArch"), environmentQuery.systemArch()));
+            }
+            if (environmentQuery.gitOriginUrl() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("gitOriginUrl"), environmentQuery.gitOriginUrl()));
+            }
+            if (environmentQuery.gitBranch() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("gitBranch"), environmentQuery.gitBranch()));
+            }
+            if (environmentQuery.systemProcessors() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemProcessors"), environmentQuery.systemProcessors()));
+            }
+            if (environmentQuery.systemProcessorsMin() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemProcessorsMin"), environmentQuery.systemProcessorsMin()));
+            }
+            if (environmentQuery.systemProcessorsMax() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemProcessorsMax"), environmentQuery.systemProcessorsMax()));
+            }
+            if (environmentQuery.systemMemory() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemMemory"), environmentQuery.systemMemory()));
+            }
+            if (environmentQuery.systemMemoryMin() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemMemoryMin"), environmentQuery.systemMemoryMin()));
+            }
+            if (environmentQuery.systemMemoryMax() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemMemoryMax"), environmentQuery.systemMemoryMax()));
+            }
+            if (environmentQuery.osName() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("osName"), environmentQuery.osName()));
+            }
+            if (environmentQuery.osVersion() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("osVersion"), environmentQuery.osVersion()));
+            }
+            if (environmentQuery.jvmVersion() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("jvmVersion"), environmentQuery.jvmVersion()));
+            }
+            if (environmentQuery.jvmName() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("jvmName"), environmentQuery.jvmName()));
+            }
+            if (environmentQuery.jmhVersion() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("jmhVersion"), environmentQuery.jmhVersion()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
