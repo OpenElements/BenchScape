@@ -284,6 +284,12 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    /**
+     * Get a list of all git branches that are currently part of environments (for the current tenant - see
+     * #{@link EnvironmentService}).
+     *
+     * @return all git branches
+     */
     @GetMapping("/gitBranches")
     public List<String> getAllGitBranches() {
         return environmentService.getAll().stream()
@@ -294,6 +300,13 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    /**
+     * Get a list of all git branches for a specific git origin that are currently part of environments (for the current
+     * tenant - see #{@link EnvironmentService}).
+     *
+     * @param gitOrigin the git origin to get the branches for
+     * @return all git branches for the specified git origin
+     */
     @GetMapping("/gitBranches/forGitOrigin")
     public List<String> getAllGitBranches(@RequestParam final String gitOrigin) {
         return environmentService.getAll().stream()
@@ -305,11 +318,49 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    /**
+     * Get a list of all human-readable system memory descriptions that are currently part of environments (for the current
+     * tenant - see #{@link EnvironmentService}).
+     *
+     * @return all human-readable system memory descriptions
+     */
     @GetMapping("/systemMemoryReadable")
     public List<String> getAllSystemMemoryReadable() {
         return environmentService.getAll().stream()
                 .map(Environment::systemMemoryReadable)
                 .filter(systemMemoryReadable -> systemMemoryReadable != null && !systemMemoryReadable.isBlank())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    /**
+     * Get a list of all system processors that are currently part of environments (for the current tenant - see
+     * #{@link EnvironmentService}).
+     *
+     * @return all system processors
+     */
+    @GetMapping("/systemProcessors")
+    public List<Integer> getAllSystemProcessors() {
+        return environmentService.getAll().stream()
+                .map(Environment::systemProcessors)
+                .filter(processors -> processors != null)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    /**
+     * Get a list of all operating system names that are currently part of environments (for the current tenant - see
+     * #{@link EnvironmentService}).
+     *
+     * @return all operating system names
+     */
+    @GetMapping("/osName")
+    public List<String> getOperatingSystemNames() {
+        return environmentService.getAll().stream()
+                .map(Environment::osName)
+                .filter(osName -> osName != null && !osName.isBlank())
                 .distinct()
                 .sorted()
                 .toList();

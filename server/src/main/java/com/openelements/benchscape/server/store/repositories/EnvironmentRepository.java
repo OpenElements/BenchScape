@@ -19,7 +19,7 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
         return findAll(createSpecificationForQuery(environmentQuery));
     }
 
-    static Specification<EnvironmentEntity> createSpecificationForQuery(@NonNull final EnvironmentQuery environmentQuery) {
+    private static Specification<EnvironmentEntity> createSpecificationForQuery(@NonNull final EnvironmentQuery environmentQuery) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (environmentQuery.systemArch() != null) {
@@ -60,6 +60,12 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             }
             if (environmentQuery.jvmName() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("jvmName"), environmentQuery.jvmName()));
+            }
+            if (environmentQuery.osFamily() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("osFamily"), environmentQuery.osFamily()));
+            }
+            if (environmentQuery.systemMemoryReadable() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemMemoryReadable"), environmentQuery.systemMemoryReadable()));
             }
             if (environmentQuery.jmhVersion() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("jmhVersion"), environmentQuery.jmhVersion()));

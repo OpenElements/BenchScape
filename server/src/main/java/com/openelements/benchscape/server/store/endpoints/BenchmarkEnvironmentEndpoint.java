@@ -7,6 +7,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.EnvironmentQuery;
+import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.swagger.v3.oas.annotations.Operation;
@@ -111,10 +112,12 @@ public class BenchmarkEnvironmentEndpoint {
             @RequestParam(required = false) String osVersion,
             @RequestParam(required = false) String jvmVersion,
             @RequestParam(required = false) String jvmName,
+                                         @RequestParam(required = false) OperationSystem osFamily,
+                                         @RequestParam(required = false) String systemMemoryReadable,
             @RequestParam(required = false) String jmhVersion) {
         final EnvironmentQuery environmentQuery = new EnvironmentQuery(name, gitOriginUrl, gitBranch, systemArch,
                 systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin,
-                systemMemoryMax, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+                systemMemoryMax, osName, osVersion, jvmVersion, jvmName, osFamily, systemMemoryReadable, jmhVersion);
         return environmentService.findByQuery(environmentQuery);
     }
 
