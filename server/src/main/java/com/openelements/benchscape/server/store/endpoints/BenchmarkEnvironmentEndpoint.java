@@ -114,10 +114,11 @@ public class BenchmarkEnvironmentEndpoint {
             @RequestParam(required = false) String jvmName,
                                          @RequestParam(required = false) OperationSystem osFamily,
                                          @RequestParam(required = false) String systemMemoryReadable,
+                                         @RequestParam(required = false) Integer cores,
             @RequestParam(required = false) String jmhVersion) {
         final EnvironmentQuery environmentQuery = new EnvironmentQuery(name, gitOriginUrl, gitBranch, systemArch,
                 systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin,
-                systemMemoryMax, osName, osVersion, jvmVersion, jvmName, osFamily, systemMemoryReadable, jmhVersion);
+                systemMemoryMax, osName, osVersion, jvmVersion, jvmName, osFamily, systemMemoryReadable, cores, jmhVersion);
         return environmentService.findByQuery(environmentQuery);
     }
 

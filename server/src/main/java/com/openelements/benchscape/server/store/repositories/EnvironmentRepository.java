@@ -67,6 +67,9 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             if (environmentQuery.systemMemoryReadable() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("systemMemoryReadable"), environmentQuery.systemMemoryReadable()));
             }
+            if (environmentQuery.cores() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("cores"), environmentQuery.cores()));
+            }
             if (environmentQuery.jmhVersion() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("jmhVersion"), environmentQuery.jmhVersion()));
             }

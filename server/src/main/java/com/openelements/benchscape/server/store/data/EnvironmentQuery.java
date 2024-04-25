@@ -41,6 +41,7 @@ public record EnvironmentQuery(@Nullable String name,
                                @Nullable String jvmName,
                                @Nullable OperationSystem osFamily,
                                @Nullable String systemMemoryReadable,
+                               @Nullable Integer cores,
                                @Nullable String jmhVersion) implements Serializable {
 
 
