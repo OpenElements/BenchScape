@@ -4,6 +4,8 @@ import com.openelements.benchscape.server.store.data.DateTimePeriode;
 import com.openelements.benchscape.server.store.data.Measurement;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
 import com.openelements.benchscape.server.store.data.MeasurementQuery;
+import com.openelements.benchscape.server.store.data.MemoryType;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -161,7 +164,7 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
                 entity.getJmhWarmupTime(), entity.getJmhWarmupBatchSize(),
                 entity.getJmhMeasurementIterations(), entity.getJmhMeasurementTime(),
                 entity.getJmhMeasurementBatchSize(), entity.getSystemArch(),
-                entity.getSystemProcessors(), entity.getSystemMemory(),
+                entity.getSystemProcessors(), SystemMemory.getFromByteConverter().apply(entity.getSystemMemory()),
                 entity.getOsName(), entity.getOsVersion(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion(), entity.getSystemProperties(), entity.getEnvironmentProperties());

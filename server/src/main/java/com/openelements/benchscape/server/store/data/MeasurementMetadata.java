@@ -47,7 +47,7 @@ public record MeasurementMetadata(@Nullable UUID id, @Nullable String gitOriginU
                                   @Nullable Duration jmhWarmupTime, @Nullable Integer jmhWarmupBatchSize,
                                   @Nullable Integer jmhMeasurementIterations, @Nullable Duration jmhMeasurementTime,
                                   @Nullable Integer jmhMeasurementBatchSize, @Nullable String systemArch,
-                                  @Nullable Integer systemProcessors, @Nullable Long systemMemory,
+                                  @Nullable Integer systemProcessors, @Nullable SystemMemory systemMemory,
                                   @Nullable String osName, @Nullable String osVersion,
                                   @Nullable String jvmVersion, @Nullable String jvmName,
                                   @Nullable String jmhVersion, @NonNull Map<String, String> systemProperties,

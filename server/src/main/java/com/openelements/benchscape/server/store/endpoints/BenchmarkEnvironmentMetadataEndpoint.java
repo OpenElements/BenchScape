@@ -4,6 +4,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.OperationSystem;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.List;
@@ -161,6 +162,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
         return environmentService.getAll().stream()
                 .map(Environment::systemMemory)
                 .filter(memory -> memory != null)
+                .map(memory -> memory.toBytes())
                 .distinct()
                 .sorted()
                 .toList();
@@ -305,11 +307,12 @@ public class BenchmarkEnvironmentMetadataEndpoint {
                 .toList();
     }
 
+    @Deprecated(forRemoval = true)
     @GetMapping("/systemMemoryReadable")
     public List<String> getAllSystemMemoryReadable() {
         return environmentService.getAll().stream()
-                .map(Environment::systemMemoryReadable)
-                .filter(systemMemoryReadable -> systemMemoryReadable != null && !systemMemoryReadable.isBlank())
+                .map(Environment::systemMemory)
+                .map(SystemMemory::toString)
                 .distinct()
                 .sorted()
                 .toList();

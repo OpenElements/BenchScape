@@ -87,7 +87,6 @@ public class EnvironmentServiceTests {
         final Environment updated = new Environment(saved.id(), saved.name(), saved.description(), saved.gitOriginUrl(),
                 saved.gitBranch(), saved.systemArch(), saved.systemProcessors(), saved.systemProcessorsMin(),
                 saved.systemProcessorsMax(), saved.systemMemory(), saved.systemMemoryMin(), saved.systemMemoryMax(),
-                saved.systemMemoryReadable(), saved.systemMemoryMinReadable(), saved.systemMemoryMaxReadable(),
                 saved.osName(), saved.osVersion(), saved.osFamily(), saved.jvmName(), saved.jvmVersion(),
                 "NEW JMH VERSION");
         final Environment savedUpdated = environmentService.save(updated);
