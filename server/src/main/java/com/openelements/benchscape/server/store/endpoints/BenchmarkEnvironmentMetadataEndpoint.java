@@ -341,7 +341,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
      * @return all system processors
      */
     @GetMapping("/systemProcessors")
-    public List<Integer> getAllSystemProcessors() {
+    public List<Integer> getAllSystemProcessorsCounts() {
         return environmentService.getAll().stream()
                 .map(Environment::systemProcessors)
                 .filter(processors -> processors != null)
