@@ -58,16 +58,13 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
                 predicates.add(criteriaBuilder.equal(root.get(SYSTEM_PROCESSORS_MAX_QUERY_FIELD), environmentQuery.systemProcessorsMax()));
             }
             if (environmentQuery.systemMemory() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD).get("value"), environmentQuery.systemMemory().value()));
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD).get("type"), environmentQuery.systemMemory().type()));
+                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), environmentQuery.systemMemory().toBytes()));
             }
             if (environmentQuery.systemMemoryMin() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD).get("value"), environmentQuery.systemMemoryMin().value()));
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD).get("type"), environmentQuery.systemMemoryMin().type()));
+                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD), environmentQuery.systemMemoryMin().toBytes()));
             }
             if (environmentQuery.systemMemoryMax() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD).get("value"), environmentQuery.systemMemoryMax().value()));
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD).get("type"), environmentQuery.systemMemoryMax().type()));
+                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD), environmentQuery.systemMemoryMax().toBytes()));
             }
             if (environmentQuery.osName() != null) {
                 predicates.add(criteriaBuilder.equal(root.get(OS_NAME_QUERY_FIELD), environmentQuery.osName()));
