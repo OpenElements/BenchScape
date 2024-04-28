@@ -4,6 +4,7 @@ import static com.openelements.benchscape.server.store.endpoints.EndpointsConsta
 
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.OperationSystem;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.List;
@@ -35,10 +36,10 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
-     * Get a list of all operation systems that are currently part of environments (for the current tenant - see
+     * Get a list of all operating systems that are currently part of environments (for the current tenant - see
      * #{@link EnvironmentService}).
      *
-     * @return all operation systems
+     * @return all operating systems
      */
     @GetMapping("/os")
     public List<String> getAllOperationSystems() {
@@ -51,10 +52,10 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
-     * Get a list of all operation systems that are currently part of environments (for the current tenant - see
+     * Get a list of all operating systems that are currently part of environments (for the current tenant - see
      * #{@link EnvironmentService}).
      *
-     * @return all operation systems
+     * @return all operating systems
      */
     @GetMapping("/osFamily")
     public List<OperationSystem> getAllOperationSystemFamilies() {
@@ -67,10 +68,10 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
-     * Get a list of all operation system versions that are currently part of environments (for the current tenant - see
+     * Get a list of all operating system versions that are currently part of environments (for the current tenant - see
      * * #{@link EnvironmentService}).
      *
-     * @return all operation system versions
+     * @return all operating system versions
      */
     @GetMapping("/osVersion")
     public List<String> getAllOperationSystemsVersions() {
@@ -83,11 +84,11 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
-     * Get a list of all operation system versions for a specific os that are currently part of environments (for the
+     * Get a list of all operating system versions for a specific os that are currently part of environments (for the
      * current tenant - see * #{@link EnvironmentService}).
      *
      * @param osName the os name to get the versions for
-     * @return all operation system versions
+     * @return all operating system versions
      */
     @GetMapping("/osVersion/forOs")
     public List<String> getAllOperationSystemsVersionsByOsName(@RequestParam final String osName) {
@@ -101,11 +102,11 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     }
 
     /**
-     * Get a list of all operation system versions for a specific os that are currently part of environments (for the
+     * Get a list of all operating system versions for a specific os that are currently part of environments (for the
      * current tenant - see * #{@link EnvironmentService}).
      *
      * @param osFamily the os family to get the versions for
-     * @return all operation system versions
+     * @return all operating system versions
      */
     @GetMapping("/osVersion/forOsFamily")
     public List<String> getAllOperationSystemsVersionsByOsFamily(@RequestParam final OperationSystem osFamily) {
@@ -161,6 +162,7 @@ public class BenchmarkEnvironmentMetadataEndpoint {
         return environmentService.getAll().stream()
                 .map(Environment::systemMemory)
                 .filter(memory -> memory != null)
+                .map(memory -> memory.toBytes())
                 .distinct()
                 .sorted()
                 .toList();
@@ -327,8 +329,8 @@ public class BenchmarkEnvironmentMetadataEndpoint {
     @GetMapping("/systemMemoryReadable")
     public List<String> getAllSystemMemoryReadable() {
         return environmentService.getAll().stream()
-                .map(Environment::systemMemoryReadable)
-                .filter(systemMemoryReadable -> systemMemoryReadable != null && !systemMemoryReadable.isBlank())
+                .map(Environment::systemMemory)
+                .map(SystemMemory::toString)
                 .distinct()
                 .sorted()
                 .toList();

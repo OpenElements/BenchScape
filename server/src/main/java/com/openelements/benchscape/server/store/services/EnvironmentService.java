@@ -3,6 +3,7 @@ package com.openelements.benchscape.server.store.services;
 import com.openelements.benchscape.server.store.data.Environment;
 import com.openelements.benchscape.server.store.data.EnvironmentQuery;
 import com.openelements.benchscape.server.store.data.MeasurementMetadata;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
 import com.openelements.server.base.tenant.TenantService;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,17 +52,9 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         return new Environment(entity.getId(), entity.getName(), entity.getDescription(), entity.getGitOriginUrl(),
                 entity.getGitBranch(), entity.getSystemArch(),
                 entity.getSystemProcessors(), entity.getSystemProcessorsMin(),
-                entity.getSystemProcessorsMax(), entity.getSystemMemory(),
-                entity.getSystemMemoryMin(), entity.getSystemMemoryMax(),
-                Optional.ofNullable(entity.getSystemMemory())
-                        .map(m -> FileUtils.byteCountToDisplaySize(m))
-                        .orElse(null),
-                Optional.ofNullable(entity.getSystemMemoryMin())
-                        .map(m -> FileUtils.byteCountToDisplaySize(m))
-                        .orElse(null),
-                Optional.ofNullable(entity.getSystemMemoryMax())
-                        .map(m -> FileUtils.byteCountToDisplaySize(m))
-                        .orElse(null),
+                entity.getSystemProcessorsMax(), SystemMemory.getFromByteConverter().apply(entity.getSystemMemory()),
+                SystemMemory.getFromByteConverter().apply(entity.getSystemMemoryMin()),
+                SystemMemory.getFromByteConverter().apply(entity.getSystemMemoryMax()),
                 entity.getOsName(), entity.getOsVersion(), entity.getOsFamily(),
                 entity.getJvmVersion(), entity.getJvmName(),
                 entity.getJmhVersion());
@@ -81,9 +73,9 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         entity.setSystemProcessors(environment.systemProcessors());
         entity.setSystemProcessorsMin(environment.systemProcessorsMin());
         entity.setSystemProcessorsMax(environment.systemProcessorsMax());
-        entity.setSystemMemory(environment.systemMemory());
-        entity.setSystemMemoryMin(environment.systemMemoryMin());
-        entity.setSystemMemoryMax(environment.systemMemoryMax());
+        entity.setSystemMemory(SystemMemory.getToByteConverter().apply(environment.systemMemory()));
+        entity.setSystemMemoryMin(SystemMemory.getToByteConverter().apply(environment.systemMemoryMin()));
+        entity.setSystemMemoryMax(SystemMemory.getToByteConverter().apply(environment.systemMemoryMax()));
         entity.setOsName(environment.osName());
         entity.setOsVersion(environment.osVersion());
         entity.setJvmVersion(environment.jvmVersion());
@@ -130,21 +122,21 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         final boolean gitOriginUrlCheck = Optional.ofNullable(environment.gitOriginUrl())
                 .map(gitUrl -> stringMetadataValueMatches(gitUrl, metadata.gitOriginUrl(), false))
                 .orElse(true);
-        if (gitOriginUrlCheck == false) {
+        if (!gitOriginUrlCheck) {
             return false;
         }
 
         final Boolean gitBranchCheck = Optional.ofNullable(environment.gitBranch())
                 .map(gitBranch -> stringMetadataValueMatches(gitBranch, metadata.gitBranch(), false))
                 .orElse(true);
-        if (gitBranchCheck == false) {
+        if (!gitBranchCheck) {
             return false;
         }
 
         final Boolean systemArchCheck = Optional.ofNullable(environment.systemArch())
                 .map(systemArch -> stringMetadataValueMatches(systemArch, metadata.systemArch(), false))
                 .orElse(true);
-        if (systemArchCheck == false) {
+        if (!systemArchCheck) {
             return false;
         }
 
@@ -156,7 +148,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
                     return systemProcessors == metadata.systemProcessors();
                 })
                 .orElse(true);
-        if (systemProcessorsCheck == false) {
+        if (!systemProcessorsCheck) {
             return false;
         }
 
@@ -168,7 +160,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
                     return systemProcessorsMin <= metadata.systemProcessors();
                 })
                 .orElse(true);
-        if (systemProcessorsMinCheck == false) {
+        if (!systemProcessorsMinCheck) {
             return false;
         }
 
@@ -189,16 +181,14 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         }
 
         final Boolean systemMemoryMinCheck = Optional.ofNullable(environment.systemMemoryMin())
-                .map(systemMemoryMin -> metadata.systemMemory() != null &&
-                        systemMemoryMin <= metadata.systemMemory())
+                .map(min -> metadata.systemMemory() != null && min.isLessThanOrEqual(metadata.systemMemory()))
                 .orElse(true);
         if (!systemMemoryMinCheck) {
             return false;
         }
 
         final Boolean systemMemoryMaxCheck = Optional.ofNullable(environment.systemMemoryMax())
-                .map(systemMemoryMax -> metadata.systemMemory() != null &&
-                        systemMemoryMax >= metadata.systemMemory())
+                .map(max -> metadata.systemMemory() != null && max.isGreaterThanOrEqual(metadata.systemMemory()))
                 .orElse(true);
         if (!systemMemoryMaxCheck) {
             return false;
@@ -242,12 +232,7 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         final Boolean jmhVersionCheck = Optional.ofNullable(environment.jmhVersion())
                 .map(jmhVersion -> stringMetadataValueMatches(jmhVersion, metadata.jmhVersion(), false))
                 .orElse(true);
-        if (!jmhVersionCheck) {
-            return false;
-        }
-
-
-        return true;
+        return jmhVersionCheck;
     }
 
     private boolean stringMetadataValueMatches(@NonNull final String environmentPattern,

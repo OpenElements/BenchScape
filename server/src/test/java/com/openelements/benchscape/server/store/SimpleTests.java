@@ -48,8 +48,7 @@ public class SimpleTests {
                 null, null, null,
                 null, null,
                 null, null,
-                null, null,
-                null, null);
+                null);
 
         //when
         environmentEndpoint.save(environment);
