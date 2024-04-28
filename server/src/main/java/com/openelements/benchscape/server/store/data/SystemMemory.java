@@ -114,7 +114,7 @@ public record SystemMemory(long value, @NonNull MemoryType type) {
             if (value == null) {
                 return null;
             }
-            return new SystemMemory(value);
+            return new SystemMemory(value).simplify();
         };
     }
 
