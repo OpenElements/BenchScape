@@ -99,7 +99,8 @@ public class BenchmarkEnvironmentEndpoint {
      * @return all environments that match the given query parameters
      */
     @GetMapping("/findByQuery")
-    public List<Environment> findByQuery(@RequestParam(required = false) String name,
+    public List<Environment> findByQuery(
+            @RequestParam(required = false) String name,
             @RequestParam(required = false) String gitOriginUrl,
             @RequestParam(required = false) String gitBranch,
             @RequestParam(required = false) String systemArch,

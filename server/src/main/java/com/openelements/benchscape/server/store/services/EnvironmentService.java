@@ -1,20 +1,19 @@
 package com.openelements.benchscape.server.store.services;
 
-import com.openelements.benchscape.server.store.data.Environment;
-import com.openelements.benchscape.server.store.data.EnvironmentQuery;
-import com.openelements.benchscape.server.store.data.MeasurementMetadata;
-import com.openelements.benchscape.server.store.data.SystemMemory;
+import com.openelements.benchscape.server.store.data.*;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.repositories.EnvironmentRepository;
 import com.openelements.server.base.tenant.TenantService;
 import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +87,65 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     @Override
     protected EnvironmentEntity createNewEntity() {
         return new EnvironmentEntity();
+    }
+
+    public List<Environment> getFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
+                                                     Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
+                                                     SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
+                                                     OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
+                                                     String jmhVersion) {
+        return repository.findAll((Specification<EnvironmentEntity>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (name != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+            }
+            if (gitOriginUrl != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("gitOriginUrl")), "%" + gitOriginUrl.toLowerCase() + "%"));
+            }
+            if (gitBranch != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("gitBranch")), gitBranch.toLowerCase()));
+            }
+            if (systemArch != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("systemArch")), systemArch.toLowerCase()));
+            }
+            if (systemProcessors != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemProcessors"), systemProcessors));
+            }
+            if (systemProcessorsMin != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("systemProcessorsMin"), systemProcessorsMin));
+            }
+            if (systemProcessorsMax != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("systemProcessorsMax"), systemProcessorsMax));
+            }
+            if (systemMemory != null) {
+                predicates.add(criteriaBuilder.equal(root.get("systemMemory"), SystemMemory.getToByteConverter().apply(systemMemory)));
+            }
+            if (systemMemoryMin != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("systemMemoryMin"), SystemMemory.getToByteConverter().apply(systemMemoryMin)));
+            }
+            if (systemMemoryMax != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("systemMemoryMax"), SystemMemory.getToByteConverter().apply(systemMemoryMax)));
+            }
+            if (osFamily != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("osFamily")), osFamily.toString().toLowerCase()));
+            }
+            if (osName != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("osName")), "%" + osName.toLowerCase() + "%"));
+            }
+            if (osVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("osVersion")), "%" + osVersion.toLowerCase() + "%"));
+            }
+            if (jvmVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jvmVersion")), "%" + jvmVersion.toLowerCase() + "%"));
+            }
+            if (jvmName != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jvmName")), "%" + jvmName.toLowerCase() + "%"));
+            }
+            if (jmhVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jmhVersion")), "%" + jmhVersion.toLowerCase() + "%"));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        }).stream().map(this::mapToData).collect(Collectors.toList());
     }
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
