@@ -327,10 +327,9 @@ public class BenchmarkEnvironmentMetadataEndpoint {
      * @return all human-readable system memory descriptions
      */
     @GetMapping("/systemMemoryReadable")
-    public List<String> getAllSystemMemoryReadable() {
+    public List<SystemMemory> getAllSystemMemoryReadable() {
         return environmentService.getAll().stream()
                 .map(Environment::systemMemory)
-                .map(SystemMemory::toString)
                 .distinct()
                 .sorted()
                 .toList();

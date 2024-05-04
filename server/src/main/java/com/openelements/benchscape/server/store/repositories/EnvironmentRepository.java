@@ -1,6 +1,8 @@
 package com.openelements.benchscape.server.store.repositories;
 
 import com.openelements.benchscape.server.store.data.EnvironmentQuery;
+import com.openelements.benchscape.server.store.data.OperationSystem;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.server.base.tenantdata.EntityWithTenantRepository;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -15,11 +17,21 @@ import org.springframework.stereotype.Repository;
 public interface EnvironmentRepository extends EntityWithTenantRepository<EnvironmentEntity>,
         JpaSpecificationExecutor<EnvironmentEntity> {
 
-    default List<EnvironmentEntity> findAllByQuery(@NonNull final EnvironmentQuery environmentQuery) {
-        return findAll(createSpecificationForQuery(environmentQuery));
+    default List<EnvironmentEntity> findFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
+                                                             Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
+                                                             SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
+                                                             OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
+                                                             String jmhVersion) {
+        return findAll(createSpecificationForQuery(name, gitOriginUrl, gitBranch, systemArch,
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
+                osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion));
     }
 
-    private static Specification<EnvironmentEntity> createSpecificationForQuery(@NonNull final EnvironmentQuery environmentQuery) {
+    private static Specification<EnvironmentEntity> createSpecificationForQuery(String name, String gitOriginUrl, String gitBranch, String systemArch,
+                                                                                Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
+                                                                                SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
+                                                                                OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
+                                                                                String jmhVersion) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -39,50 +51,53 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             final String OS_FAMILY_QUERY_FIELD = "osFamily";
             final String JMH_VERSION_QUERY_FIELD = "jmhVersion";
 
-            if (environmentQuery.systemArch() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_ARCH_QUERY_FIELD), environmentQuery.systemArch()));
+            if (name != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
             }
-            if (environmentQuery.gitOriginUrl() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(GIT_ORIGIN_URL_QUERY_FIELD), environmentQuery.gitOriginUrl()));
+            if (gitOriginUrl != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(GIT_ORIGIN_URL_QUERY_FIELD)), "%" + gitOriginUrl.toLowerCase() + "%"));
             }
-            if (environmentQuery.gitBranch() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(GIT_BRANCH_QUERY_FIELD), environmentQuery.gitBranch()));
+            if (gitBranch != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(GIT_BRANCH_QUERY_FIELD)), gitBranch.toLowerCase()));
             }
-            if (environmentQuery.systemProcessors() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_PROCESSORS_QUERY_FIELD), environmentQuery.systemProcessors()));
+            if (systemArch != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(SYSTEM_ARCH_QUERY_FIELD)), systemArch.toLowerCase()));
             }
-            if (environmentQuery.systemProcessorsMin() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_PROCESSORS_MIN_QUERY_FIELD), environmentQuery.systemProcessorsMin()));
+            if (systemProcessors != null) {
+                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_PROCESSORS_QUERY_FIELD), systemProcessors));
             }
-            if (environmentQuery.systemProcessorsMax() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_PROCESSORS_MAX_QUERY_FIELD), environmentQuery.systemProcessorsMax()));
+            if (systemProcessorsMin != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_PROCESSORS_MIN_QUERY_FIELD), systemProcessorsMin));
             }
-            if (environmentQuery.systemMemory() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), environmentQuery.systemMemory().toBytes()));
+            if (systemProcessorsMax != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_PROCESSORS_MAX_QUERY_FIELD), systemProcessorsMax));
             }
-            if (environmentQuery.systemMemoryMin() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD), environmentQuery.systemMemoryMin().toBytes()));
+            if (systemMemory != null) {
+                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemory)));
             }
-            if (environmentQuery.systemMemoryMax() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD), environmentQuery.systemMemoryMax().toBytes()));
+            if (systemMemoryMin != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemoryMin)));
             }
-            if (environmentQuery.osName() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(OS_NAME_QUERY_FIELD), environmentQuery.osName()));
+            if (systemMemoryMax != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemoryMax)));
             }
-            if (environmentQuery.osVersion() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(OS_VERSION_QUERY_FIELD), environmentQuery.osVersion()));
+            if (osFamily != null) {
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(OS_FAMILY_QUERY_FIELD)), osFamily.toString().toLowerCase()));
             }
-            if (environmentQuery.jvmVersion() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(JVM_VERSION_QUERY_FIELD), environmentQuery.jvmVersion()));
+            if (osName != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(OS_NAME_QUERY_FIELD)), "%" + osName.toLowerCase() + "%"));
             }
-            if (environmentQuery.jvmName() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(JVM_NAME_QUERY_FIELD), environmentQuery.jvmName()));
+            if (osVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(OS_VERSION_QUERY_FIELD)), "%" + osVersion.toLowerCase() + "%"));
             }
-            if (environmentQuery.osFamily() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(OS_FAMILY_QUERY_FIELD), environmentQuery.osFamily()));
+            if (jvmVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(JVM_VERSION_QUERY_FIELD)), "%" + jvmVersion.toLowerCase() + "%"));
             }
-            if (environmentQuery.jmhVersion() != null) {
-                predicates.add(criteriaBuilder.equal(root.get(JMH_VERSION_QUERY_FIELD), environmentQuery.jmhVersion()));
+            if (jvmName != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(JVM_NAME_QUERY_FIELD)), "%" + jvmName.toLowerCase() + "%"));
+            }
+            if (jmhVersion != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(JMH_VERSION_QUERY_FIELD)), "%" + jmhVersion.toLowerCase() + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

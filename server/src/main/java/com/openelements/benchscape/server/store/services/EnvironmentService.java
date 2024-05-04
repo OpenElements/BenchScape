@@ -94,59 +94,13 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
                                                      SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
                                                      OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
                                                      String jmhVersion) {
-        return repository.findAll((Specification<EnvironmentEntity>) (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (name != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
-            }
-            if (gitOriginUrl != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("gitOriginUrl")), "%" + gitOriginUrl.toLowerCase() + "%"));
-            }
-            if (gitBranch != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("gitBranch")), gitBranch.toLowerCase()));
-            }
-            if (systemArch != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("systemArch")), systemArch.toLowerCase()));
-            }
-            if (systemProcessors != null) {
-                predicates.add(criteriaBuilder.equal(root.get("systemProcessors"), systemProcessors));
-            }
-            if (systemProcessorsMin != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("systemProcessorsMin"), systemProcessorsMin));
-            }
-            if (systemProcessorsMax != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("systemProcessorsMax"), systemProcessorsMax));
-            }
-            if (systemMemory != null) {
-                predicates.add(criteriaBuilder.equal(root.get("systemMemory"), SystemMemory.getToByteConverter().apply(systemMemory)));
-            }
-            if (systemMemoryMin != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("systemMemoryMin"), SystemMemory.getToByteConverter().apply(systemMemoryMin)));
-            }
-            if (systemMemoryMax != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("systemMemoryMax"), SystemMemory.getToByteConverter().apply(systemMemoryMax)));
-            }
-            if (osFamily != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get("osFamily")), osFamily.toString().toLowerCase()));
-            }
-            if (osName != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("osName")), "%" + osName.toLowerCase() + "%"));
-            }
-            if (osVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("osVersion")), "%" + osVersion.toLowerCase() + "%"));
-            }
-            if (jvmVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jvmVersion")), "%" + jvmVersion.toLowerCase() + "%"));
-            }
-            if (jvmName != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jvmName")), "%" + jvmName.toLowerCase() + "%"));
-            }
-            if (jmhVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jmhVersion")), "%" + jmhVersion.toLowerCase() + "%"));
-            }
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        }).stream().map(this::mapToData).collect(Collectors.toList());
+        List<EnvironmentEntity> filteredEntities = repository.findFilteredEnvironments(name, gitOriginUrl, gitBranch, systemArch,
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
+                osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+
+        return filteredEntities.stream().map(this::mapToData).collect(Collectors.toList());
     }
+
 
     public boolean isMatchingEnvironment(@NonNull final MeasurementMetadata metadata,
                                          @NonNull final String environmentId) {
@@ -266,13 +220,6 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
             return false;
         }
 
-//        final Boolean osFamilyCheck = Optional.ofNullable(environment.osFamily())
-//                .map(osFamily -> stringMetadataValueMatches(osFamily, metadata.OsFamily(), false))
-//                .orElse(true);
-//        if (!osFamilyCheck) {
-//            return false;
-//        }
-
         final Boolean jvmVersionCheck = Optional.ofNullable(environment.jvmVersion())
                 .map(jvmVersion -> stringMetadataValueMatches(jvmVersion, metadata.jvmVersion(), false))
                 .orElse(true);
@@ -320,8 +267,13 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
     @NonNull
     public List<Environment> findByQuery(@NonNull final EnvironmentQuery environmentQuery) {
         Objects.requireNonNull(environmentQuery, "environmentQuery must not be null");
-        return repository.findAllByQuery(environmentQuery).stream()
+        return repository.findFilteredEnvironments(environmentQuery.name(), environmentQuery.gitOriginUrl(), environmentQuery.gitBranch(), environmentQuery.systemArch(),
+                        environmentQuery.systemProcessors(), environmentQuery.systemProcessorsMin(), environmentQuery.systemProcessorsMax(),
+                        environmentQuery.systemMemory(), environmentQuery.systemMemoryMin(), environmentQuery.systemMemoryMax(),
+                        environmentQuery.osFamily(), environmentQuery.osName(), environmentQuery.osVersion(), environmentQuery.jvmVersion(),
+                        environmentQuery.jvmName(), environmentQuery.jmhVersion()).stream()
                 .map(this::mapToData)
-                .toList();
+                .collect(Collectors.toList());
     }
+
 }
