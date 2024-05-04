@@ -18,20 +18,23 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
         JpaSpecificationExecutor<EnvironmentEntity> {
 
     default List<EnvironmentEntity> findFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
-                                                             Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
-                                                             SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
-                                                             OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
-                                                             String jmhVersion) {
+                                                             Integer systemProcessors, Integer systemProcessorsMin,
+                                                             Integer systemProcessorsMax, SystemMemory systemMemory,
+                                                             SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
+                                                             OperationSystem osFamily, String osName, String osVersion, String jvmVersion,
+                                                             String jvmName, String jmhVersion) {
         return findAll(createSpecificationForQuery(name, gitOriginUrl, gitBranch, systemArch,
                 systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
                 osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion));
     }
 
-    private static Specification<EnvironmentEntity> createSpecificationForQuery(String name, String gitOriginUrl, String gitBranch, String systemArch,
-                                                                                Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
-                                                                                SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
-                                                                                OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
-                                                                                String jmhVersion) {
+    private static Specification<EnvironmentEntity> createSpecificationForQuery(String name, String gitOriginUrl, String gitBranch,
+                                                                                String systemArch, Integer systemProcessors,
+                                                                                Integer systemProcessorsMin, Integer systemProcessorsMax,
+                                                                                SystemMemory systemMemory, SystemMemory systemMemoryMin,
+                                                                                SystemMemory systemMemoryMax, OperationSystem osFamily,
+                                                                                String osName, String osVersion, String jvmVersion,
+                                                                                String jvmName, String jmhVersion) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -76,10 +79,12 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
                 predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemory)));
             }
             if (systemMemoryMin != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemoryMin)));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD),
+                        SystemMemory.getToByteConverter().apply(systemMemoryMin)));
             }
             if (systemMemoryMax != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemoryMax)));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD),
+                        SystemMemory.getToByteConverter().apply(systemMemoryMax)));
             }
             if (osFamily != null) {
                 predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(OS_FAMILY_QUERY_FIELD)), osFamily.toString().toLowerCase()));
