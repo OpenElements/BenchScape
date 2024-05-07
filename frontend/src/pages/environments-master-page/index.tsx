@@ -112,10 +112,10 @@ function EnvironmentsPage() {
           <Select
             label="OS Version"
             options={forOsFamilyOptionsFiltered}
-            value={filters["forOsFamily"]}
+            value={filters["osVersion"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("forOsFamily", e)}
+            onChange={(e) => handleSelectionChange("osVersion", e)}
           />
           <Select
             label="Architecture"
@@ -128,10 +128,10 @@ function EnvironmentsPage() {
           <Select
             label="CPU Cores"
             options={coresOptions}
-            value={filters["cores"]}
+            value={filters["systemProcessors"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("cores", e)}
+            onChange={(e) => handleSelectionChange("systemProcessors", e)}
           />
           <Select
             label="Memory"

@@ -3,10 +3,7 @@ package com.openelements.benchscape.server.store.export;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
-import com.openelements.benchscape.server.store.data.Benchmark;
-import com.openelements.benchscape.server.store.data.Environment;
-import com.openelements.benchscape.server.store.data.Measurement;
-import com.openelements.benchscape.server.store.data.MeasurementQuery;
+import com.openelements.benchscape.server.store.data.*;
 import com.openelements.benchscape.server.store.services.BenchmarkService;
 import com.openelements.benchscape.server.store.services.EnvironmentService;
 import com.openelements.benchscape.server.store.services.MeasurementService;
@@ -51,9 +48,22 @@ public class ExportEndpoint {
     }
 
     @GetMapping(value = "/environments/csv", produces = "text/csv")
-    public @ResponseBody byte[] getCsvExportOfEnvironments() {
-        final List<Environment> all = environmentService.getAll();
-        return createData(osw -> CsvExport.exportEnvironments(osw, all));
+    public @ResponseBody byte[] getCsvExportOfEnvironments(@RequestParam(required = false) String name,
+                                                           @RequestParam(required = false) String gitOriginUrl,
+                                                           @RequestParam(required = false) String gitBranch,
+                                                           @RequestParam(required = false) String systemArch,
+                                                           @RequestParam(required = false) Integer systemProcessors,
+                                                           @RequestParam(required = false) Integer systemProcessorsMin,
+                                                           @RequestParam(required = false) Integer systemProcessorsMax,
+                                                           @RequestParam(required = false) OperationSystem osFamily,
+                                                           @RequestParam(required = false) String osName,
+                                                           @RequestParam(required = false) String osVersion,
+                                                           @RequestParam(required = false) String jvmVersion,
+                                                           @RequestParam(required = false) String jvmName,
+                                                           @RequestParam(required = false) String jmhVersion) {
+        final List<Environment> filteredEnvironments = environmentService.getFilteredEnvironments(name, gitOriginUrl, gitBranch,
+                systemArch, systemProcessors, systemProcessorsMin, systemProcessorsMax, osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+        return createData(osw -> CsvExport.exportEnvironments(osw, filteredEnvironments));
     }
 
     @GetMapping(value = "/benchmarks/csv", produces = "text/csv")
@@ -67,8 +77,8 @@ public class ExportEndpoint {
             @RequestParam(required = false) final BenchmarkUnit unit,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
-                                                           @RequestParam(required = false) final String gitOriginUrl,
-                                                           @RequestParam(required = false) final String gitBranch,
+            @RequestParam(required = false) final String gitOriginUrl,
+            @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false) final List<String> environmentIds) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);

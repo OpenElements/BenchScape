@@ -32,14 +32,11 @@ public record EnvironmentQuery(@Nullable String name,
                                @Nullable Integer systemProcessors,
                                @Nullable Integer systemProcessorsMin,
                                @Nullable Integer systemProcessorsMax,
-                               @Nullable Long systemMemory,
-                               @Nullable Long systemMemoryMin,
-                               @Nullable Long systemMemoryMax,
+                               @Nullable OperationSystem osFamily,
                                @Nullable String osName,
                                @Nullable String osVersion,
                                @Nullable String jvmVersion,
                                @Nullable String jvmName,
                                @Nullable String jmhVersion) implements Serializable {
-
 
 }

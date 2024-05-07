@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DataBase extends Serializable {
+public interface DataBase extends Serializable, WithId {
 
     UUID id();
 

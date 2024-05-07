@@ -12,10 +12,9 @@ public class EnvironmentTests {
             new Environment(UUID.randomUUID(), null, "", "",
                     "", "",
                     3, 1,
-                    5, 6L,
-                    2L, 10L,
-                    "", "",
-                    "", "",
+                    5, new SystemMemory(10),
+                    new SystemMemory(1), new SystemMemory(20),
+                    "",
                     "", OperationSystem.MAC_OS, "", "", "");
         });
     }

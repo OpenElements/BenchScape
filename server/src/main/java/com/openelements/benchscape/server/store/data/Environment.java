@@ -22,9 +22,6 @@ import java.util.UUID;
  * @param systemMemory            system memory of the environment
  * @param systemMemoryMin         min system memory of the environment
  * @param systemMemoryMax         max system memory of the environment
- * @param systemMemoryReadable    system memory readable of the environment
- * @param systemMemoryMinReadable min system memory readable of the environment
- * @param systemMemoryMaxReadable max system memory readable of the environment
  * @param osName                  os name of the environment
  * @param osVersion               os version of the environment
  * @param osFamily                os family of the environment
@@ -35,15 +32,19 @@ import java.util.UUID;
 public record Environment(@Nullable UUID id, @NonNull String name,
                           @Nullable String description,
                           @Nullable String gitOriginUrl,
-                          @Nullable String gitBranch, @Nullable String systemArch,
-                          @Nullable Integer systemProcessors, @Nullable Integer systemProcessorsMin,
-                          @Nullable Integer systemProcessorsMax, @Nullable Long systemMemory,
-                          @Nullable Long systemMemoryMin, @Nullable Long systemMemoryMax,
-                          @Nullable String systemMemoryReadable,
-                          @Nullable String systemMemoryMinReadable, @Nullable String systemMemoryMaxReadable,
-                          @Nullable String osName, @Nullable String osVersion,
+                          @Nullable String gitBranch,
+                          @Nullable String systemArch,
+                          @Nullable Integer systemProcessors,
+                          @Nullable Integer systemProcessorsMin,
+                          @Nullable Integer systemProcessorsMax,
+                          @Nullable SystemMemory systemMemory,
+                          @Nullable SystemMemory systemMemoryMin,
+                          @Nullable SystemMemory systemMemoryMax,
+                          @Nullable String osName,
+                          @Nullable String osVersion,
                           @Nullable OperationSystem osFamily,
-                          @Nullable String jvmVersion, @Nullable String jvmName,
+                          @Nullable String jvmVersion,
+                          @Nullable String jvmName,
                           @Nullable String jmhVersion) implements DataBase {
 
     public Environment {
@@ -58,14 +59,8 @@ public record Environment(@Nullable UUID id, @NonNull String name,
         if (systemProcessorsMax != null && systemProcessorsMax < 0) {
             throw new IllegalStateException("systemProcessorsMin must be > 0");
         }
-        if (systemMemoryMax != null && systemMemoryMax < 0) {
-            throw new IllegalStateException("systemProcessorsMin must be > 0");
-        }
-        if (systemMemoryMin != null && systemMemoryMin < 0) {
-            throw new IllegalStateException("systemProcessorsMin must be > 0");
-        }
-        if (systemMemoryMax != null && systemMemoryMax < 0) {
-            throw new IllegalStateException("systemProcessorsMin must be > 0");
+        if (systemMemoryMax != null && systemMemoryMin != null && systemMemoryMax.isLessThan(systemMemoryMin)) {
+            throw new IllegalStateException("systemProcessorsMin must be <= systemMemoryMax");
         }
     }
 
