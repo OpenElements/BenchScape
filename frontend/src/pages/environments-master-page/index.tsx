@@ -112,10 +112,10 @@ function EnvironmentsPage() {
           <Select
             label="OS Version"
             options={forOsFamilyOptionsFiltered}
-            value={filters["osFamily"]}
+            value={filters["osVersion"]}
             valueExtractor={(name) => name}
             labelExtractor={(name) => name}
-            onChange={(e) => handleSelectionChange("osFamily", e)}
+            onChange={(e) => handleSelectionChange("osVersion", e)}
           />
           <Select
             label="Architecture"

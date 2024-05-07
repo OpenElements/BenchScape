@@ -91,12 +91,10 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
 
     public List<Environment> getFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
                                                      Integer systemProcessors, Integer systemProcessorsMin, Integer systemProcessorsMax,
-                                                     SystemMemory systemMemory, SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
                                                      OperationSystem osFamily, String osName, String osVersion, String jvmVersion, String jvmName,
                                                      String jmhVersion) {
         List<EnvironmentEntity> filteredEntities = repository.findFilteredEnvironments(name, gitOriginUrl, gitBranch, systemArch,
-                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
-                osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
 
         return filteredEntities.stream().map(this::mapToData).collect(Collectors.toList());
     }
@@ -269,7 +267,6 @@ public class EnvironmentService extends AbstractServiceWithTenant<EnvironmentEnt
         Objects.requireNonNull(environmentQuery, "environmentQuery must not be null");
         return repository.findFilteredEnvironments(environmentQuery.name(), environmentQuery.gitOriginUrl(), environmentQuery.gitBranch(), environmentQuery.systemArch(),
                         environmentQuery.systemProcessors(), environmentQuery.systemProcessorsMin(), environmentQuery.systemProcessorsMax(),
-                        environmentQuery.systemMemory(), environmentQuery.systemMemoryMin(), environmentQuery.systemMemoryMax(),
                         environmentQuery.osFamily(), environmentQuery.osName(), environmentQuery.osVersion(), environmentQuery.jvmVersion(),
                         environmentQuery.jvmName(), environmentQuery.jmhVersion()).stream()
                 .map(this::mapToData)

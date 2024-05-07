@@ -19,20 +19,17 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
 
     default List<EnvironmentEntity> findFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
                                                              Integer systemProcessors, Integer systemProcessorsMin,
-                                                             Integer systemProcessorsMax, SystemMemory systemMemory,
-                                                             SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
-                                                             OperationSystem osFamily, String osName, String osVersion, String jvmVersion,
+                                                             Integer systemProcessorsMax, OperationSystem osFamily, String osName, String osVersion, String jvmVersion,
                                                              String jvmName, String jmhVersion) {
         return findAll(createSpecificationForQuery(name, gitOriginUrl, gitBranch, systemArch,
-                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
+                systemProcessors, systemProcessorsMin, systemProcessorsMax,
                 osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion));
     }
 
     private static Specification<EnvironmentEntity> createSpecificationForQuery(String name, String gitOriginUrl, String gitBranch,
                                                                                 String systemArch, Integer systemProcessors,
                                                                                 Integer systemProcessorsMin, Integer systemProcessorsMax,
-                                                                                SystemMemory systemMemory, SystemMemory systemMemoryMin,
-                                                                                SystemMemory systemMemoryMax, OperationSystem osFamily,
+                                                                                OperationSystem osFamily,
                                                                                 String osName, String osVersion, String jvmVersion,
                                                                                 String jvmName, String jmhVersion) {
         return (root, criteriaQuery, criteriaBuilder) -> {
@@ -75,19 +72,19 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             if (systemProcessorsMax != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_PROCESSORS_MAX_QUERY_FIELD), systemProcessorsMax));
             }
-            if (systemMemory != null) {
-                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemory)));
-            }
-            if (systemMemoryMin != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD),
-                        SystemMemory.getToByteConverter().apply(systemMemoryMin)));
-            }
-            if (systemMemoryMax != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD),
-                        SystemMemory.getToByteConverter().apply(systemMemoryMax)));
-            }
+//            if (systemMemory != null) {
+//                predicates.add(criteriaBuilder.equal(root.get(SYSTEM_MEMORY_QUERY_FIELD), SystemMemory.getToByteConverter().apply(systemMemory)));
+//            }
+//            if (systemMemoryMin != null) {
+//                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(SYSTEM_MEMORY_MIN_QUERY_FIELD),
+//                        SystemMemory.getToByteConverter().apply(systemMemoryMin)));
+//            }
+//            if (systemMemoryMax != null) {
+//                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(SYSTEM_MEMORY_MAX_QUERY_FIELD),
+//                        SystemMemory.getToByteConverter().apply(systemMemoryMax)));
+//            }
             if (osFamily != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(OS_FAMILY_QUERY_FIELD)), osFamily.toString().toLowerCase()));
+                predicates.add(criteriaBuilder.equal(root.get(OS_FAMILY_QUERY_FIELD), osFamily));
             }
             if (osName != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(OS_NAME_QUERY_FIELD)), "%" + osName.toLowerCase() + "%"));
