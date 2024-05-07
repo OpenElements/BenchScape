@@ -86,10 +86,10 @@ public class BenchmarkEnvironmentEndpoint {
      *                            systemProcessors will be ignored)
      * @param systemProcessorsMax the maximum number of system processors of the environment (if defined
      *                            systemProcessors will be ignored)
-     * @param systemMemory        the system memory of the environment
-     * @param systemMemoryMin     the minimum system memory of the environment (if defined systemMemory will be
-     *                            ignored)
-     * @param systemMemoryMax     the maximum system memory of the environment (if defined systemMemory will be
+//     * @param systemMemory        the system memory of the environment
+//     * @param systemMemoryMin     the minimum system memory of the environment (if defined systemMemory will be
+//     *                            ignored)
+//     * @param systemMemoryMax     the maximum system memory of the environment (if defined systemMemory will be
      *                            ignored)
      * @param osName              the os name of the environment (can contain wildcards)
      * @param osVersion           the os version of the environment (can contain wildcards)
