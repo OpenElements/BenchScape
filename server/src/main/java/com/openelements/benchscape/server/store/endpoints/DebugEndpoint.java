@@ -95,7 +95,6 @@ public class DebugEndpoint {
         return entityManager.createQuery("SELECT COUNT(m) FROM Measurement m", Long.class).getSingleResult();
     }
 
-    @Transactional
     @PostMapping("/create-test-data")
     public void createTestData() {
 
