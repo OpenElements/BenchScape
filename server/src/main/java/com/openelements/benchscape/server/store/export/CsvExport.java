@@ -35,7 +35,6 @@ public class CsvExport {
                 d.systemMemory() + " "));
         columns.add(new CsvColumn<>("Java", (d, h) -> d.jvmName() + " " + d.jvmVersion()+ " "));
         columns.add(new CsvColumn<>("JMH Version", (d, h) -> d.jmhVersion() + " "));
-        //columns.add(new CsvColumn<>("Description", (d, h) -> d.description() + " "));
         final CsvData<Environment> csvData = new CsvData<>(columns);
         return csvData;
     }
