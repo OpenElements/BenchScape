@@ -31,7 +31,8 @@ public class CsvExport {
         final List<CsvColumn<Environment>> columns = new ArrayList<>();
         columns.add(new CsvColumn<>("Name", (d, h) -> d.name() + " "));
         columns.add(new CsvColumn<>("OPERATING SYSTEM", (d, h) -> String.valueOf(d.osFamily()) + " " + d.osVersion() + " "));
-        columns.add(new CsvColumn<>("HARDWARE", (d, h) -> d.systemArch() + " " + String.valueOf(d.systemProcessors()) + " " + d.systemMemory() + " "));
+        columns.add(new CsvColumn<>("HARDWARE", (d, h) -> d.systemArch() + " " + String.valueOf(d.systemProcessors()) + " " +
+                d.systemMemory() + " "));
         columns.add(new CsvColumn<>("Java", (d, h) -> d.jvmName() + " " + d.jvmVersion()+ " "));
         columns.add(new CsvColumn<>("JMH Version", (d, h) -> d.jmhVersion() + " "));
         //columns.add(new CsvColumn<>("Description", (d, h) -> d.description() + " "));
