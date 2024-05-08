@@ -53,8 +53,12 @@ export async function exportMeasurementsCsv(benchmarkId: string) {
   await exportCsv(url, "measurements.csv");
 }
 
-export async function exportEnvironmentsCsv() {
-  const url = `${apiUrl}/api/v2/export/environments/csv`;
+export async function exportEnvironmentsCsv(filters: Object) {
+  const withValues = Object.entries(filters)
+      .filter(([_key, value]) => Boolean(value))
+      .map(([key, value]) => [key, value]); 
+  const params = new URLSearchParams(withValues).toString();
+  const url = `${apiUrl}/api/v2/export/environments/csv?${params}`;
   await exportCsv(url, "environments.csv");
 }
 
