@@ -41,4 +41,8 @@ public interface MeasurementRepository extends EntityWithTenantRepository<Measur
     @NonNull
     @Query("SELECT m FROM Measurement m WHERE m.benchmarkId = ?1 ORDER BY m.timestamp DESC limit 1")
     Optional<MeasurementEntity> findLast(final UUID benchmarkId);
+
+    @NonNull
+    @Query("SELECT DISTINCT m.metadata.gitBranch FROM Measurement m WHERE m.benchmarkId = ?1")
+    List<String> findDistinctBranchesByBenchmarkId(UUID benchmarkId);
 }
