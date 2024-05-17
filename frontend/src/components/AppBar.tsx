@@ -40,13 +40,13 @@ const AppBar = () => {
           <List className="h-7 w-7 fill-current" aria-hidden="true" />
         </button>
       </div>
-      <div className="xl:pl-64 xl:pt-4">
+      <div className="xl:fixed w-full xl:pl-64 xl:pt-4 z-50">
         <div className="xl:px-4">
           <div className="flex items-center bg-winkle 2xl:px-8 2xl:py-7 px-5 py-4 w-full">
             <div className="xl:pl-4 flex-1 flex flex-col items-center gap-5">
               <div className="flex md:flex-row flex-col md:items-center md:justify-between gap-5 text-primary-navy w-full">
                 <div className="space-y-0.5">
-                  <p className=" text-[22px] font-semibold">{title}</p>
+                  <p className="text-[22px] font-semibold">{title}</p>
                 </div>
                 {Array.isArray(actions) && (
                   <div className="flex items-center gap-2 text-sm">
