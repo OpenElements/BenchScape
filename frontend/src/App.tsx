@@ -14,7 +14,7 @@ function App() {
     <div>
       <div className="bg-primary-gray">
         <AppBar />
-        <div className="xl:pl-64">
+        <div className="xl:pl-64" style={{ paddingTop: "104px" }}>
           <main className="w-full xl:px-4">
             <div className="bg-white xl:rounded-sm xl:shadow-sm h-full">
               <Routes>
