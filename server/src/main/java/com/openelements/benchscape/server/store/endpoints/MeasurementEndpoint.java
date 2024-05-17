@@ -121,7 +121,7 @@ public class MeasurementEndpoint {
     }
 
     @GetMapping("/{benchmarkId}/branches")
-    public List<String> getBranchesForBenchmark(@PathVariable String benchmarkId) {
+    public List<String> getGitBranchesForBenchmark(@PathVariable String benchmarkId) {
         return measurementService.getBranchesForBenchmark(benchmarkId);
     }
 }
