@@ -77,7 +77,7 @@ function EnvironmentsPage() {
   };
 
   const handleExportCsv = async () => {
-    await exportEnvironmentsCsv();
+    await exportEnvironmentsCsv(filters);
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ function EnvironmentsPage() {
         },
       ],
     });
-  }, []);
+  }, [filters]);
 
   return (
     <div>
