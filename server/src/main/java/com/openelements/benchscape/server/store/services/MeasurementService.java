@@ -186,4 +186,10 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
                 .orElseThrow(() -> new IllegalArgumentException("No measurement for benchmark " + benchmarkId));
         return DateTimePeriode.between(start, end);
     }
+
+    @NonNull
+    public List<String> getBranchesForBenchmark(@NonNull final String benchmarkId) {
+        Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
+        return measurementRepository.findDistinctBranchesByBenchmarkId(UUID.fromString(benchmarkId));
+    }
 }
