@@ -120,6 +120,13 @@ export function useForOsFamilyFilter(osFamily: string) {
   );
 }
 
+export function useBranches(benchmarkId: string) {
+  return useSwr<Array<string>, Error>(
+    `${apiUrl}/api/v2/measurement/${benchmarkId}/branches`,
+    dataFetcher
+  );
+}
+
 export function useBreakpoint(breakpointKey: string) {
   const [bool, setBool] = useState(false);
 

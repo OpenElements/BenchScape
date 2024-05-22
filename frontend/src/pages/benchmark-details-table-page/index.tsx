@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMeasurements, useEnvironments, useFilters } from "../../hooks";
+import { useMeasurements, useEnvironments, useFilters, useBranches } from "../../hooks";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   createAppBarConfig,
@@ -19,6 +19,8 @@ const MeasurementsTableComponent = () => {
     benchmarkId: id,
     ...initialFilters,
   });
+
+  const { data: branches } = useBranches(id);
 
   const { data: environments } = useEnvironments();
   const { data } = useMeasurements(filters);
@@ -41,6 +43,10 @@ const MeasurementsTableComponent = () => {
 
   const handleExportCsv = async () => {
     await exportMeasurementsCsv(id);
+  };
+
+  const handleBranchSelectChange = (field: string, values: Array<string>) => {
+    setFilters((prev) => ({ ...prev, [field]: values }));
   };
 
   useEffect(() => {
@@ -76,6 +82,17 @@ const MeasurementsTableComponent = () => {
             labelExtractor={(option) => option.name}
             onChange={handleEnvironmentChange}
           />
+
+        <div className="flex gap-2">
+          <Select
+            label="Branch"
+            options={branches}
+            value={filters.benchmarkId}
+            valueExtractor={(option) => option}
+            labelExtractor={(option) => option}
+            onChange={(e) => handleBranchSelectChange("benchmarkId", e.target.value)}
+          />
+        </div>
           <Datepicker
             label="Start Date"
             placeholder="Enter start date"

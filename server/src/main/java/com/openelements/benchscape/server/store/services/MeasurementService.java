@@ -8,6 +8,7 @@ import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.entities.MeasurementEntity;
 import com.openelements.benchscape.server.store.entities.MeasurementMetadataEntity;
 import com.openelements.benchscape.server.store.repositories.MeasurementRepository;
+import com.openelements.benchscape.server.store.repositories.MeasurementSpecification;
 import com.openelements.server.base.tenant.TenantService;
 import com.openelements.server.base.tenantdata.AbstractServiceWithTenant;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +62,10 @@ public class MeasurementService extends AbstractServiceWithTenant<MeasurementEnt
     @NonNull
     public List<Measurement> find(@NonNull final MeasurementQuery query) {
         Objects.requireNonNull(query, "query must not be null");
-        return measurementRepository.find(UUID.fromString(query.benchmarkId()), query.start(), query.end())
+        Specification<MeasurementEntity> specification = MeasurementSpecification.createSpecification(query);
+        return measurementRepository.findAll(specification)
                 .stream()
-                .map(m -> mapToData(m))
+                .map(this::mapToData)
                 .filter(m -> isMatchingEnvironment(m, query.environmentIds()))
                 .map(m -> m.withUnit(query.unit()))
                 .toList();
