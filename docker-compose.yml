@@ -1,0 +1,75 @@
+x-common-environment: &common-environment
+  STAGE: "${STAGE:-dev}"
+
+x-common-environment-files: &common-environment-files
+  - path: "secrets.env"
+    required: false
+
+configs:
+  init-postgres:
+    content: |
+      #!/bin/bash
+  
+      set -eu -o pipefail
+      
+      : "$${POSTGRES_USERNAME:=postgres}"
+      : "$${POSTGRES_PASSWORD:=postgres}"
+      : "$${POSTGRES_DB:=postgres}"
+      : "$${SPRING_DATASOURCE_USERNAME:=benchscape}"
+      : "$${SPRING_DATASOURCE_PASSWORD:=benchscape}"
+      : "$${SPRING_DATASOURCE_DATABASE:=benchscape}"
+      
+      psql -v ON_ERROR_STOP=1 \
+      --username "$${POSTGRES_USERNAME}" \
+      --dbname "$${POSTGRES_DB}" <<-EOF
+      CREATE USER $${SPRING_DATASOURCE_USERNAME} WITH PASSWORD '$${SPRING_DATASOURCE_PASSWORD}';
+      CREATE DATABASE $${SPRING_DATASOURCE_DATABASE} WITH OWNER $${SPRING_DATASOURCE_USERNAME};
+      GRANT ALL PRIVILEGES ON DATABASE $${SPRING_DATASOURCE_DATABASE} TO $${SPRING_DATASOURCE_USERNAME};
+      GRANT USAGE, CREATE ON SCHEMA public TO $${SPRING_DATASOURCE_USERNAME};
+      EOF
+
+services:
+  frontend:
+    build: frontend
+    image: "ghcr.io/openelements/benchscape-frontend:${FRONTEND_TAG:-latest}"
+    env_file: *common-environment-files
+    environment:
+      <<: *common-environment
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-2180}:80"
+    depends_on:
+      - server
+
+  server:
+    build: server
+    image: "ghcr.io/openelements/benchscape-backend:${SERVER_TAG:-latest}"
+    env_file: *common-environment-files
+    environment:
+      <<: *common-environment
+      SPRING_PROFILES_ACTIVE: postgres,${STAGE:-dev}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:${SERVER_PORT:-2181}:8080"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    env_file: *common-environment-files
+    environment:
+      <<: *common-environment
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+    configs:
+      - source: init-postgres
+        target: /docker-entrypoint-initdb.d/00-init-postgres.sh
+        uid: "999"
+        gid: "999"
+        mode: 0400
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-2132}:5432"
+    volumes:
+      - ./docker/${STAGE:-dev}/db/data:/var/lib/postgresql/data

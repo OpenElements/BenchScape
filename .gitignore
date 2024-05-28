@@ -38,3 +38,6 @@ hs_err_pid*
 # Gradle
 .gradle/
 build/
+
+# Docker
+/docker/
