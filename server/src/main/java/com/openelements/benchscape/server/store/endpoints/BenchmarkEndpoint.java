@@ -1,6 +1,5 @@
 package com.openelements.benchscape.server.store.endpoints;
 
-import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.ALL;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.COUNT;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.FIND;
 import static com.openelements.benchscape.server.store.endpoints.EndpointsConstants.V2;
@@ -56,7 +55,8 @@ public class BenchmarkEndpoint {
      *
      * @return all available benchmarks
      */
-    @GetMapping(ALL)
+    @GetMapping("/all1")
+    @RequestMapping(value = "/all2", method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public List<Benchmark> getAll() {
         return benchmarkService.getAll();
     }
