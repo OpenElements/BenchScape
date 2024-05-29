@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEnvironments, useMeasurements, useFilters } from "../../hooks";
+import { useEnvironments, useMeasurements, useFilters, useBranches } from "../../hooks";
 import Datepicker from "../../components/DatePicker";
 import Select from "../../components/Select";
 import GraphCard from "../../charts/GraphCard";
@@ -36,6 +36,8 @@ const BenchmarksDetailsGraph = () => {
     smooth: true,
     ...filters,
   });
+
+  const { data: branches } = useBranches(id);
 
   const handleChecked = (field: string, checked: boolean) =>
     setChecks((prev) => ({ ...prev, [field]: checked }));
@@ -154,6 +156,10 @@ const BenchmarksDetailsGraph = () => {
     setFilters((prev) => ({ ...prev, [field]: target.value }));
   };
 
+  const handleBranchSelectChange = (field: string, values: Array<string>) => {
+    setFilters((prev) => ({ ...prev, [field]: values }));
+  };
+
   useEffect(() => {
     createAppBarConfig({
       title: "Bechmark details",
@@ -182,6 +188,16 @@ const BenchmarksDetailsGraph = () => {
           labelExtractor={(option) => option.name}
           onChange={(e) => handleChange("environmentIds", e)}
         />
+        <div className="flex gap-2">
+          <Select
+            label="Branch"
+            options={branches}
+            value={filters.benchmarkId}
+            valueExtractor={(option) => option}
+            labelExtractor={(option) => option}
+            onChange={(e) => handleBranchSelectChange("benchmarkId", e.target.value)}
+          />
+        </div>
         <div className="flex gap-2">
           <Datepicker
             label="Start Date"

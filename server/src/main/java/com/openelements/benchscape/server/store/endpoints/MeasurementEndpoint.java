@@ -41,8 +41,8 @@ public class MeasurementEndpoint {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
             @RequestParam(required = false) final List<String> environmentIds,
-                           @RequestParam(required = false) final String gitOriginUrl,
-                           @RequestParam(required = false) final String gitBranch,
+            @RequestParam(required = false) final String gitOriginUrl,
+            @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false, defaultValue = "false") final boolean smooth) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);
@@ -69,8 +69,8 @@ public class MeasurementEndpoint {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final ZonedDateTime end,
             @RequestParam(required = false) final List<String> environmentIds,
             @RequestParam(required = false) final InterpolationType interpolationType,
-                                                   @RequestParam(required = false) final String gitOriginUrl,
-                                                   @RequestParam(required = false) final String gitBranch,
+            @RequestParam(required = false) final String gitOriginUrl,
+            @RequestParam(required = false) final String gitBranch,
             @RequestParam(required = false, defaultValue = "10") final int interpolationPoints) {
         Objects.requireNonNull(benchmarkId, "benchmarkId must not be null");
         final BenchmarkUnit queryUnit = Optional.ofNullable(unit).orElse(BenchmarkUnit.OPERATIONS_PER_MILLISECOND);

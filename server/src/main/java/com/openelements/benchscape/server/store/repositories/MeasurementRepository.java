@@ -7,11 +7,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MeasurementRepository extends EntityWithTenantRepository<MeasurementEntity> {
+public interface MeasurementRepository extends EntityWithTenantRepository<MeasurementEntity>, JpaSpecificationExecutor<MeasurementEntity> {
 
 
     @NonNull
