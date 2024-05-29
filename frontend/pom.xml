@@ -56,9 +56,11 @@
           </execution>
         </executions>
         <configuration>
-          <nodeVersion>${node.version}</nodeVersion>
           <workingDirectory>./</workingDirectory>
+          <!-- tag::node-and-npm-versions-config[] -->
+          <nodeVersion>${node.version}</nodeVersion>
           <npmVersion>${npm.version}</npmVersion>
+          <!-- end::node-and-npm-versions-config[] -->
         </configuration>
       </plugin>
       <plugin>
