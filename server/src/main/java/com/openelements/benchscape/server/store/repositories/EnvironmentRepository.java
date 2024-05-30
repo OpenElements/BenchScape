@@ -36,16 +36,20 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             List<Predicate> predicates = new ArrayList<>();
 
             if (name != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.name)), "%" + name.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.name)), "%" +
+                        name.toLowerCase() + "%"));
             }
             if (gitOriginUrl != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.gitOriginUrl)), "%" + gitOriginUrl.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.gitOriginUrl)), "%" +
+                        gitOriginUrl.toLowerCase() + "%"));
             }
             if (gitBranch != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(EnvironmentEntity_.gitBranch)), gitBranch.toLowerCase()));
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(EnvironmentEntity_.gitBranch)),
+                        gitBranch.toLowerCase()));
             }
             if (systemArch != null) {
-                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(EnvironmentEntity_.systemArch)), systemArch.toLowerCase()));
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(EnvironmentEntity_.systemArch)),
+                        systemArch.toLowerCase()));
             }
             if (systemProcessors != null) {
                 predicates.add(criteriaBuilder.equal(root.get(EnvironmentEntity_.systemProcessors), systemProcessors));
@@ -60,19 +64,24 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
                 predicates.add(criteriaBuilder.equal(root.get(EnvironmentEntity_.osFamily), osFamily));
             }
             if (osName != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.osName)), "%" + osName.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.osName)), "%" +
+                        osName.toLowerCase() + "%"));
             }
             if (osVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.osVersion)), "%" + osVersion.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.osVersion)), "%" +
+                        osVersion.toLowerCase() + "%"));
             }
             if (jvmVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jvmVersion)), "%" + jvmVersion.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jvmVersion)), "%" +
+                        jvmVersion.toLowerCase() + "%"));
             }
             if (jvmName != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jvmName)), "%" + jvmName.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jvmName)), "%" +
+                        jvmName.toLowerCase() + "%"));
             }
             if (jmhVersion != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jmhVersion)), "%" + jmhVersion.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(EnvironmentEntity_.jmhVersion)), "%" +
+                        jmhVersion.toLowerCase() + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
