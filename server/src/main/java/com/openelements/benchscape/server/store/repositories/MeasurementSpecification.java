@@ -19,10 +19,6 @@ public class MeasurementSpecification {
 
             predicates.add(cb.between(root.get(MeasurementEntity_.timestamp), query.start(), query.end()));
 
-            if (!query.environmentIds().isEmpty()) {
-                predicates.add(root.get(MeasurementEntity_.environmentId).in(query.environmentIds()));
-            }
-
             if (query.gitOriginUrl() != null) {
                 predicates.add(cb.equal(root.get(MeasurementEntity_.metadata).get("gitOriginUrl"), query.gitOriginUrl()));
             }

@@ -7,12 +7,15 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.metamodel.StaticMetamodel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //TODO: Define unique key over name+params
+@StaticMetamodel(BenchmarkEntity.class)
 @Entity(name = "Benchmark")
 public class BenchmarkEntity extends AbstractEntityWithTenant {
 
