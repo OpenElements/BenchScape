@@ -2,14 +2,15 @@ package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
-import jakarta.persistence.*;
-import jakarta.persistence.metamodel.StaticMetamodel;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-@StaticMetamodel(MeasurementEntity.class)
 @Entity(name = "Measurement")
 public class MeasurementEntity extends AbstractEntityWithTenant {
 

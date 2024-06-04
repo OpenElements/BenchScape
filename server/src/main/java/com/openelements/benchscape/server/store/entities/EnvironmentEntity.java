@@ -6,11 +6,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import jakarta.persistence.metamodel.StaticMetamodel;
-
 import java.util.Objects;
 
-@StaticMetamodel(EnvironmentEntity.class)
 @Entity(name = "Environment")
 public class EnvironmentEntity extends AbstractEntityWithTenant {
 

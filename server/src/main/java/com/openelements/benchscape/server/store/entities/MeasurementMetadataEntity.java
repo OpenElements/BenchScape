@@ -8,14 +8,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.metamodel.StaticMetamodel;
-
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-@StaticMetamodel(MeasurementMetadataEntity.class)
 @Entity(name = "MeasurementMetadata")
 public class MeasurementMetadataEntity extends AbstractEntityWithTenant {
 
