@@ -1,10 +1,8 @@
 package com.openelements.benchscape.server.store.entities;
 
 import com.openelements.benchscape.jmh.model.BenchmarkUnit;
-import com.openelements.server.base.data.AbstractEntity;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
