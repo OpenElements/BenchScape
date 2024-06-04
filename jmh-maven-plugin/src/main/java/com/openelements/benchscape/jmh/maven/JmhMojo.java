@@ -57,11 +57,6 @@ public class JmhMojo extends AbstractMojo {
     public static final String CLASSPATH_ARG = "-cp";
     public static final String JAR_TYPE = "jar";
 
-    /**
-     * If true benchmarks in test scope will be executed (Java classes of benchmarks must be placed under
-     * {@code src/main/java}).
-     */
-    private boolean benchmarksInTestScope = false;
 
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
@@ -71,6 +66,13 @@ public class JmhMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "true")
     private boolean writeToFile;
+
+    /**
+     * If true benchmarks in test scope will be executed (Java classes of benchmarks must be placed under
+     * {@code src/test/java}).
+     */
+    @Parameter(defaultValue = "true")
+    private boolean testScope;
 
     @Parameter(defaultValue = "${project.build.directory}/jmh-results.json")
     private String file;
@@ -157,7 +159,7 @@ public class JmhMojo extends AbstractMojo {
 
         final List<String> classpath = new ArrayList<>();
         classpath.addAll(project.getRuntimeClasspathElements());
-        if (benchmarksInTestScope) {
+        if (testScope) {
             classpath.addAll(project.getTestClasspathElements());
         }
         classpath.addAll(dependencies);
@@ -289,7 +291,7 @@ public class JmhMojo extends AbstractMojo {
      */
     @NonNull
     private File getBenchmarkList() {
-        if (benchmarksInTestScope) {
+        if (testScope) {
             return new File(new File(project.getBuild().getTestOutputDirectory(), META_INF),
                     BENCHMARK_LIST_FILE);
         } else {

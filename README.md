@@ -173,6 +173,7 @@ The maven goal has several config params:
 | `apiPrincipal` | `String`  | Will be used once we support multiple users                       | `null`  |
 | `apiKey`       | `String`  | Will be used once we support multiple users                       | `null`  |
 | `skip`         | `boolean` | if `true` the goal will do nothing                                | `false` |
+| `testScope`    | `boolean` | if `true` benchmarks under `src/test/java` will be executed       | `true` |
 
 ### Testdata from Maven projects
 
