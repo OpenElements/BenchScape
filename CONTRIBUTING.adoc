@@ -1,0 +1,309 @@
+= Contributing
+:icons: font
+:toc: left
+
+[.lead]
+====
+We currently focus on the build aspects.
+Most of what is stated below can also be stated for the (local) run of BenchScape.
+
+Additionally, it should be extended by more aspects which are relevant to code contributors, e.g., local setup, coding conventions, etc.
+====
+
+[[sec:build-and-run]]
+== BenchScape Build (and Run)
+
+[[sec:build]]
+=== Build
+
+There are several ways to build (and run) BenchScape with redundant and overlapping build steps.
+Each seems to have its merits and drawbacks.
+
+[IMPORTANT]
+.Local Builds
+====
+The following is valid mostly in the context of a local build on a developer machine as we do have only limited control over the environment of the build.
+
+For continuous integration (CI) environments like GitHub Actions, we could somehow make the build (better) reproducible and unique by explicitly defining the surrounding build environment.
+====
+
+[[sec:maven-wrapper-build]]
+==== Maven (Wrapper) Build
+
+[plantuml,maven-build,svg]
+....
+@startuml
+autoactivate on
+
+actor "Developer" as developer
+control "Maven\nReactor\nBuild" as reactor
+control "..." as mod_x
+control "Maven\nServer\nBuild" as mod_be
+control "..." as mod_y
+control "Maven\nFrontend\nBuild" as mod_fe
+control "NPM\nFrontend\nBuild" as npm
+
+developer -> reactor : mvnw\nverify
+reactor -> mod_x : Maven\nModule\nbuild\n(misc. goals)
+return
+reactor -> mod_be : Module\nbuild
+return
+reactor -> mod_y : Module\nBuild
+return
+reactor -> mod_fe : Module\nBuild
+mod_fe -> mod_fe : Install NPM and Node
+return
+note over mod_fe #lightgreen
+Now we have a controlled version
+of NPM and Node
+end note
+mod_fe -> npm : npm install
+return
+return
+return
+@enduml
+....
+
+The Maven-based build seems to be the default as the project in general is a Maven project, consisting of the reactor (parent) build and several modules.
+Almost all modules create a Maven artifact as deliverable.
+
+But there is one exception, the _frontend_.
+The frontend is based on Node/NPM.
+The Maven module for the frontend uses the Maven frontend plugin to first install node and npm:
+
+[source,xml]
+.frontend/pom.xml
+----
+include::frontend/pom.xml[tag=node-and-npm-versions-config,indent=0]
+----
+
+The values are coming from the reactor POM.
+
+[source,xml]
+.pom.xml (Reactor POM)
+----
+include::pom.xml[tag=node-and-npm-versions,indent=0]
+----
+
+[NOTE]
+====
+Using Maven as the reactor here has the benefit that the version of NPM and Node can be specified for the build, which makes the build (better) reproducible.
+====
+
+==== Native frontend build
+
+The frontend is build using Node and NPM (and additional tools from this universe like `husky`).
+
+[plantuml,native-build,svg]
+....
+@startuml
+autoactivate on
+actor "Developer" as developer
+control "NPM\nFrontend\nBuild" as npm
+
+note over npm #red
+Here we have (mostly)
+uncontrolled version
+of NPM and Node.
+
+(It is up to the developer
+to ensure the right version)
+end note
+developer -> npm : npm\ninstall
+return
+@enduml
+....
+
+For contributors mainly working on the frontend, it seems more natural to perform build actions with the respective tools directly.
+
+For example, https://brew.sh[Homebrew] meanwhile installs newer versions on a Mac:
+
+[source, bash]
+.Node and NPM versions by Homebrew by the time of writing
+----
+node: v22.2.0
+npm: 10.7.0
+----
+
+[[sec:setup-and-startup]]
+==== Setup and Start Scripts
+
+The shell script xref:setup-benchscape.sh[] is kind of a super wrapper.
+Without going into details, it
+
+* Runs `./mvnw verify` (cf <<sec:maven-wrapper-build>>), which internally runs `npm` with a controlled version of NPM,
+* Runs `npm install` with an uncontrolled (local environment specific version) of NPM.
+* Performs other actions like starting both server and frontend (and stopping them on miscellaneous signals like Control-C to abort the script).
++
+[CAUTION]
+.Set up and start overlap
+====
+The latter goes beyond a _setup_ as the name of the script suggests and seems to interfere with the xref:start-benchscape.sh[] script.
+
+Both of the scripts, setup and start, directly call `java` with the server JAR file.
+This does not allow using additional information, e.g., environment-specific configurations like Spring profiles (as we might use it in the future to run the server backend with a PostgreSQL database).
+====
+
+[plantuml,setup-build,svg]
+....
+@startuml
+autoactivate on
+
+actor "Developer" as developer
+control "setup-benchscape.sh" as setup
+control "Maven\nReactor\nBuild" as reactor
+control "..." as mod_x
+control "Maven\nServer\nBuild" as mod_be
+control "..." as mod_y
+control "Maven\nFrontend\nBuild" as mod_fe
+control "NPM\nFrontend\nBuild" as npm
+
+developer -> setup : Run
+setup -> reactor : mvnw\nverify
+reactor -> mod_x : Maven\nModule\nbuild\n(misc. goals)
+return
+reactor -> mod_be : Module\nbuild
+return
+reactor -> mod_y : Module\nBuild
+return
+reactor -> mod_fe : Module\nBuild
+mod_fe -> mod_fe : Install NPM and Node
+return
+note over mod_fe #lightgreen
+Now we have a controlled version
+of NPM and Node
+end note
+mod_fe -> npm : npm install
+return
+return
+return
+====
+note over setup, npm #red
+NPM is called again (though it was already performed
+by the Maven reactor build).
+
+Now, an uncontrolled version is used.
+end note
+setup -> npm : npm\ninstall
+return
+
+return
+@enduml
+....
+
+==== Make
+
+Additionally, there is a link:Makefile[]that just executes both of the two shell scripts from above to set up and start BenchScape.
+As already said, both scripts overlap and the setup script already starts frontend and server in the background, and the start script again starts frontend and server.
+
+[plantuml,make,svg]
+....
+@startuml
+autoactivate on
+
+actor "Developer" as developer
+entity "Makefile" as makefile
+control "setup-benchscape.sh" as setup
+control "Maven\nReactor\nBuild" as reactor
+control "..." as mod_x
+control "Maven\nServer\nBuild" as mod_be
+control "..." as mod_y
+control "Maven\nFrontend\nBuild" as mod_fe
+control "NPM\nFrontend\nBuild" as npm
+
+developer -> makefile : make
+makefile -> setup : Run
+setup -> reactor : mvnw\nverify
+reactor -> mod_x : Maven\nModule\nbuild\n(misc. goals)
+return
+reactor -> mod_be : Module\nbuild
+return
+reactor -> mod_y : Module\nBuild
+return
+reactor -> mod_fe : Module\nBuild
+mod_fe -> mod_fe : Install NPM and Node
+return
+note over mod_fe #lightgreen
+Now we have a controlled version
+of NPM and Node
+end note
+mod_fe -> npm : npm install
+return
+return
+return
+====
+note over setup, npm #red
+NPM is called again (though it was already performed
+by the Maven reactor build).
+
+Now, an uncontrolled version is used.
+end note
+setup -> npm : npm\ninstall
+return
+====
+note over makefile, npm #orange
+After running server and frontend by the setup script,
+the Makefile now starts both components a second time.
+end note
+control "start-benchscape.sh" as start
+makefile -> start : Run
+return
+@enduml
+....
+
+== Git Hooks
+
+As developers, we would like to use (and provide) https://git-scm.com/docs/githooks[Git Hooks] to enable checks and balances before (or after) some git action is performed, e.g.,
+
+* Perform some code formatting, import optimization, etc. before a commit.
+* Perform a local build and test before pushing a change to the remote repository.
+
+There are several Git hook frameworks available, e.g.,
+
+Husky:: https://typicode.github.io/husky/[Husky] integrates very well with Node and NPM and seems to be a perfect choice for frontend contributors.
+Pre-Commit:: https://pre-commit.com/[Pre-commit], though written in Python, promises to be language and build system agnostic and seems to be a good choice when the tech stack consists of diverse technologies.
+
+[CAUTION]
+.Uncontrolled Git hooks
+====
+Currently, the NPM-based frontend build installs Git hooks for the frontend only, i.e., code formatting and build/test.
+These hooks do not cover the overall code base, i.e., the (mostly) Java code of the other BenchScape modules.
+
+Additionally, as stated above, the configured hooks use an arbitrary version of NPM from the local environment (whatever it finds on `+${PATH}+`).
+This can lead to local problems, resulting in a non-working local setup which prohibits commiting or pushing changes.
+
+To avoid such hassle, the hooks should make use of a controlled environment, i.e., use the recommended <<sec:maven-wrapper-build,Maven-based>> build.
+====
+
+However, in the end, contributors are finally responsible to check in code which does not break build, is well formatted, tested, etc.
+
+
+[IMPORTANT]
+.Only configure Git hooks privately
+====
+Nevertheless, using Git hooks to perform some local checks should be _optional_ for each contributor at their own choice.
+
+Therefore, please do not activate any Git hook installation by extending one of the project <<sec:build,build>> tools mentioned above.
+====
+
+People may use the commit hook framework of their choice.
+
+Use Husky::
+Currently, there is already a xref:frontend/.husky[] configuration prepared. 
+Install this by executing
++
+[source, bash]
+husky frontend/.husky
+
++
+at your convenience.
+
+Use `pre-commit`::
+Pre-Commit is not yet configured and prepared.
+As soon as we provide the respective configurations, contributors may install it with
++
+[source, bash]
+pre-commit install
+
+
+

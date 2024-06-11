@@ -14,7 +14,6 @@
     "build:production": "env-cmd -f ./.env.production npm run-script build",
     "test": "vitest",
     "test:run": "vitest --run",
-    "prepare": "cd .. && husky frontend/.husky",
     "prettier": "prettier --write \"src/**/*.{js,jsx}\""
   },
   "eslintConfig": {
