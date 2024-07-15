@@ -19,8 +19,10 @@
     <maven.compiler.target>17</maven.compiler.target>
     <jmh.version>1.37</jmh.version>
     <picocli.version>4.7.5</picocli.version>
+    <!-- tag::node-and-npm-versions[] -->
     <node.version>v20.5.0</node.version>
     <npm.version>9.8.0</npm.version>
+    <!-- end::node-and-npm-versions[] -->
   </properties>
 
 
