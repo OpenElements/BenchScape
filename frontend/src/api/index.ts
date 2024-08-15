@@ -1,103 +1,85 @@
-package com.nevmem.moneysaver.app.data
+import axios from "axios";
+import { apiUrl } from "../utils/constants";
+import { Environment, Measurement } from "../types";
 
-import android.util.Log
-import com.nevmem.moneysaver.app.room.AppDatabase
-import com.nevmem.moneysaver.app.room.entity.Feature
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import java.lang.ref.WeakReference
-import javax.inject.Inject
+async function exportCsv(url: string, filename: string) {
+  try {
+    const response = await axios({
+      url,
+      method: "GET",
+      responseType: "blob",
+    });
+    const href = URL.createObjectURL(response.data);
 
-class SettingsManagerImpl @Inject constructor(
-    private val appDatabase: AppDatabase
-) : SettingsManager {
-    private val enabledFeatures = HashSet<Feature>()
-    private val tag = "SETTINGS_MANAGER_IMPL"
+    const link = document.createElement("a");
+    link.href = href;
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
 
-    private val listeners = ArrayList<WeakReference<SettingsManagerListener>>()
-    private var initialization: Job? = null
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
 
-    init {
-        Log.d(tag, "Initialization")
-    }
+export async function dataFetcher<T>(url: string) {
+  return await axios
+    .get<T>(url)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(error);
+    });
+}
 
-    override fun initialize(): Job {
-        if (initialization == null) {
-            initialization = CoroutineScope(Dispatchers.IO).launch {
-                appDatabase.featuresDao().loadAll().forEach {
-                    Log.d(tag, "Feature: ${it.featureName}")
-                    enabledFeatures.add(it)
-                }
-            }
-        }
-        return initialization as Job
-    }
+export async function postData<T>(url: string, payload: any) {
+  return await axios
+    .post<T>(url, payload)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw new Error(error);
+    });
+}
 
-    override fun isFeatureEnabled(featureName: String): Boolean {
-        return enabledFeatures.contains(Feature(featureName))
-    }
+export async function deleteData(url: string) {
+  return await axios.delete(url).catch((error) => {
+    throw new Error(error);
+  });
+}
 
-    override fun enableFeature(featureName: String) {
-        if (!isFeatureEnabled(featureName)) {
-            val feature = Feature(featureName)
-            enabledFeatures.add(feature)
-            insertFeature(feature)
-            notifyFeaturesChanged()
-        }
-    }
+export async function exportMeasurementsCsv(benchmarkId: string) {
+  const url = `${apiUrl}/api/v2/export/measurements/csv?benchmarkId=${benchmarkId}`;
+  await exportCsv(url, "measurements.csv");
+}
 
-    override fun disableFeature(featureName: String) {
-        if (isFeatureEnabled(featureName)) {
-            val featureToDelete = enabledFeatures.find {
-                it.featureName == featureName
-            }
-            enabledFeatures.remove(Feature(featureName))
-            if (featureToDelete != null) {
-                deleteFeature(featureToDelete)
-            }
-            notifyFeaturesChanged()
-        }
-    }
+export async function exportEnvironmentsCsv(filters: Object) {
+  const withValues = Object.entries(filters)
+      .filter(([_key, value]) => Boolean(value))
+      .map(([key, value]) => [key, value]); 
+  const params = new URLSearchParams(withValues).toString();
+  const url = `${apiUrl}/api/v2/export/environments/csv?${params}`;
+  await exportCsv(url, "environments.csv");
+}
 
-    override fun toggleFeature(featureName: String) {
-        if (isFeatureEnabled(featureName)) {
-            disableFeature(featureName)
-        } else {
-            enableFeature(featureName)
-        }
-    }
+export async function exportBenchmarksCsv() {
+  const url = `${apiUrl}/api/v2/export/benchmarks/csv`;
+  await exportCsv(url, "benchmarks.csv");
+}
 
-    override fun subscribe(listener: WeakReference<SettingsManagerListener>) {
-        listeners.add(listener)
-    }
+export async function getMeasurementsForBechmark(benchmarkId: string) {
+  const url = `${apiUrl}/api/v2/measurement/find?benchmarkId=${benchmarkId}`;
+  const data = await dataFetcher<Array<Measurement>>(url);
+  return data?.length;
+}
 
-    override fun unsubscribe(listener: WeakReference<SettingsManagerListener>) {
-        listeners.remove(listener)
-    }
+export async function saveEnvironment(payload: Object) {
+  return await postData<Array<Environment>>(
+    `${apiUrl}/api/v2/environment`,
+    payload
+  );
+}
 
-    private fun notifyFeaturesChanged() {
-        val iterator = listeners.iterator()
-        while (iterator.hasNext()) {
-            val ref = iterator.next().get()
-            if (ref != null) {
-                ref.onFeaturesUpdated()
-            } else {
-                iterator.remove()
-            }
-        }
-    }
-
-    private fun insertFeature(feature: Feature) {
-        CoroutineScope(Dispatchers.IO).launch {
-            appDatabase.featuresDao().insert(feature)
-        }
-    }
-
-    private fun deleteFeature(feature: Feature) {
-        CoroutineScope(Dispatchers.IO).launch {
-            appDatabase.featuresDao().delete(feature)
-        }
-    }
+export async function deleteEnvironment(id: string) {
+  return await deleteData(`${apiUrl}/api/v2/environment?id=${id}`);
 }
