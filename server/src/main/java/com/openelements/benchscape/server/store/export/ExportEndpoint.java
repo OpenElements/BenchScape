@@ -55,6 +55,9 @@ public class ExportEndpoint {
                                                            @RequestParam(required = false) Integer systemProcessors,
                                                            @RequestParam(required = false) Integer systemProcessorsMin,
                                                            @RequestParam(required = false) Integer systemProcessorsMax,
+                                                           @RequestParam(required = false) SystemMemory systemMemory,
+                                                           @RequestParam(required = false) SystemMemory systemMemoryMin,
+                                                           @RequestParam(required = false) SystemMemory systemMemoryMax,
                                                            @RequestParam(required = false) OperationSystem osFamily,
                                                            @RequestParam(required = false) String osName,
                                                            @RequestParam(required = false) String osVersion,
@@ -62,7 +65,8 @@ public class ExportEndpoint {
                                                            @RequestParam(required = false) String jvmName,
                                                            @RequestParam(required = false) String jmhVersion) {
         final List<Environment> filteredEnvironments = environmentService.getFilteredEnvironments(name, gitOriginUrl, gitBranch,
-                systemArch, systemProcessors, systemProcessorsMin, systemProcessorsMax, osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+                systemArch, systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
+                osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
         return createData(osw -> CsvExport.exportEnvironments(osw, filteredEnvironments));
     }
 
