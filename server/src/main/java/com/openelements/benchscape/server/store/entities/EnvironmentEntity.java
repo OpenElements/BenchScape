@@ -1,12 +1,12 @@
 package com.openelements.benchscape.server.store.entities;
 
+import java.util.Objects;
+
 import com.openelements.benchscape.server.store.data.OperationSystem;
 import com.openelements.server.base.tenantdata.AbstractEntityWithTenant;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import java.util.Objects;
 
 @Entity(name = "Environment")
 public class EnvironmentEntity extends AbstractEntityWithTenant {
