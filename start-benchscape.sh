@@ -7,10 +7,10 @@ java -jar benchscape-server.jar &
 SERVER_PID=$!
 cd ../..
 
-# Start BenchScape frontend server
-echo "Starting frontend server..."
-cd frontend || { echo "Error: frontend directory not found"; exit 1; }
-npm start &
+# # Start BenchScape frontend server
+# echo "Starting frontend server..."
+# cd frontend || { echo "Error: frontend directory not found"; exit 1; }
+# npm start &
 
 # Cleanup function to stop servers on script exit
 cleanup() {
