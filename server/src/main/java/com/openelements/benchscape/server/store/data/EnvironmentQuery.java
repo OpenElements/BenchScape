@@ -16,9 +16,10 @@ import java.io.Serializable;
  * @param systemProcessors    system processors of the environment
  * @param systemProcessorsMin min system processors of the environment
  * @param systemProcessorsMax max system processors of the environment
-// * @param systemMemory        system memory of the environment
-// * @param systemMemoryMin     min system memory of the environment
-// * @param systemMemoryMax     max system memory of the environment
+ * @param systemMemory        system memory of the environment
+ * @param systemMemoryMin     min system memory of the environment
+ * @param systemMemoryMax     max system memory of the environment
+ * @param osFamily            os family of the environment
  * @param osName              os name of the environment
  * @param osVersion           os version of the environment
  * @param jvmVersion          jvm version of the environment
@@ -32,6 +33,9 @@ public record EnvironmentQuery(@Nullable String name,
                                @Nullable Integer systemProcessors,
                                @Nullable Integer systemProcessorsMin,
                                @Nullable Integer systemProcessorsMax,
+                               @Nullable SystemMemory systemMemory,
+                               @Nullable SystemMemory systemMemoryMin,
+                               @Nullable SystemMemory systemMemoryMax,
                                @Nullable OperationSystem osFamily,
                                @Nullable String osName,
                                @Nullable String osVersion,

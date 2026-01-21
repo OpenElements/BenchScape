@@ -86,10 +86,10 @@ public class BenchmarkEnvironmentEndpoint {
      *                            systemProcessors will be ignored)
      * @param systemProcessorsMax the maximum number of system processors of the environment (if defined
      *                            systemProcessors will be ignored)
-//     * @param systemMemory        the system memory of the environment
-//     * @param systemMemoryMin     the minimum system memory of the environment (if defined systemMemory will be
-//     *                            ignored)
-//     * @param systemMemoryMax     the maximum system memory of the environment (if defined systemMemory will be
+     * @param systemMemory        the system memory of the environment
+     * @param systemMemoryMin     the minimum system memory of the environment (if defined systemMemory will be
+     *                            ignored)
+     * @param systemMemoryMax     the maximum system memory of the environment (if defined systemMemory will be
      *                            ignored)
      * @param osName              the os name of the environment (can contain wildcards)
      * @param osVersion           the os version of the environment (can contain wildcards)
@@ -107,6 +107,9 @@ public class BenchmarkEnvironmentEndpoint {
             @RequestParam(required = false) Integer systemProcessors,
             @RequestParam(required = false) Integer systemProcessorsMin,
             @RequestParam(required = false) Integer systemProcessorsMax,
+            @RequestParam(required = false) SystemMemory systemMemory,
+            @RequestParam(required = false) SystemMemory systemMemoryMin,
+            @RequestParam(required = false) SystemMemory systemMemoryMax,
             @RequestParam(required = false) OperationSystem osFamily,
             @RequestParam(required = false) String osName,
             @RequestParam(required = false) String osVersion,
@@ -114,7 +117,8 @@ public class BenchmarkEnvironmentEndpoint {
             @RequestParam(required = false) String jvmName,
             @RequestParam(required = false) String jmhVersion) {
         final EnvironmentQuery environmentQuery = new EnvironmentQuery(name, gitOriginUrl, gitBranch, systemArch,
-                systemProcessors, systemProcessorsMin, systemProcessorsMax, osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
+                osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion);
         return environmentService.findByQuery(environmentQuery);
     }
 

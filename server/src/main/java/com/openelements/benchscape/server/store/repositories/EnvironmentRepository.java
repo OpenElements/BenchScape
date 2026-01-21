@@ -1,6 +1,7 @@
 package com.openelements.benchscape.server.store.repositories;
 
 import com.openelements.benchscape.server.store.data.OperationSystem;
+import com.openelements.benchscape.server.store.data.SystemMemory;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity;
 import com.openelements.benchscape.server.store.entities.EnvironmentEntity_;
 import com.openelements.server.base.tenantdata.EntityWithTenantRepository;
@@ -18,18 +19,20 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
 
     default List<EnvironmentEntity> findFilteredEnvironments(String name, String gitOriginUrl, String gitBranch, String systemArch,
                                                              Integer systemProcessors, Integer systemProcessorsMin,
-                                                             Integer systemProcessorsMax, OperationSystem osFamily,
-                                                             String osName, String osVersion, String jvmVersion,
+                                                             Integer systemProcessorsMax, SystemMemory systemMemory,
+                                                             SystemMemory systemMemoryMin, SystemMemory systemMemoryMax,
+                                                             OperationSystem osFamily, String osName, String osVersion, String jvmVersion,
                                                              String jvmName, String jmhVersion) {
         return findAll(createSpecificationForQuery(name, gitOriginUrl, gitBranch, systemArch,
-                systemProcessors, systemProcessorsMin, systemProcessorsMax,
+                systemProcessors, systemProcessorsMin, systemProcessorsMax, systemMemory, systemMemoryMin, systemMemoryMax,
                 osFamily, osName, osVersion, jvmVersion, jvmName, jmhVersion));
     }
 
     private static Specification<EnvironmentEntity> createSpecificationForQuery(String name, String gitOriginUrl, String gitBranch,
                                                                                 String systemArch, Integer systemProcessors,
                                                                                 Integer systemProcessorsMin, Integer systemProcessorsMax,
-                                                                                OperationSystem osFamily,
+                                                                                SystemMemory systemMemory, SystemMemory systemMemoryMin,
+                                                                                SystemMemory systemMemoryMax, OperationSystem osFamily,
                                                                                 String osName, String osVersion, String jvmVersion,
                                                                                 String jvmName, String jmhVersion) {
         return (root, criteriaQuery, criteriaBuilder) -> {
@@ -59,6 +62,17 @@ public interface EnvironmentRepository extends EntityWithTenantRepository<Enviro
             }
             if (systemProcessorsMax != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EnvironmentEntity_.systemProcessors), systemProcessorsMax));
+            }
+            if (systemMemory != null) {
+                predicates.add(criteriaBuilder.equal(root.get(EnvironmentEntity_.systemMemory).get("type"), systemMemory.toBytes()));
+            }
+
+            if (systemMemoryMin != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(EnvironmentEntity_.systemMemory).get("value"), systemMemoryMin.toBytes()));
+            }
+
+            if (systemMemoryMax != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(EnvironmentEntity_.systemMemory).get("value"), systemMemoryMax.toBytes()));
             }
             if (osFamily != null) {
                 predicates.add(criteriaBuilder.equal(root.get(EnvironmentEntity_.osFamily), osFamily));
